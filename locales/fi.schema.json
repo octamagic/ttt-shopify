@@ -453,6 +453,24 @@
         }
       }
     },
+    "analytics": {
+      "name": "Analytiikka",
+      "info": "PostHog behavioral tracking and A/B experiments. Leave the token blank to turn PostHog off.",
+      "settings": {
+        "posthog_project_token": {
+          "label": "PostHog project token",
+          "info": "Starts with phc_. Use the same project as go.threaditate.com."
+        },
+        "posthog_api_host": {
+          "label": "PostHog API host",
+          "info": "https://us.i.posthog.com for US Cloud, https://eu.i.posthog.com for EU."
+        },
+        "posthog_session_replay": {
+          "label": "Record session replays",
+          "info": "Replay also has to be switched on in PostHog project settings."
+        }
+      }
+    },
     "advanced": {
       "name": "Lisäasetukset",
       "info": "Asetukset edistyneille käyttäjille ja kehittäjille, jotka ovat tuttuja HTML-dokumenttirakenteen kanssa.",

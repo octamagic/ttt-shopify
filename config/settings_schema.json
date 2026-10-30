@@ -1602,6 +1602,36 @@
     ]
   },
   {
+    "name": "t:settings_schema.analytics.name",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "t:settings_schema.analytics.info"
+      },
+      {
+        "type": "text",
+        "id": "posthog_project_token",
+        "label": "t:settings_schema.analytics.settings.posthog_project_token.label",
+        "info": "t:settings_schema.analytics.settings.posthog_project_token.info",
+        "default": "phc_kAjV7TfyUfu7MX9zLLS6UMDE7HJPMEXVPsC2kGyb7bfM"
+      },
+      {
+        "type": "text",
+        "id": "posthog_api_host",
+        "label": "t:settings_schema.analytics.settings.posthog_api_host.label",
+        "info": "t:settings_schema.analytics.settings.posthog_api_host.info",
+        "default": "https://us.i.posthog.com"
+      },
+      {
+        "type": "checkbox",
+        "id": "posthog_session_replay",
+        "label": "t:settings_schema.analytics.settings.posthog_session_replay.label",
+        "info": "t:settings_schema.analytics.settings.posthog_session_replay.info",
+        "default": false
+      }
+    ]
+  },
+  {
     "name": "t:settings_schema.advanced.name",
     "settings": [
       {

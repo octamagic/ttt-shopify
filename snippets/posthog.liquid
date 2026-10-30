@@ -1,0 +1,53 @@
+{%- comment -%}
+  PostHog behavioral analytics + experiments.
+  Token and host come from theme settings (Analytics). Blank token = nothing loads.
+  Same project as go.threaditate.com, so the cookie on .threaditate.com carries
+  one distinct_id from storefront to app. Loader + events live in assets/posthog.js;
+  this snippet only renders config and page data as JSON. See docs/POSTHOG.md.
+{%- endcomment -%}
+{%- if settings.posthog_project_token != blank -%}
+  <script type="application/json" id="ph-config">
+    {
+      "token": {{ settings.posthog_project_token | strip | json }},
+      "api_host": {{ settings.posthog_api_host | default: 'https://us.i.posthog.com' | strip | json }},
+      "session_replay": {{ settings.posthog_session_replay | json }},
+      "context": {
+        "site": "storefront",
+        "shopify_template": {{ template.name | json }},
+        "shopify_template_suffix": {{ template.suffix | default: '' | json }},
+        "theme_name": {{ theme.name | json }}
+      },
+      "customer": {% if customer %}{
+        "id": {{ customer.id | json }},
+        "email": {{ customer.email | json }},
+        "orders_count": {{ customer.orders_count | json }}
+      }{% else %}null{% endif %}
+    }
+  </script>
+
+  {%- if template.name == 'product' and product -%}
+    {%- assign v = product.selected_or_first_available_variant -%}
+    <script type="application/json" id="ph-product">
+      {
+        "product_id": {{ product.id | json }},
+        "handle": {{ product.handle | json }},
+        "name": {{ product.title | json }},
+        "variant_id": {{ v.id | json }},
+        "variant_name": {{ v.title | json }},
+        "price": {{ v.price | divided_by: 100.0 | json }},
+        "currency": {{ cart.currency.iso_code | json }},
+        "available": {{ v.available | json }},
+        "vendor": {{ product.vendor | json }},
+        "type": {{ product.type | json }}
+      }
+    </script>
+  {%- endif -%}
+
+  {%- comment -%} Anti-flicker for experiment variants (see posthog.js). {%- endcomment -%}
+  <style>
+    .js [data-ph-flag] { visibility: hidden; }
+    .js.ph-flags-ready [data-ph-flag] { visibility: visible; }
+  </style>
+
+  <script src="{{ 'posthog.js' | asset_url }}" defer></script>
+{%- endif -%}
