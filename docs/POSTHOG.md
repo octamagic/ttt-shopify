@@ -28,10 +28,25 @@ without code. On top of that:
 | `Cart Updated` | cart page and drawer | `cart:update` event from `cart.js` |
 | `Checkout Clicked` | cart, drawer, add-to-cart notification | click on `button[name="checkout"]` |
 | `App Link Clicked` | anywhere | click on a link to go.threaditate.com |
+| `Section Viewed` | every page | half of a section (or half the screen) in view, once per section per page |
+| `CTA Clicked` | every page | a button-styled link or a product link inside `<main>` |
+| `FAQ Opened` | FAQ sections | opening an accordion question |
+| `Before After Slider Used` | any before/after slider | first drag per slider per page |
+| `Video Clicked` | embedded videos | focus moving into the player iframe (plays inside YouTube can't be seen directly) |
+| `Newsletter Submitted` | signup forms | submitting a newsletter form |
 | `Checkout Started`, `Checkout Contact Submitted`, `Checkout Shipping Submitted`, `Payment Info Submitted`, `Order Completed` | checkout | the custom pixel |
 
 Every storefront event also carries `site: storefront`, the Shopify template
 name and suffix, and the theme name, so you can filter app vs store traffic.
+
+The marketing-page events carry `section` (readable, e.g. `hero_dark`),
+`section_key` (the template key) and `section_position` (1 = top of page).
+A funnel of `Section Viewed` by `section_position` shows how far down each
+page people get.
+
+**Testing note:** posthog-js drops events from automated browsers (it reads
+`navigator.webdriver` and the HeadlessChrome brand). Playwright or Puppeteer
+checks see `flags` requests but no events unless both are spoofed.
 
 ## One-time admin setup
 
@@ -53,14 +68,25 @@ name and suffix, and the theme name, so you can filter app vs store traffic.
 
 ## Running an A/B test
 
-PostHog Experiments do the splitting and the stats. The theme only needs to
-render the right variant.
+PostHog Experiments do the splitting and the stats. The theme renders the
+assigned version. Tests work on any page of the store. Shopify's checkout
+itself can't be changed from the theme, but checkout events from the pixel
+can be the goal metric.
 
-1. PostHog > Experiments > New experiment. Pick a flag key such as
-   `hero-cta-copy`, variants `control` and `test`, goal metric e.g. funnel
-   `$pageview` on `/products/...` to `Order Completed`.
-2. In the theme, tag the markup:
+1. **PostHog > Experiments > New experiment.** Pick a flag key such as
+   `home-hero-photo`, with variants `control` and `test`. For the goal metric,
+   use `Order Completed` (needs the checkout pixel), or `Product Added` /
+   `CTA Clicked` for faster reads.
+2. **Mark the variants. In the Theme Editor (no code):**
+   - Duplicate the section you want to test and edit the copy (new photo,
+     heading, button text).
+   - Add an **A/B test** section directly above the original: flag key
+     `home-hero-photo`, variant `control`.
+   - Add another directly above the copy: same flag key, variant `test`.
+   - Save. The editor shows both versions under yellow labels. Customers
+     only see their assigned one, and the markers take no space.
 
+   **Or in Liquid**, for a change inside a section:
    ```liquid
    <div data-ph-flag="hero-cta-copy" data-ph-variant="control">
      {% render 'button', label: 'Get my kit' %}
@@ -69,30 +95,22 @@ render the right variant.
      {% render 'button', label: 'Turn my photo into a kit' %}
    </div>
    ```
-
-   Both start hidden; `posthog.js` shows the matching one when flags
-   load, and falls back to `control` after 1.5 s or if PostHog is blocked.
-   Boolean flags map to `test` when on, `control` when off.
-
-   For JS-driven changes use the API directly:
-
+   For JS-driven changes read `window.posthog` at call time (not a copy
+   saved before the library loaded):
    ```js
    posthog.onFeatureFlags(function () {
-     if (posthog.getFeatureFlag('hero-cta-copy') === 'test') { /* swap */ }
+     if (window.posthog.getFeatureFlag('hero-cta-copy') === 'test') { /* swap */ }
    });
    ```
+3. **Launch the experiment in PostHog.** Exposure is recorded the first time
+   a visitor's flag is evaluated. Until flags arrive (usually well under a
+   second), control holds its place invisibly. If PostHog is blocked or
+   slow, control shows after 1.5 s.
+4. **Preview a variant** in your own browser console:
+   `posthog.featureFlags.overrideFeatureFlags({ flags: { 'home-hero-photo': 'test' } })`,
+   then reload. Undo with `overrideFeatureFlags(false)`.
+5. **Ship the winner.** Delete the losing section and both A/B test markers
+   (or the losing Liquid block), then end the experiment and archive the flag.
 
-3. Launch the experiment in PostHog. Exposure is recorded automatically the
-   first time the flag is evaluated for a visitor.
-4. Ship the winner by removing the losing block and the attributes, then
-   archive the flag.
-
-Good first candidates from the Oct 2026 PDP conversion pass: hero CTA copy,
-buy-box ordering, and whether the guarantee line sits above or below the
-price. Keep to one experiment per page at a time.
-
-### What this approach does not cover
-
-Variants are chosen in the browser, so this suits copy, layout, and section
-swaps. Price tests, shipping-threshold tests, and checkout changes need a
-Shopify app (Intelligems, Shoplift) or Shopify Functions.
+Not suited to these tools: price and shipping-rate tests. Those change
+checkout, so they need an app such as Intelligems or Shoplift.

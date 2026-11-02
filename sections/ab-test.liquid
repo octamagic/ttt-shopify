@@ -1,0 +1,84 @@
+{%- comment -%}
+  A/B test marker. Place one directly above each version of a section, all
+  with the same flag key: one with variant "control" above the original, one
+  with variant "test" (or another PostHog variant key) above the copy.
+  Customers see only the version PostHog assigns them; the marker itself
+  takes no space. Control shows if PostHog is off, blocked or slow.
+  The switching lives in assets/posthog.js. See docs/POSTHOG.md.
+
+  In the Theme Editor every version shows, each under a label, so they can
+  all be edited. The editor marker uses a different class, so neither the
+  CSS below nor posthog.js acts on it.
+{%- endcomment -%}
+{%- liquid
+  assign flag = section.settings.flag | strip | escape
+  assign variant = section.settings.variant | strip | downcase | default: 'control' | escape
+-%}
+{%- if flag != blank -%}
+  {%- if request.design_mode -%}
+    <div class="ab-test-editor">
+      A/B test <strong>{{ flag }}</strong>, variant <strong>{{ variant }}</strong>: controls the section below.
+    </div>
+  {%- else -%}
+    <div class="ab-test" data-ab-flag="{{ flag }}" data-ab-variant="{{ variant }}" hidden></div>
+  {%- endif -%}
+{%- endif -%}
+
+{% stylesheet %}
+  /* The marker's own wrapper takes no space. */
+  .shopify-section:has(> .ab-test) { display: none; }
+
+  /* Before flags arrive: other variants are out, control holds its place
+     invisibly (only when PostHog is on, so it can never stay invisible). */
+  .shopify-section:has(> .ab-test:not([data-ab-variant="control"])) + .shopify-section { display: none; }
+  html:has(#ph-config):not(.ph-flags-ready) .shopify-section:has(> .ab-test[data-ab-variant="control"]) + .shopify-section { visibility: hidden; }
+
+  /* After: posthog.js marks the assigned version. */
+  .shopify-section.ab-test-shown { display: block !important; visibility: visible !important; }
+  .shopify-section.ab-test-hidden { display: none !important; }
+
+  .ab-test-editor {
+    margin: 0;
+    padding: 10px 16px;
+    font-family: var(--font-body-family);
+    font-size: 1.3rem;
+    color: #0B0B0F;
+    background: #FFF4CC;
+    border: 1px dashed #B08A00;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "A/B test",
+  "tag": "div",
+  "disabled_on": {
+    "groups": ["header", "footer", "aside"]
+  },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Put one of these directly above each version of a section, all with the same flag key. Create the experiment in PostHog with that flag key first. Customers only see the version PostHog assigns them."
+    },
+    {
+      "type": "text",
+      "id": "flag",
+      "label": "PostHog flag key",
+      "info": "Exactly as in PostHog, e.g. home-hero-photo."
+    },
+    {
+      "type": "text",
+      "id": "variant",
+      "label": "Variant",
+      "default": "control",
+      "info": "control for the original. test (or the PostHog variant key) for the new version."
+    }
+  ],
+  "presets": [
+    {
+      "name": "A/B test",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}
