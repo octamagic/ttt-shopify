@@ -26,6 +26,7 @@
 
     {%- comment -%} Synchronous JS and CSS below here {% endcomment %}
     {% render 'css-settings-and-variables' %}
+    {% render 'seasonal-skin' %}
 
     {{ 'accessibility.css' | asset_url | stylesheet_tag: preload: true }}
     {{ 'reset.css' | asset_url | stylesheet_tag: preload: true }}
