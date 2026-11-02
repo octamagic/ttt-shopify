@@ -453,6 +453,24 @@
         }
       }
     },
+    "analytics": {
+      "name": "Analytics",
+      "info": "PostHog behavioral tracking and A/B experiments. Leave the token blank to turn PostHog off. Setup notes live in docs/POSTHOG.md in the theme repo.",
+      "settings": {
+        "posthog_project_token": {
+          "label": "PostHog project token",
+          "info": "Starts with phc_. Use the same project as go.threaditate.com so one visitor is one person across both sites."
+        },
+        "posthog_api_host": {
+          "label": "PostHog API host",
+          "info": "https://us.i.posthog.com for US Cloud, https://eu.i.posthog.com for EU."
+        },
+        "posthog_session_replay": {
+          "label": "Record session replays",
+          "info": "Replay also has to be switched on in PostHog project settings."
+        }
+      }
+    },
     "advanced": {
       "name": "Advanced",
       "info": "Settings for advanced users and developers that are familiar with HTML document structure.",

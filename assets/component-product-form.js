@@ -106,7 +106,7 @@ if (!customElements.get('product-form')) {
           }, 50);
         }
 
-        const event = new CustomEvent('ajaxProduct:added')
+        const event = new CustomEvent('ajaxProduct:added', { detail: json })
         document.dispatchEvent(event)
       } catch(error) {
         this.handleErrorMessage(error);
