@@ -1,0 +1,111 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "layout": "theme",
+  "sections": {
+    "holiday": {
+      "type": "holiday-landing",
+      "blocks": {
+        "q1": {
+          "type": "quote",
+          "settings": {
+            "text": "It looks like something from a gallery. People ask where I bought it. I made it. On my couch.",
+            "name": "Andy S.",
+            "context": "Kickstarter backer"
+          }
+        },
+        "q2": {
+          "type": "quote",
+          "settings": {
+            "text": "[VERBATIM QUOTE FROM SEP 2026 SURVEY, completion angle]",
+            "name": "Sheryl M.",
+            "context": "Verified customer"
+          }
+        },
+        "q3": {
+          "type": "quote",
+          "settings": {
+            "text": "[VERBATIM QUOTE FROM SEP 2026 SURVEY, calm angle]",
+            "name": "Timothy K.",
+            "context": "Verified customer"
+          }
+        },
+        "f1": {
+          "type": "faq",
+          "settings": {
+            "q": "They are not crafty. Will they actually finish it?",
+            "a": "<p>That is the whole design. There is no pattern to read and no skill to pick up. The app says which pin is next and they loop the thread. Most people finish in an evening or two, and the app keeps their place if they stop halfway.</p>"
+          }
+        },
+        "f2": {
+          "type": "faq",
+          "settings": {
+            "q": "Do I need to pick the photo before I buy?",
+            "a": "<p>No. The kit works with any photo, and the recipient chooses it in the app when they open the box. You are giving them the choice, which is a better gift than guessing.</p>"
+          }
+        },
+        "f3": {
+          "type": "faq",
+          "settings": {
+            "q": "Will it arrive in time?",
+            "a": "<p>Orders ship within 24 hours from our US warehouse. Anything ordered during this sale has weeks of margin before the holidays.</p>"
+          }
+        },
+        "f4": {
+          "type": "faq",
+          "settings": {
+            "q": "What is in the box?",
+            "a": "<p>The loom with pins already set, enough thread for a full piece, a needle, hanging hardware, and a card with the app download. The app is free and runs on iPhone.</p>"
+          }
+        },
+        "f5": {
+          "type": "faq",
+          "settings": {
+            "q": "What if they already have one, or change their mind?",
+            "a": "<p>Unopened kits can be returned within 30 days. Email support and we will sort it out. If something arrives damaged or wrong, that is on us and we cover it.</p>"
+          }
+        },
+        "f6": {
+          "type": "faq",
+          "settings": {
+            "q": "How does the discount work?",
+            "a": "<p>Tap the button and the code is applied for you at checkout. If it does not show, enter HOLIDAY30 in the discount field. It is good on every kit through December 1.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "q1",
+        "q2",
+        "q3",
+        "f1",
+        "f2",
+        "f3",
+        "f4",
+        "f5",
+        "f6"
+      ],
+      "settings": {
+        "product_handle": "string-ring-custom-string-art-kit",
+        "discount_code": "HOLIDAY30",
+        "discount_pct": 30,
+        "offer_dates": "November 26 through December 1.",
+        "cta_label": "Make yours",
+        "sticky_bar": true,
+        "hero_eyebrow": "Black Friday through Cyber Monday",
+        "sbs_mode": "auto",
+        "sbs_date": "20261128",
+        "show_judgeme": false
+      }
+    }
+  },
+  "order": [
+    "holiday"
+  ]
+}
