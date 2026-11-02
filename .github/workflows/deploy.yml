@@ -67,6 +67,11 @@ jobs:
         # Everything else (sections/*.liquid, snippets, assets, locales) is code:
         # code wins and deploys normally.
         #
+        # --nodelete: never delete files that exist only on the live theme (a
+        # section pushed by hand, an app's file). Without it, every merge wiped
+        # live-only sections such as holiday-landing.liquid. To remove a file
+        # from live, delete it in the admin code editor.
+        #
         # NOTE: the glob patterns are single-quoted so the SHELL doesn't expand
         # them — the Shopify CLI must receive the literal pattern.
         #
@@ -81,6 +86,7 @@ jobs:
         run: |
           shopify theme push \
             --live --allow-live \
+            --nodelete \
             --ignore config/settings_data.json \
             --ignore 'templates/*.json' \
             --ignore 'templates/customers/*.json' \
