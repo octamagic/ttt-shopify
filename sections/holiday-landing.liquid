@@ -1,0 +1,721 @@
+{% comment %}
+  Threaditate: Black Friday / Cyber Monday landing page
+  File: sections/holiday-landing.liquid
+  Template: templates/page.holiday.json
+  URL: /pages/holiday
+
+  Offer: HOLIDAY30, 30% off every kit, Nov 26 - Dec 1 2026
+  Small Business Saturday layer: auto-shows Nov 28 (override in section settings)
+
+  Conversion structure (mobile first, every section earns its scroll):
+    1. Hero: offer, price anchor, qty picker, one CTA. Above the fold on a 390px phone.
+    2. Trust strip: patent, ships in 24h, returns, Atlanta.
+    3. Reveal: original photo next to the finished piece (the single best visual we have).
+    4. Three gift stories (the gift is the evening of making, never the object).
+    5. How it works, three steps.
+    6. Honest comparison vs nail-board kits.
+    7. Reviews (Judge.me slot + verbatim quotes as blocks).
+    8. Small Business Saturday callout (date-conditional).
+    9. Objection FAQ (blocks).
+   10. Final CTA + sticky mobile bar that appears once the hero CTA scrolls away.
+
+  Checkout: cart permalink with the discount pre-applied, quantity from the picker.
+  Images: every image is a section setting. Empty settings render a labelled placeholder
+  with the pixel spec the designer needs. No AI-generated string art, ever. Real pieces only.
+{% endcomment %}
+
+{%- liquid
+  assign s = section.settings
+  assign product = all_products[s.product_handle]
+  assign variant = product.selected_or_first_available_variant
+  assign code = s.discount_code | default: 'HOLIDAY30'
+  assign pct = s.discount_pct | default: 30
+  assign reg = product.price | default: 8900
+  assign off = reg | times: pct | divided_by: 100
+  assign sale = reg | minus: off
+  assign reg_money = reg | money_without_trailing_zeros
+  assign sale_money = sale | money
+  assign off_money = off | money_without_trailing_zeros
+  assign today = 'now' | date: '%Y%m%d' | plus: 0
+  assign sbs_day = s.sbs_date | default: '20261128' | plus: 0
+  assign show_sbs = false
+  if s.sbs_mode == 'on'
+    assign show_sbs = true
+  elsif s.sbs_mode == 'auto' and today == sbs_day
+    assign show_sbs = true
+  endif
+  assign cta_label = s.cta_label | default: 'Make yours'
+  assign checkout_base = routes.cart_url | append: '/' | append: variant.id | append: ':'
+-%}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@1,9..144,400;1,9..144,500&display=swap" rel="stylesheet">
+
+<style>
+  #hl-{{ section.id }} {
+    --hl-ink: #17201c;
+    --hl-ink-soft: #4a5550;
+    --hl-ivory: #f7f3ea;
+    --hl-cream: #fffdf8;
+    --hl-pine: #1f3d32;
+    --hl-pine-deep: #142a22;
+    --hl-cobalt: #1f3fd1;
+    --hl-cobalt-dark: #182fa3;
+    --hl-brass: #c9a24d;
+    --hl-line: rgba(23, 32, 28, 0.12);
+    --hl-radius: 18px;
+    --hl-head: 'Space Grotesk', var(--font-heading-family, 'Space Grotesk'), system-ui, sans-serif;
+    --hl-body: 'DM Sans', var(--font-body-family, 'DM Sans'), system-ui, sans-serif;
+    --hl-display: 'Fraunces', Georgia, serif;
+    font-family: var(--hl-body);
+    font-size: clamp(17px, 0.95em + 0.3vw, 22px);
+    color: var(--hl-ink);
+    background: var(--hl-ivory);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+  }
+  #hl-{{ section.id }} *, #hl-{{ section.id }} *::before, #hl-{{ section.id }} *::after { box-sizing: border-box; }
+  #hl-{{ section.id }} img { display: block; max-width: 100%; height: auto; }
+  #hl-{{ section.id }} h1, #hl-{{ section.id }} h2, #hl-{{ section.id }} h3 { font-family: var(--hl-head); letter-spacing: -0.01em; line-height: 1.1; margin: 0; }
+  #hl-{{ section.id }} p { margin: 0; }
+  #hl-{{ section.id }} .hl-wrap { width: min(100% - 2.5em, 1200px); margin-inline: auto; }
+  #hl-{{ section.id }} .hl-sec { padding: clamp(2.75em, 7vw, 5.5em) 0; }
+  #hl-{{ section.id }} .hl-eyebrow { font-family: var(--hl-head); font-size: 0.78em; letter-spacing: 0.14em; text-transform: uppercase; color: var(--hl-brass); font-weight: 600; }
+  #hl-{{ section.id }} .hl-h2 { font-size: clamp(1.85em, 4.2vw, 3.1em); margin-bottom: 0.75em; }
+  #hl-{{ section.id }} .hl-lede { color: var(--hl-ink-soft); font-size: clamp(1em, 1.6vw, 1.2em); max-width: 56ch; }
+  #hl-{{ section.id }} .hl-ital { font-family: var(--hl-display); font-style: italic; font-weight: 400; letter-spacing: 0; }
+
+  /* buttons */
+  #hl-{{ section.id }} .hl-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.5em;
+    min-height: 54px; padding: 0.9em 1.6em; border-radius: 999px; border: 0;
+    font-family: var(--hl-head); font-weight: 600; font-size: 1.02em; text-decoration: none;
+    cursor: pointer; transition: transform 0.12s ease, background 0.12s ease, box-shadow 0.12s ease;
+    width: 100%;
+  }
+  #hl-{{ section.id }} .hl-btn:active { transform: translateY(1px); }
+  #hl-{{ section.id }} .hl-btn:focus-visible { outline: 3px solid var(--hl-brass); outline-offset: 3px; }
+  #hl-{{ section.id }} .hl-btn--primary { background: var(--hl-cobalt); color: #fff; box-shadow: 0 10px 28px rgba(31, 63, 209, 0.28); }
+  #hl-{{ section.id }} .hl-btn--primary:hover { background: var(--hl-cobalt-dark); }
+  #hl-{{ section.id }} .hl-btn--ghost { background: transparent; color: var(--hl-cream); border: 1.5px solid rgba(255,255,255,0.4); }
+  #hl-{{ section.id }} .hl-btn--ghost:hover { border-color: #fff; }
+  #hl-{{ section.id }} .hl-btn__sub { font-weight: 400; font-size: 0.85em; opacity: 0.85; }
+  @media (min-width: 720px) { #hl-{{ section.id }} .hl-btn { width: auto; min-width: 260px; } }
+
+  /* placeholders */
+  #hl-{{ section.id }} .hl-ph { position: relative; background: #e8e2d4; border: 1.5px dashed rgba(23,32,28,0.25); border-radius: var(--hl-radius); overflow: hidden; display: grid; place-items: center; color: var(--hl-ink-soft); }
+  #hl-{{ section.id }} .hl-ph svg { width: 100%; height: 100%; opacity: 0.35; position: absolute; inset: 0; }
+  #hl-{{ section.id }} .hl-ph__label { position: relative; z-index: 1; font-family: var(--hl-head); font-size: 0.78em; text-align: center; padding: 1em; line-height: 1.4; background: rgba(247,243,234,0.85); border-radius: 10px; }
+  #hl-{{ section.id }} .hl-ph__label b { display: block; font-size: 0.9em; color: var(--hl-ink); }
+
+  /* 1. hero */
+  #hl-{{ section.id }} .hl-hero { background: var(--hl-pine-deep); color: var(--hl-cream); position: relative; overflow: hidden; }
+  #hl-{{ section.id }} .hl-hero__bg { position: absolute; inset: 0; z-index: 0; }
+  #hl-{{ section.id }} .hl-hero__bg img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+  #hl-{{ section.id }} .hl-hero__bg--desktop { display: none; }
+  #hl-{{ section.id }} .hl-hero::before { content: ''; position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(20,42,34,0.55) 0%, rgba(20,42,34,0.78) 55%, rgba(20,42,34,0.92) 100%), radial-gradient(80% 60% at 70% 20%, rgba(201,162,77,0.18), transparent 60%); pointer-events: none; }
+  #hl-{{ section.id }} .hl-hero.has-bg::before { background: linear-gradient(180deg, rgba(20,42,34,{{ s.hero_bg_overlay | default: 70 | divided_by: 100.0 }}) 0%, rgba(20,42,34,{{ s.hero_bg_overlay | default: 70 | divided_by: 100.0 | plus: 0.15 | at_most: 0.95 }}) 100%); }
+  #hl-{{ section.id }} .hl-hero__grid { z-index: 2; }
+  #hl-{{ section.id }} .hl-hero__grid { position: relative; display: grid; gap: 1.25em; padding: 1em 0 2.25em; }
+  #hl-{{ section.id }} .hl-hero__media { aspect-ratio: 16 / 10; border-radius: var(--hl-radius); overflow: hidden; }
+  #hl-{{ section.id }} .hl-hero__media img { width: 100%; height: 100%; object-fit: cover; }
+  #hl-{{ section.id }} .hl-hero__media--desktop { display: none; }
+  #hl-{{ section.id }} .hl-hero__copy { display: grid; gap: 1.1em; }
+  #hl-{{ section.id }} .hl-pill { display: inline-flex; align-items: center; gap: 0.5em; align-self: start; padding: 0.4em 0.85em; border-radius: 999px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.14); font-family: var(--hl-head); font-size: 0.8em; letter-spacing: 0.06em; text-transform: uppercase; }
+  #hl-{{ section.id }} .hl-pill i { width: 7px; height: 7px; border-radius: 50%; background: var(--hl-brass); }
+  #hl-{{ section.id }} .hl-hero h1 { font-size: clamp(2.1em, 7.5vw, 4.2em); color: #fff; }
+  #hl-{{ section.id }} .hl-hero h1 .hl-ital { color: var(--hl-brass); }
+  #hl-{{ section.id }} .hl-hero__lede { font-size: clamp(1.02em, 1.7vw, 1.15em); color: rgba(255,255,255,0.8); max-width: 48ch; }
+
+  #hl-{{ section.id }} .hl-offer { display: grid; gap: 0.9em; padding: 1.1em; border-radius: 16px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); }
+  #hl-{{ section.id }} .hl-price { display: flex; align-items: baseline; gap: 0.6em; flex-wrap: wrap; }
+  #hl-{{ section.id }} .hl-price__sale { font-family: var(--hl-head); font-size: 2.1em; font-weight: 700; color: #fff; line-height: 1; }
+  #hl-{{ section.id }} .hl-price__reg { font-size: 1.05em; color: rgba(255,255,255,0.55); text-decoration: line-through; }
+  #hl-{{ section.id }} .hl-price__save { font-family: var(--hl-head); font-size: 0.85em; color: var(--hl-brass); font-weight: 600; }
+  #hl-{{ section.id }} .hl-price__each { font-size: 0.85em; color: rgba(255,255,255,0.6); width: 100%; }
+  #hl-{{ section.id }} .hl-qty { display: grid; gap: 0.45em; }
+  #hl-{{ section.id }} .hl-qty__label { font-size: 0.82em; color: rgba(255,255,255,0.7); }
+  #hl-{{ section.id }} .hl-qty__row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5em; }
+  #hl-{{ section.id }} .hl-qty__btn { min-height: 46px; border-radius: 12px; border: 1.5px solid rgba(255,255,255,0.22); background: transparent; color: #fff; font-family: var(--hl-head); font-weight: 600; cursor: pointer; display: grid; place-items: center; line-height: 1.1; }
+  #hl-{{ section.id }} .hl-qty__btn small { font-weight: 400; font-size: 0.72em; opacity: 0.7; }
+  #hl-{{ section.id }} .hl-qty__btn[aria-pressed="true"] { background: var(--hl-cream); color: var(--hl-pine-deep); border-color: var(--hl-cream); }
+  #hl-{{ section.id }} .hl-qty__btn[aria-pressed="true"] small { opacity: 0.75; }
+  #hl-{{ section.id }} .hl-offer__fine { font-size: 0.8em; color: rgba(255,255,255,0.6); }
+  #hl-{{ section.id }} .hl-offer__fine code { font-family: var(--hl-head); font-weight: 600; color: #fff; letter-spacing: 0.08em; }
+
+  @media (min-width: 860px) {
+    #hl-{{ section.id }} .hl-hero__grid { grid-template-columns: 1.05fr 1fr; align-items: center; gap: 3.5em; padding: 3.5em 0 4em; }
+    #hl-{{ section.id }} .hl-hero__media { order: 2; aspect-ratio: 5 / 6; }
+    #hl-{{ section.id }} .hl-hero__media--mobile { display: none; }
+    #hl-{{ section.id }} .hl-hero__media--desktop { display: block; }
+    #hl-{{ section.id }} .hl-hero__bg--mobile { display: none; }
+    #hl-{{ section.id }} .hl-hero__bg--desktop { display: block; }
+  }
+
+  /* 2. trust strip */
+  #hl-{{ section.id }} .hl-trust { background: var(--hl-pine); color: var(--hl-cream); border-top: 1px solid rgba(255,255,255,0.08); }
+  #hl-{{ section.id }} .hl-trust__row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75em 1em; padding: 1em 0; }
+  #hl-{{ section.id }} .hl-trust__item { display: flex; gap: 0.55em; align-items: flex-start; font-size: 0.86em; line-height: 1.3; }
+  #hl-{{ section.id }} .hl-trust__item svg { width: 18px; height: 18px; flex: none; color: var(--hl-brass); margin-top: 1px; }
+  #hl-{{ section.id }} .hl-trust__item b { font-family: var(--hl-head); font-weight: 600; display: block; }
+  #hl-{{ section.id }} .hl-trust__item span { color: rgba(255,255,255,0.65); font-size: 0.78em; }
+  @media (min-width: 860px) { #hl-{{ section.id }} .hl-trust__row { grid-template-columns: repeat(4, 1fr); padding: 1.25em 0; } }
+
+  /* 3. reveal */
+  #hl-{{ section.id }} .hl-reveal__pair { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75em; margin-top: 1.75em; }
+  #hl-{{ section.id }} .hl-reveal__cell { display: grid; gap: 0.5em; }
+  #hl-{{ section.id }} .hl-reveal__cell .hl-ph, #hl-{{ section.id }} .hl-reveal__cell img { aspect-ratio: 1; border-radius: 14px; object-fit: cover; width: 100%; }
+  #hl-{{ section.id }} .hl-reveal__cap { font-family: var(--hl-head); font-size: 0.8em; color: var(--hl-ink-soft); text-align: center; }
+  #hl-{{ section.id }} .hl-reveal__arrow { display: none; }
+  @media (min-width: 720px) {
+    #hl-{{ section.id }} .hl-reveal { display: grid; grid-template-columns: 1fr 1.3fr; gap: 3em; align-items: center; }
+    #hl-{{ section.id }} .hl-reveal__pair { margin-top: 0; }
+  }
+
+  /* 4. gift stories */
+  #hl-{{ section.id }} .hl-stories { background: var(--hl-cream); }
+  #hl-{{ section.id }} .hl-stories__grid { display: grid; gap: 1.25em; margin-top: 2em; }
+  #hl-{{ section.id }} .hl-story { background: #fff; border: 1px solid var(--hl-line); border-radius: var(--hl-radius); overflow: hidden; display: grid; grid-template-columns: 104px 1fr; }
+  #hl-{{ section.id }} .hl-story__media { aspect-ratio: 1; height: 100%; }
+  #hl-{{ section.id }} .hl-story__media img, #hl-{{ section.id }} .hl-story__media .hl-ph { width: 100%; height: 100%; object-fit: cover; border-radius: 0; border: 0; }
+  #hl-{{ section.id }} .hl-story__body { padding: 1em 1.1em; display: grid; gap: 0.35em; align-content: center; }
+  #hl-{{ section.id }} .hl-story__for { font-family: var(--hl-head); font-size: 0.75em; letter-spacing: 0.1em; text-transform: uppercase; color: var(--hl-cobalt); font-weight: 600; }
+  #hl-{{ section.id }} .hl-story h3 { font-size: 1.1em; }
+  #hl-{{ section.id }} .hl-story p { font-size: 0.92em; color: var(--hl-ink-soft); }
+  @media (min-width: 860px) {
+    #hl-{{ section.id }} .hl-stories__grid { grid-template-columns: repeat(3, 1fr); }
+    #hl-{{ section.id }} .hl-story { grid-template-columns: 1fr; }
+    #hl-{{ section.id }} .hl-story__media { aspect-ratio: 4 / 3; height: auto; }
+    #hl-{{ section.id }} .hl-story__body { padding: 1.25em 1.35em 1.5em; }
+  }
+
+  /* 5. how it works */
+  #hl-{{ section.id }} .hl-steps { display: grid; gap: 1em; margin-top: 2em; counter-reset: step; }
+  #hl-{{ section.id }} .hl-step { display: grid; grid-template-columns: 56px 1fr; gap: 1em; align-items: start; }
+  #hl-{{ section.id }} .hl-step__num { width: 56px; height: 56px; border-radius: 50%; background: var(--hl-pine); color: var(--hl-brass); font-family: var(--hl-display); font-style: italic; font-size: 1.6em; display: grid; place-items: center; }
+  #hl-{{ section.id }} .hl-step h3 { font-size: 1.15em; margin-bottom: 0.25em; }
+  #hl-{{ section.id }} .hl-step p { color: var(--hl-ink-soft); font-size: 0.95em; }
+  #hl-{{ section.id }} .hl-steps__media { margin-top: 1.5em; aspect-ratio: 16 / 10; border-radius: var(--hl-radius); overflow: hidden; }
+  #hl-{{ section.id }} .hl-steps__media img { width: 100%; height: 100%; object-fit: cover; }
+  @media (min-width: 860px) {
+    #hl-{{ section.id }} .hl-how { display: grid; grid-template-columns: 1fr 1fr; gap: 3em; align-items: center; }
+    #hl-{{ section.id }} .hl-steps__media { margin-top: 0; aspect-ratio: 4 / 5; }
+  }
+
+  /* 6. comparison */
+  #hl-{{ section.id }} .hl-compare { background: var(--hl-pine-deep); color: var(--hl-cream); }
+  #hl-{{ section.id }} .hl-compare .hl-lede { color: rgba(255,255,255,0.72); }
+  #hl-{{ section.id }} .hl-table { width: 100%; border-collapse: collapse; margin-top: 1.75em; font-size: 1em; }
+  #hl-{{ section.id }} .hl-table th, #hl-{{ section.id }} .hl-table td { padding: 0.85em 0.6em; text-align: left; vertical-align: top; border-bottom: 1px solid rgba(255,255,255,0.12); }
+  #hl-{{ section.id }} .hl-table th { font-family: var(--hl-head); font-size: 0.78em; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.6); font-weight: 600; }
+  #hl-{{ section.id }} .hl-table th:nth-child(2), #hl-{{ section.id }} .hl-table td:nth-child(2) { color: #fff; font-weight: 500; }
+  #hl-{{ section.id }} .hl-table td:nth-child(3) { color: rgba(255,255,255,0.6); }
+  #hl-{{ section.id }} .hl-table td:first-child { color: rgba(255,255,255,0.75); font-family: var(--hl-head); font-size: 0.82em; }
+  #hl-{{ section.id }} .hl-table .hl-tick { color: var(--hl-brass); margin-right: 0.3em; }
+
+  /* 7. reviews */
+  #hl-{{ section.id }} .hl-reviews { background: var(--hl-cream); }
+  #hl-{{ section.id }} .hl-stars { color: var(--hl-brass); letter-spacing: 0.1em; font-size: 1em; }
+  #hl-{{ section.id }} .hl-quotes { display: grid; gap: 1em; margin-top: 1.75em; }
+  #hl-{{ section.id }} .hl-quote { background: #fff; border: 1px solid var(--hl-line); border-radius: var(--hl-radius); padding: 1.35em; display: grid; gap: 0.75em; }
+  #hl-{{ section.id }} .hl-quote blockquote { margin: 0; font-family: var(--hl-display); font-style: italic; font-size: 1.15em; line-height: 1.35; }
+  #hl-{{ section.id }} .hl-quote cite { font-style: normal; font-family: var(--hl-head); font-size: 0.82em; color: var(--hl-ink-soft); }
+  #hl-{{ section.id }} .hl-judgeme { margin-top: 2em; }
+  @media (min-width: 860px) { #hl-{{ section.id }} .hl-quotes { grid-template-columns: repeat(3, 1fr); } }
+
+  /* 8. small business saturday */
+  #hl-{{ section.id }} .hl-sbs { background: var(--hl-brass); color: var(--hl-pine-deep); }
+  #hl-{{ section.id }} .hl-sbs__inner { display: grid; gap: 1em; padding: 2.25em 0; }
+  #hl-{{ section.id }} .hl-sbs h2 { font-size: clamp(1.6em, 4vw, 2.3em); }
+  #hl-{{ section.id }} .hl-sbs p { max-width: 60ch; }
+  #hl-{{ section.id }} .hl-sbs .hl-eyebrow { color: var(--hl-pine-deep); opacity: 0.75; }
+  @media (min-width: 860px) { #hl-{{ section.id }} .hl-sbs__inner { grid-template-columns: 1fr 1.4fr; align-items: center; gap: 3em; } }
+
+  /* 9. faq */
+  #hl-{{ section.id }} .hl-faq__list { margin-top: 1.5em; border-top: 1px solid var(--hl-line); }
+  #hl-{{ section.id }} .hl-faq__item { border-bottom: 1px solid var(--hl-line); }
+  #hl-{{ section.id }} .hl-faq__item summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 1em; padding: 1.1em 0; font-family: var(--hl-head); font-weight: 600; font-size: 1.02em; }
+  #hl-{{ section.id }} .hl-faq__item summary::-webkit-details-marker { display: none; }
+  #hl-{{ section.id }} .hl-faq__item summary::after { content: '+'; font-weight: 400; font-size: 1.4em; color: var(--hl-cobalt); flex: none; transition: transform 0.15s ease; }
+  #hl-{{ section.id }} .hl-faq__item[open] summary::after { transform: rotate(45deg); }
+  #hl-{{ section.id }} .hl-faq__item .hl-faq__a { padding: 0 0 1.2em; color: var(--hl-ink-soft); font-size: 0.95em; max-width: 64ch; }
+
+  /* 10. final cta */
+  #hl-{{ section.id }} .hl-final { background: var(--hl-pine-deep); color: var(--hl-cream); text-align: center; }
+  #hl-{{ section.id }} .hl-final__inner { display: grid; gap: 1.25em; justify-items: center; }
+  #hl-{{ section.id }} .hl-final h2 { font-size: clamp(1.9em, 5vw, 3em); color: #fff; max-width: 20ch; }
+  #hl-{{ section.id }} .hl-final .hl-price__sale { font-size: 2.6em; }
+  #hl-{{ section.id }} .hl-final__fine { font-size: 0.85em; color: rgba(255,255,255,0.6); }
+
+  /* sticky bar */
+  #hl-{{ section.id }} .hl-sticky { position: fixed; left: 0; right: 0; bottom: 0; z-index: 60; background: rgba(20,42,34,0.96); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); color: #fff; border-top: 1px solid rgba(255,255,255,0.12); padding: 0.65em 1em calc(0.65em + env(safe-area-inset-bottom)); transform: translateY(110%); transition: transform 0.25s ease; }
+  #hl-{{ section.id }} .hl-sticky.is-on { transform: translateY(0); }
+  #hl-{{ section.id }} .hl-sticky__inner { width: min(100%, 1200px); margin-inline: auto; display: flex; align-items: center; justify-content: space-between; gap: 1em; }
+  #hl-{{ section.id }} .hl-sticky__price { display: grid; line-height: 1.15; }
+  #hl-{{ section.id }} .hl-sticky__price b { font-family: var(--hl-head); font-size: 1.1em; }
+  #hl-{{ section.id }} .hl-sticky__price span { font-size: 0.74em; color: rgba(255,255,255,0.6); }
+  #hl-{{ section.id }} .hl-sticky .hl-btn { width: auto; min-height: 46px; min-width: 0; padding: 0.7em 1.3em; font-size: 0.95em; box-shadow: none; }
+
+  @media (min-width: 1600px) {
+    #hl-{{ section.id }} .hl-wrap { width: min(100% - 4em, 1320px); }
+    #hl-{{ section.id }} .hl-hero__grid { gap: 5em; padding: 5em 0 5.5em; }
+    #hl-{{ section.id }} .hl-sec { padding: 6em 0; }
+    #hl-{{ section.id }} .hl-story p, #hl-{{ section.id }} .hl-step p, #hl-{{ section.id }} .hl-faq__item .hl-faq__a { font-size: 1.05em; }
+    #hl-{{ section.id }} .hl-quote blockquote { font-size: 1.3em; }
+  }
+  @media (prefers-reduced-motion: reduce) { #hl-{{ section.id }} * { transition: none !important; } }
+</style>
+
+<div id="hl-{{ section.id }}" data-section="holiday-landing" data-reg="{{ reg }}" data-sale="{{ sale }}" data-base="{{ checkout_base }}" data-code="{{ code }}">
+
+  {%- comment -%} 1. HERO {%- endcomment -%}
+  <section class="hl-hero{% if s.hero_bg or s.hero_bg_mobile %} has-bg{% endif %}">
+    {%- if s.hero_bg or s.hero_bg_mobile -%}
+      <div class="hl-hero__bg hl-hero__bg--mobile" aria-hidden="true">
+        {%- assign bgm = s.hero_bg_mobile | default: s.hero_bg -%}
+        {{ bgm | image_url: width: 1200 | image_tag: loading: 'eager', fetchpriority: 'high', sizes: '100vw', alt: '' }}
+      </div>
+      <div class="hl-hero__bg hl-hero__bg--desktop" aria-hidden="true">
+        {%- assign bgd = s.hero_bg | default: s.hero_bg_mobile -%}
+        {{ bgd | image_url: width: 2800 | image_tag: loading: 'eager', fetchpriority: 'high', sizes: '100vw', alt: '' }}
+      </div>
+    {%- endif -%}
+    <div class="hl-wrap hl-hero__grid">
+
+      <div class="hl-hero__media hl-hero__media--mobile">
+        {%- if s.hero_image_mobile -%}
+          {{ s.hero_image_mobile | image_url: width: 1200 | image_tag: loading: 'eager', fetchpriority: 'high', sizes: '100vw', alt: s.hero_alt }}
+        {%- else -%}
+          <div class="hl-ph" style="height:100%">
+            {{ 'lifestyle-1' | placeholder_svg_tag }}
+            <div class="hl-ph__label"><b>Hero, mobile</b>1080 x 675 (16:10), wide crop so the offer stays above the fold. A real finished piece on a wall beside the wrapped kit, or someone mid-thread by lamplight. Warm, holiday-adjacent, no tree required.</div>
+          </div>
+        {%- endif -%}
+      </div>
+      <div class="hl-hero__media hl-hero__media--desktop">
+        {%- if s.hero_image -%}
+          {{ s.hero_image | image_url: width: 1600 | image_tag: loading: 'eager', fetchpriority: 'high', sizes: '(min-width: 860px) 50vw, 100vw', alt: s.hero_alt }}
+        {%- else -%}
+          <div class="hl-ph" style="height:100%">
+            {{ 'lifestyle-2' | placeholder_svg_tag }}
+            <div class="hl-ph__label"><b>Hero, desktop</b>1400 x 1680 (5:6). Same scene as mobile, cropped taller. Real piece, real loom, composited into the scene if needed.</div>
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div class="hl-hero__copy">
+        <span class="hl-pill"><i></i>{{ s.hero_eyebrow | default: 'Black Friday through Cyber Monday' }}</span>
+        <h1>{{ s.headline | default: 'The gift is the <span class="hl-ital">evening they spend</span> making it' }}</h1>
+        <p class="hl-hero__lede">{{ s.subhead | default: 'Thread any photo, line by line, into a piece for the wall. Every kit is 30% off through December 1, and it ships within 24 hours.' }}</p>
+
+        <div class="hl-offer">
+          <div class="hl-price" aria-live="polite">
+            <span class="hl-price__sale" data-sale-total>{{ sale_money }}</span>
+            <span class="hl-price__reg" data-reg-total>{{ reg_money }}</span>
+            <span class="hl-price__save" data-save-total>Save {{ off_money }}</span>
+            <span class="hl-price__each" data-each hidden>{{ sale_money }} per kit</span>
+          </div>
+          <div class="hl-qty" role="group" aria-label="How many kits">
+            <span class="hl-qty__label">How many are you giving?</span>
+            <div class="hl-qty__row">
+              <button type="button" class="hl-qty__btn" data-qty="1" aria-pressed="true">1 kit<small>one person</small></button>
+              <button type="button" class="hl-qty__btn" data-qty="2" aria-pressed="false">2 kits<small>one each</small></button>
+              <button type="button" class="hl-qty__btn" data-qty="3" aria-pressed="false">3 kits<small>the whole list</small></button>
+            </div>
+          </div>
+          <a class="hl-btn hl-btn--primary" data-cta data-cta-loc="hero" href="{{ checkout_base }}1?discount={{ code }}">{{ cta_label }}</a>
+          <p class="hl-offer__fine">Code <code>{{ code }}</code> is applied for you at checkout. {{ s.offer_dates | default: 'November 26 through December 1.' }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} 2. TRUST STRIP {%- endcomment -%}
+  <section class="hl-trust" aria-label="Why you can trust this">
+    <div class="hl-wrap hl-trust__row">
+      <div class="hl-trust__item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 7h13v10H3zM16 10h3l2 3v4h-5z"/><circle cx="7" cy="18" r="1.5"/><circle cx="18" cy="18" r="1.5"/></svg>
+        <div><b>Ships within 24 hours</b><span>From our warehouse in the US</span></div>
+      </div>
+      <div class="hl-trust__item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.3-5.7"/><path d="M4 4v5h5"/></svg>
+        <div><b>30-day returns</b><span>On unopened kits, by email</span></div>
+      </div>
+      <div class="hl-trust__item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.9L12 16.4 6.8 19.2l1-5.9L3.5 9.2l5.9-.9z"/></svg>
+        <div><b>U.S. Patent 12,423,349</b><span>The guided loom is ours</span></div>
+      </div>
+      <div class="hl-trust__item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21s-6-5.3-6-10a6 6 0 0 1 12 0c0 4.7-6 10-6 10z"/><circle cx="12" cy="11" r="2"/></svg>
+        <div><b>Made by a small team</b><span>Atlanta, Georgia</span></div>
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} 3. REVEAL {%- endcomment -%}
+  <section class="hl-sec">
+    <div class="hl-wrap hl-reveal">
+      <div>
+        <p class="hl-eyebrow">{{ s.reveal_eyebrow | default: 'From the camera roll to the wall' }}</p>
+        <h2 class="hl-h2">{{ s.reveal_headline | default: 'One photo. A few hundred lines of thread. Something that stays up.' }}</h2>
+        <p class="hl-lede">{{ s.reveal_body | default: 'The app turns the photo into a sequence. A voice reads each line out loud. Your hands do the rest, and the picture appears slowly, which is most of the pleasure.' }}</p>
+      </div>
+      <div class="hl-reveal__pair">
+        <div class="hl-reveal__cell">
+          {%- if s.reveal_before -%}
+            {{ s.reveal_before | image_url: width: 900 | image_tag: loading: 'lazy', sizes: '(min-width: 720px) 30vw, 50vw', alt: 'The original photo' }}
+          {%- else -%}
+            <div class="hl-ph">{{ 'image' | placeholder_svg_tag }}<div class="hl-ph__label"><b>Original photo</b>900 x 900. The actual source photo for the piece on the right. A person or a pet reads best for holiday.</div></div>
+          {%- endif -%}
+          <span class="hl-reveal__cap">{{ s.reveal_before_cap | default: 'The photo' }}</span>
+        </div>
+        <div class="hl-reveal__cell">
+          {%- if s.reveal_after -%}
+            {{ s.reveal_after | image_url: width: 900 | image_tag: loading: 'lazy', sizes: '(min-width: 720px) 30vw, 50vw', alt: 'The finished thread piece' }}
+          {%- else -%}
+            <div class="hl-ph">{{ 'image' | placeholder_svg_tag }}<div class="hl-ph__label"><b>Finished piece</b>900 x 900. Real photograph of the real threaded loom. Never generated.</div></div>
+          {%- endif -%}
+          <span class="hl-reveal__cap">{{ s.reveal_after_cap | default: 'The piece, an evening or two later' }}</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} 4. GIFT STORIES {%- endcomment -%}
+  <section class="hl-sec hl-stories">
+    <div class="hl-wrap">
+      <p class="hl-eyebrow">{{ s.stories_eyebrow | default: 'Who it is for' }}</p>
+      <h2 class="hl-h2">{{ s.stories_headline | default: 'They have enough things. Give them a few hours.' }}</h2>
+      <p class="hl-lede">{{ s.stories_lede | default: 'What arrives is a loom, thread, and an app. What they get is a quiet evening with their hands busy and a piece they made, from a photo they chose.' }}</p>
+
+      <div class="hl-stories__grid">
+        {%- for i in (1..3) -%}
+          {%- liquid
+            case i
+              when 1
+                assign st_for = s.story_1_for | default: 'For the one who has everything'
+                assign st_h = s.story_1_head | default: 'They do not have a portrait they made themselves'
+                assign st_p = s.story_1_body | default: 'Their dog, their kid, their grandmother at twenty. Threaded by hand, hung by the door.'
+                assign st_img = s.story_image_1
+                assign st_spec = '800 x 600. Finished piece of a person or pet, hung in a real room.'
+              when 2
+                assign st_for = s.story_2_for | default: 'For the one who needs a night off'
+                assign st_h = s.story_2_head | default: 'A phone-down evening with an ending'
+                assign st_p = s.story_2_body | default: 'The voice calls the next line. They thread it. Two hours disappear and something real is left behind.'
+                assign st_img = s.story_image_2
+                assign st_spec = '800 x 600. Hands threading the loom, overhead, lamplight. Real loom.'
+              when 3
+                assign st_for = s.story_3_for | default: 'For the one who never finishes a kit'
+                assign st_h = s.story_3_head | default: 'Built to be finished'
+                assign st_p = s.story_3_body | default: 'No chart to decode, no skill to learn. Open the box, pick a photo, follow along. It ends on the wall, not in a drawer.'
+                assign st_img = s.story_image_3
+                assign st_spec = '800 x 600. The kit contents laid out, box open, app on screen.'
+            endcase
+          -%}
+          <article class="hl-story">
+            <div class="hl-story__media">
+              {%- if st_img -%}
+                {{ st_img | image_url: width: 800 | image_tag: loading: 'lazy', sizes: '(min-width: 860px) 33vw, 104px', alt: st_h }}
+              {%- else -%}
+                <div class="hl-ph">{{ 'image' | placeholder_svg_tag }}<div class="hl-ph__label"><b>Gift story {{ i }}</b>{{ st_spec }}</div></div>
+              {%- endif -%}
+            </div>
+            <div class="hl-story__body">
+              <span class="hl-story__for">{{ st_for }}</span>
+              <h3>{{ st_h }}</h3>
+              <p>{{ st_p }}</p>
+            </div>
+          </article>
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} 5. HOW IT WORKS {%- endcomment -%}
+  <section class="hl-sec">
+    <div class="hl-wrap hl-how">
+      <div>
+        <p class="hl-eyebrow">How it works</p>
+        <h2 class="hl-h2">{{ s.how_headline | default: 'Three steps, one of them is hanging it up' }}</h2>
+        <div class="hl-steps">
+          <div class="hl-step"><div class="hl-step__num">1</div><div><h3>Choose a photo</h3><p>Any photo from the camera roll. The app shows a preview of how it will thread before a single line is tied.</p></div></div>
+          <div class="hl-step"><div class="hl-step__num">2</div><div><h3>Follow the voice</h3><p>The app reads out each pin, line by line. Loop the thread, move on. No chart, no counting, no squinting.</p></div></div>
+          <div class="hl-step"><div class="hl-step__num">3</div><div><h3>Hang the piece</h3><p>The loom is the frame. Tie off the last line, put it on the wall, and let people ask where it came from.</p></div></div>
+        </div>
+      </div>
+      <div class="hl-steps__media">
+        {%- if s.how_image -%}
+          {{ s.how_image | image_url: width: 1200 | image_tag: loading: 'lazy', sizes: '(min-width: 860px) 50vw, 100vw', alt: 'The Threaditate app guiding a line' }}
+        {%- else -%}
+          <div class="hl-ph" style="height:100%">{{ 'image' | placeholder_svg_tag }}<div class="hl-ph__label"><b>App in use</b>1200 x 1500 (4:5). Phone propped by the loom showing the voice-guidance screen, hands mid-line. Must show the actual UI, not the icon.</div></div>
+        {%- endif -%}
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} 6. COMPARISON {%- endcomment -%}
+  <section class="hl-sec hl-compare">
+    <div class="hl-wrap">
+      <p class="hl-eyebrow">Compared honestly</p>
+      <h2 class="hl-h2">{{ s.compare_headline | default: 'Why this one and not a bag of nails' }}</h2>
+      <p class="hl-lede">{{ s.compare_lede | default: 'Classic string art is a board, two hundred nails, a hammer, and a pattern someone else drew. We kept the thread and replaced everything else.' }}</p>
+      <table class="hl-table">
+        <thead><tr><th scope="col"></th><th scope="col">Threaditate</th><th scope="col">Nail-board kits</th></tr></thead>
+        <tbody>
+          <tr><td>The picture</td><td><span class="hl-tick">&#10003;</span>Any photo you choose</td><td>A fixed design from the box</td></tr>
+          <tr><td>Setup</td><td><span class="hl-tick">&#10003;</span>Open the box, pins are already in the loom</td><td>Hammer every nail into a board</td></tr>
+          <tr><td>Guidance</td><td><span class="hl-tick">&#10003;</span>A voice reads each line</td><td>A printed chart and a lot of counting</td></tr>
+          <tr><td>Time to finish</td><td><span class="hl-tick">&#10003;</span>An evening or two</td><td>Several weekends, if it gets finished</td></tr>
+          <tr><td>On the wall</td><td><span class="hl-tick">&#10003;</span>The loom is the frame, ready to hang</td><td>Find a frame that fits a board</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  {%- comment -%} 7. REVIEWS {%- endcomment -%}
+  <section class="hl-sec hl-reviews">
+    <div class="hl-wrap">
+      <p class="hl-eyebrow">{{ s.reviews_eyebrow | default: '2,013 Kickstarter backers came first' }}</p>
+      <h2 class="hl-h2">{{ s.reviews_headline | default: 'What people say after they finish one' }}</h2>
+      <div class="hl-quotes">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'quote' -%}
+            <div class="hl-quote" {{ block.shopify_attributes }}>
+              <span class="hl-stars" aria-label="Five stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+              <blockquote>{{ block.settings.text }}</blockquote>
+              <cite>{{ block.settings.name }}{% if block.settings.context != blank %}, {{ block.settings.context }}{% endif %}</cite>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+      {%- if s.show_judgeme and product -%}
+        <div class="hl-judgeme">
+          {%- comment -%} Judge.me review widget. Product id 10195372441895. {%- endcomment -%}
+          <div class="jdgm-widget jdgm-review-widget" data-id="{{ product.id }}" data-product-title="{{ product.title | escape }}"></div>
+        </div>
+      {%- endif -%}
+    </div>
+  </section>
+
+  {%- comment -%} 8. SMALL BUSINESS SATURDAY (date-conditional) {%- endcomment -%}
+  {%- if show_sbs -%}
+  <section class="hl-sbs">
+    <div class="hl-wrap hl-sbs__inner">
+      <div>
+        <p class="hl-eyebrow">Small Business Saturday</p>
+        <h2>{{ s.sbs_headline | default: 'Made by a small team of makers in Atlanta' }}</h2>
+      </div>
+      <p>{{ s.sbs_body | default: 'There is no warehouse algorithm behind this. There is a loom we designed, a patent we were granted, a 3PL in the US that gets your order out within a day, and a few people who answer the support inbox themselves. Buying from us today keeps that going.' }}</p>
+    </div>
+  </section>
+  {%- endif -%}
+
+  {%- comment -%} 9. FAQ {%- endcomment -%}
+  <section class="hl-sec">
+    <div class="hl-wrap">
+      <p class="hl-eyebrow">Before you decide</p>
+      <h2 class="hl-h2">{{ s.faq_headline | default: 'The questions gift-givers ask us' }}</h2>
+      <div class="hl-faq__list">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'faq' -%}
+            <details class="hl-faq__item" {{ block.shopify_attributes }}>
+              <summary>{{ block.settings.q }}</summary>
+              <div class="hl-faq__a">{{ block.settings.a }}</div>
+            </details>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} 10. FINAL CTA {%- endcomment -%}
+  <section class="hl-sec hl-final" id="hl-final-{{ section.id }}">
+    <div class="hl-wrap hl-final__inner">
+      <p class="hl-eyebrow">{{ pct }}% off every kit</p>
+      <h2>{{ s.final_headline | default: 'Give them something to make this year' }}</h2>
+      <div class="hl-price" style="justify-content:center">
+        <span class="hl-price__sale" data-sale-total>{{ sale_money }}</span>
+        <span class="hl-price__reg" data-reg-total>{{ reg_money }}</span>
+      </div>
+      <a class="hl-btn hl-btn--primary" data-cta data-cta-loc="final" href="{{ checkout_base }}1?discount={{ code }}">{{ cta_label }}</a>
+      <p class="hl-final__fine">Code {{ code }} applied at checkout. {{ s.offer_dates | default: 'November 26 through December 1.' }} Ships within 24 hours.</p>
+    </div>
+  </section>
+
+  {%- comment -%} STICKY BAR {%- endcomment -%}
+  {%- if s.sticky_bar -%}
+  <div class="hl-sticky" data-sticky aria-hidden="true">
+    <div class="hl-sticky__inner">
+      <div class="hl-sticky__price">
+        <b><span data-sale-total>{{ sale_money }}</span> <s style="opacity:.5;font-weight:400;font-size:.85em" data-reg-total>{{ reg_money }}</s></b>
+        <span data-sticky-sub>{{ pct }}% off with {{ code }}, through Dec 1</span>
+      </div>
+      <a class="hl-btn hl-btn--primary" data-cta data-cta-loc="sticky" href="{{ checkout_base }}1?discount={{ code }}">{{ cta_label }}</a>
+    </div>
+  </div>
+  {%- endif -%}
+
+</div>
+
+<script>
+  (function () {
+    var root = document.getElementById('hl-{{ section.id }}');
+    if (!root) return;
+    var reg = parseInt(root.dataset.reg, 10), sale = parseInt(root.dataset.sale, 10);
+    var base = root.dataset.base, code = root.dataset.code;
+    var qty = 1;
+    var fmt = function (cents) {
+      var v = cents / 100;
+      return '$' + (v % 1 === 0 ? v.toFixed(0) : v.toFixed(2));
+    };
+    var update = function () {
+      root.querySelectorAll('[data-sale-total]').forEach(function (el) { el.textContent = fmt(sale * qty); });
+      root.querySelectorAll('[data-reg-total]').forEach(function (el) { el.textContent = fmt(reg * qty); });
+      root.querySelectorAll('[data-save-total]').forEach(function (el) { el.textContent = 'Save ' + fmt((reg - sale) * qty); });
+      root.querySelectorAll('[data-each]').forEach(function (el) { el.hidden = qty === 1; el.textContent = fmt(sale) + ' per kit'; });
+      root.querySelectorAll('[data-cta]').forEach(function (a) { a.href = base + qty + '?discount=' + encodeURIComponent(code); });
+      root.querySelectorAll('.hl-qty__btn').forEach(function (b) { b.setAttribute('aria-pressed', String(parseInt(b.dataset.qty, 10) === qty)); });
+    };
+    root.querySelectorAll('.hl-qty__btn').forEach(function (b) {
+      b.addEventListener('click', function () { qty = parseInt(b.dataset.qty, 10) || 1; update(); });
+    });
+
+    /* pixel events: checkout intent from any CTA */
+    root.querySelectorAll('[data-cta]').forEach(function (a) {
+      a.addEventListener('click', function () {
+        var payload = { value: (sale * qty) / 100, currency: 'USD', num_items: qty, content_ids: ['{{ variant.id }}'], content_type: 'product' };
+        try { if (window.fbq) fbq('track', 'InitiateCheckout', payload); } catch (e) {}
+        try { if (window.gtag) gtag('event', 'begin_checkout', { value: payload.value, currency: 'USD', items: [{ item_id: '{{ variant.id }}', quantity: qty }] }); } catch (e) {}
+        try { if (window.dataLayer) dataLayer.push({ event: 'hl_cta_click', location: a.dataset.ctaLoc, qty: qty }); } catch (e) {}
+      });
+    });
+
+    /* sticky bar: show once the hero CTA has scrolled out, hide when the final CTA is in view */
+    var sticky = root.querySelector('[data-sticky]');
+    var heroCta = root.querySelector('[data-cta-loc="hero"]');
+    var finalSec = document.getElementById('hl-final-{{ section.id }}');
+    if (sticky && heroCta && 'IntersectionObserver' in window) {
+      var heroGone = false, finalSeen = false;
+      var apply = function () { var on = heroGone && !finalSeen; sticky.classList.toggle('is-on', on); sticky.setAttribute('aria-hidden', String(!on)); };
+      new IntersectionObserver(function (es) { heroGone = !es[0].isIntersecting && es[0].boundingClientRect.top < 0; apply(); }, { threshold: 0 }).observe(heroCta);
+      if (finalSec) new IntersectionObserver(function (es) { finalSeen = es[0].isIntersecting; apply(); }, { threshold: 0.2 }).observe(finalSec);
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Holiday landing (BFCM)",
+  "tag": "section",
+  "class": "hl-section",
+  "settings": [
+    { "type": "header", "content": "Offer" },
+    { "type": "text", "id": "product_handle", "label": "Product handle", "default": "string-ring-custom-string-art-kit" },
+    { "type": "text", "id": "discount_code", "label": "Discount code", "default": "HOLIDAY30" },
+    { "type": "range", "id": "discount_pct", "label": "Discount %", "min": 5, "max": 60, "step": 5, "default": 30 },
+    { "type": "text", "id": "offer_dates", "label": "Offer dates line", "default": "November 26 through December 1." },
+    { "type": "text", "id": "cta_label", "label": "CTA label", "default": "Make yours" },
+    { "type": "checkbox", "id": "sticky_bar", "label": "Show sticky CTA bar", "default": true },
+
+    { "type": "header", "content": "Hero" },
+    { "type": "text", "id": "hero_eyebrow", "label": "Eyebrow", "default": "Black Friday through Cyber Monday" },
+    { "type": "html", "id": "headline", "label": "Headline (wrap the display words in <span class=\"hl-ital\">)" },
+    { "type": "textarea", "id": "subhead", "label": "Subhead" },
+    { "type": "image_picker", "id": "hero_bg", "label": "Hero background, desktop (2880 x 1620, 16:9)", "info": "Full-bleed behind the hero. Keep the subject soft and low-contrast; copy sits on top of the left half." },
+    { "type": "image_picker", "id": "hero_bg_mobile", "label": "Hero background, mobile (1080 x 1920, 9:16)", "info": "Falls back to the desktop image, center-cropped." },
+    { "type": "range", "id": "hero_bg_overlay", "label": "Background darkening %", "min": 30, "max": 90, "step": 5, "default": 70 },
+    { "type": "image_picker", "id": "hero_image", "label": "Hero image, desktop (1400 x 1680)" },
+    { "type": "image_picker", "id": "hero_image_mobile", "label": "Hero image, mobile (1080 x 675)" },
+    { "type": "text", "id": "hero_alt", "label": "Hero alt text", "default": "A finished Threaditate piece hung beside the wrapped kit" },
+
+    { "type": "header", "content": "Reveal" },
+    { "type": "text", "id": "reveal_eyebrow", "label": "Eyebrow" },
+    { "type": "text", "id": "reveal_headline", "label": "Headline" },
+    { "type": "textarea", "id": "reveal_body", "label": "Body" },
+    { "type": "image_picker", "id": "reveal_before", "label": "Original photo (900 x 900)" },
+    { "type": "text", "id": "reveal_before_cap", "label": "Caption, photo" },
+    { "type": "image_picker", "id": "reveal_after", "label": "Finished piece (900 x 900)" },
+    { "type": "text", "id": "reveal_after_cap", "label": "Caption, piece" },
+
+    { "type": "header", "content": "Gift stories" },
+    { "type": "text", "id": "stories_eyebrow", "label": "Eyebrow" },
+    { "type": "text", "id": "stories_headline", "label": "Headline" },
+    { "type": "textarea", "id": "stories_lede", "label": "Lede" },
+    { "type": "text", "id": "story_1_for", "label": "Story 1 for" },
+    { "type": "text", "id": "story_1_head", "label": "Story 1 headline" },
+    { "type": "textarea", "id": "story_1_body", "label": "Story 1 body" },
+    { "type": "image_picker", "id": "story_image_1", "label": "Story 1 image (800 x 600)" },
+    { "type": "text", "id": "story_2_for", "label": "Story 2 for" },
+    { "type": "text", "id": "story_2_head", "label": "Story 2 headline" },
+    { "type": "textarea", "id": "story_2_body", "label": "Story 2 body" },
+    { "type": "image_picker", "id": "story_image_2", "label": "Story 2 image (800 x 600)" },
+    { "type": "text", "id": "story_3_for", "label": "Story 3 for" },
+    { "type": "text", "id": "story_3_head", "label": "Story 3 headline" },
+    { "type": "textarea", "id": "story_3_body", "label": "Story 3 body" },
+    { "type": "image_picker", "id": "story_image_3", "label": "Story 3 image (800 x 600)" },
+
+    { "type": "header", "content": "How it works" },
+    { "type": "text", "id": "how_headline", "label": "Headline" },
+    { "type": "image_picker", "id": "how_image", "label": "App in use (1200 x 1500)" },
+
+    { "type": "header", "content": "Comparison" },
+    { "type": "text", "id": "compare_headline", "label": "Headline" },
+    { "type": "textarea", "id": "compare_lede", "label": "Lede" },
+
+    { "type": "header", "content": "Reviews" },
+    { "type": "text", "id": "reviews_eyebrow", "label": "Eyebrow" },
+    { "type": "text", "id": "reviews_headline", "label": "Headline" },
+    { "type": "checkbox", "id": "show_judgeme", "label": "Show Judge.me widget under quotes", "default": false },
+
+    { "type": "header", "content": "Small Business Saturday" },
+    { "type": "select", "id": "sbs_mode", "label": "Callout", "default": "auto", "options": [
+      { "value": "auto", "label": "Auto (show on the date below)" },
+      { "value": "on", "label": "Always show" },
+      { "value": "off", "label": "Never show" }
+    ] },
+    { "type": "text", "id": "sbs_date", "label": "Auto date (YYYYMMDD)", "default": "20261128", "info": "Shopify caches pages, so the switch can lag an hour or so." },
+    { "type": "text", "id": "sbs_headline", "label": "Headline" },
+    { "type": "textarea", "id": "sbs_body", "label": "Body" },
+
+    { "type": "header", "content": "FAQ and final CTA" },
+    { "type": "text", "id": "faq_headline", "label": "FAQ headline" },
+    { "type": "text", "id": "final_headline", "label": "Final CTA headline" }
+  ],
+  "blocks": [
+    {
+      "type": "quote",
+      "name": "Review quote",
+      "settings": [
+        { "type": "textarea", "id": "text", "label": "Quote (verbatim)" },
+        { "type": "text", "id": "name", "label": "Name", "default": "First name L." },
+        { "type": "text", "id": "context", "label": "Context", "default": "Kickstarter backer" }
+      ]
+    },
+    {
+      "type": "faq",
+      "name": "FAQ item",
+      "settings": [
+        { "type": "text", "id": "q", "label": "Question" },
+        { "type": "richtext", "id": "a", "label": "Answer" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Holiday landing (BFCM)",
+      "blocks": [
+        { "type": "quote", "settings": { "text": "It looks like something from a gallery. People ask where I bought it. I made it. On my couch.", "name": "Andy S.", "context": "Kickstarter backer" } },
+        { "type": "quote", "settings": { "text": "[VERBATIM QUOTE FROM SEP 2026 SURVEY, completion angle]", "name": "Sheryl M.", "context": "Verified customer" } },
+        { "type": "quote", "settings": { "text": "[VERBATIM QUOTE FROM SEP 2026 SURVEY, calm / mind went quiet angle]", "name": "Timothy K.", "context": "Verified customer" } },
+        { "type": "faq", "settings": { "q": "They are not crafty. Will they actually finish it?", "a": "<p>That is the whole design. There is no pattern to read and no skill to pick up. The app says which pin is next and they loop the thread. Most people finish in an evening or two, and the app keeps their place if they stop halfway.</p>" } },
+        { "type": "faq", "settings": { "q": "Do I need to pick the photo before I buy?", "a": "<p>No. The kit works with any photo, and the recipient chooses it in the app when they open the box. You are giving them the choice, which is a better gift than guessing.</p>" } },
+        { "type": "faq", "settings": { "q": "Will it arrive in time?", "a": "<p>Orders ship within 24 hours from our US warehouse. Anything ordered during this sale has weeks of margin before the holidays.</p>" } },
+        { "type": "faq", "settings": { "q": "What is in the box?", "a": "<p>The loom with pins already set, enough thread for a full piece, a needle, hanging hardware, and a card with the app download. The app is free and runs on iPhone.</p>" } },
+        { "type": "faq", "settings": { "q": "What if they already have one, or change their mind?", "a": "<p>Unopened kits can be returned within 30 days. Email support and we will sort it out. If something arrives damaged or wrong, that is on us and we cover it.</p>" } },
+        { "type": "faq", "settings": { "q": "How does the discount work?", "a": "<p>Tap the button and the code is applied for you at checkout. If it does not show, enter HOLIDAY30 in the discount field. It is good on every kit through December 1.</p>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
