@@ -1658,5 +1658,30 @@
         "default": false
       }
     ]
+  },
+  {
+    "name": "Seasonal look",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Recolours the whole store for a season without touching any section. Switch back to Brand when the season ends."
+      },
+      {
+        "type": "select",
+        "id": "seasonal_skin",
+        "label": "Look",
+        "default": "none",
+        "options": [
+          {
+            "value": "none",
+            "label": "Brand (cobalt)"
+          },
+          {
+            "value": "holiday",
+            "label": "Holiday (evergreen and gold)"
+          }
+        ]
+      }
+    ]
   }
 ]

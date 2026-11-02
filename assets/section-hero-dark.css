@@ -383,3 +383,96 @@
   .hero-dark__title { font-size: 3.8rem; }
   .hero-dark__grid { gap: 18px; }
 }
+
+/* ── Eyebrow: a short line above the heading (e.g. a seasonal message) ── */
+.hero-dark__eyebrow {
+  margin: 0;
+  font-family: var(--font-body-family);
+  font-size: 1.3rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--brand-cobalt-text-tint, #8FB2ED);
+}
+@media only screen and (min-width: 768px) {
+  .hero-dark__eyebrow { font-size: 1.4rem; }
+}
+
+/* ── Lifestyle layout: the photo runs to the screen edge ──
+   Landscape screens: the photo fills the right side of the section, top to
+   bottom, and the text sits in the space left of it. Phones and portrait
+   tablets: the photo runs edge to edge under the header and fills whatever
+   height the text leaves, like the slider does. */
+.hero-dark--lifestyle {
+  --hero-photo-width: 56%;
+}
+.hero-dark__image--bleed {
+  position: relative;
+  aspect-ratio: auto;
+  max-height: none;
+  border-radius: 0;
+}
+.hero-dark__image--bleed img {
+  position: absolute;
+  inset: 0;
+}
+
+@media only screen and (min-width: 768px) and (orientation: landscape),
+       only screen and (min-width: 1101px) {
+  /* the photo is placed against the section, not the centred container */
+  .hero-dark--lifestyle .hero-dark__inner { position: static; }
+  .hero-dark--lifestyle .hero-dark__grid { grid-template-columns: minmax(0, 1fr); }
+  .hero-dark--lifestyle .hero-dark__text-col {
+    position: relative;
+    z-index: 1;
+    /* the screen left of the photo, less the container's left offset and a gap */
+    width: min(100%, calc(44vw - (100vw - 100%) / 2 - 48px));
+    max-width: 600px;
+  }
+  .hero-dark--lifestyle .hero-dark__image-col {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: var(--hero-photo-width);
+  }
+  .hero-dark--lifestyle .hero-dark__image--bleed { height: 100%; }
+  .hero-dark--lifestyle .hero-dark__title { font-size: clamp(3.2rem, min(3.4vw, 6.4svh), 5.2rem); }
+}
+
+@media only screen and (max-width: 767px),
+       only screen and (min-width: 768px) and (max-width: 1100px) and (orientation: portrait) {
+  .hero-dark--lifestyle.pt { padding-top: 0 !important; }
+  .hero-dark--lifestyle .hero-dark__image-col {
+    order: -1;
+    flex: 1 1 auto;
+    display: flex;
+    margin-inline: calc(var(--container-margin) * -1);
+  }
+  .hero-dark--lifestyle .hero-dark__image--bleed {
+    flex: 1 1 auto;
+    width: auto;
+    height: auto;
+    min-height: 220px;
+  }
+}
+
+/* Large monitors take natural height; keep the photo a generous size */
+@media only screen and (min-width: 1100px) and (min-height: 1100px) {
+  .hero-dark.hero-dark--lifestyle.screen-fit { min-height: 760px !important; }
+}
+/* Short laptop screens: the narrower text column needs tighter spacing */
+@media only screen and (min-width: 768px) and (orientation: landscape) and (max-height: 800px) {
+  .hero-dark--lifestyle .hero-dark__text-col { gap: 14px; }
+  .hero-dark--lifestyle :is(.hero-dark__rating, .hero-dark__proof) { margin-top: 0; }
+  .hero-dark--lifestyle .hero-dark__subheading { font-size: 1.6rem; line-height: 1.55; }
+  .hero-dark--lifestyle .hero-dark__btn { padding: 15px 26px; }
+  .hero-dark--lifestyle .hero-dark__trust { margin-top: 4px; gap: 6px 14px; font-size: 1.3rem; }
+}
+@media only screen and (max-width: 767px) {
+  .hero-dark__eyebrow { font-size: 1.15rem; letter-spacing: 0.1em; }
+}
+@media only screen and (max-width: 767px) and (max-height: 700px) {
+  .hero-dark--lifestyle .hero-dark__image--bleed { min-height: 140px; }
+  .hero-dark__eyebrow { font-size: 1.05rem; letter-spacing: 0.06em; }
+}

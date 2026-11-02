@@ -1,0 +1,62 @@
+{%- comment -%}
+  Seasonal look: recolours the store for a season from one theme setting
+  (Theme settings > Seasonal look). Renders after css-settings-and-variables
+  so its values win.
+
+  Holiday: cobalt becomes evergreen, blue-violet a dark bronze, the light
+  blue band and card wash a pale sage, and the light text tint on dark
+  surfaces gold. The vermillion buy button stays as it is. Contrast on
+  ivory: evergreen 7.3:1, bronze 5.6:1. Gold on true black: 11:1.
+
+  Brand tokens are overridden at :root, so sections that read them follow.
+  Colour schemes come from the editor as raw hex, so any scheme colour in
+  the cobalt family is remapped here too.
+{%- endcomment -%}
+
+{%- if settings.seasonal_skin == 'holiday' -%}
+  {%- liquid
+    assign from_hex = '#1450c4,#3d3db0,#e4ebf8,#c3d2ee,#8fb2ed,#0f3f9c' | split: ','
+    assign to_hex = '#1e5a43,#7a5c17,#e6ece2,#c8d5c2,#e2c27a,#17463a' | split: ','
+    assign scheme_keys = 'background,foreground,button_background,button_foreground,card_background,borders,outlines' | split: ','
+  -%}
+  {% style %}
+    :root {
+      --brand-cobalt-blue: #1E5A43;
+      --brand-cobalt-blue-rgb: 30 90 67;
+      --brand-blue-violet: #7A5C17;
+      --brand-blue-violet-rgb: 122 92 23;
+      --brand-cobalt-text-tint: #E2C27A;
+      --brand-violet-text-tint: #E2C27A;
+      --brand-cobalt-wash: #E6ECE2;
+      --brand-cobalt-hairline: rgb(30 90 67 / 0.18);
+      --brand-dark-gradient: linear-gradient(135deg, #0B0B0F 0%, #0F2219 55%, #163829 100%);
+    }
+
+    {% for scheme in settings.color_schemes -%}
+      {%- if forloop.index == 1 %}:root, {% endif -%}
+      .color-{{ scheme.id }} {
+        {%- for key in scheme_keys -%}
+          {%- assign hex = scheme.settings[key] | append: '' | downcase -%}
+          {%- for f in from_hex -%}
+            {%- if hex == f -%}
+              {%- assign new_hex = to_hex[forloop.index0] -%}
+              {%- assign css_var = key | replace: '_', '-' -%}
+              --color-{{ css_var }}: {{ new_hex }};
+              {%- if key == 'card_background' %}
+              --gradient-card-background: {{ new_hex }};
+              {%- elsif key == 'background' %}
+              --color-background-alt: {{ new_hex | color_darken: 6 }};
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endfor -%}
+        {%- assign lightness = scheme.settings.background | color_extract: 'lightness' -%}
+        {%- if lightness > 50 %}
+        --focus-ring: #1E5A43;
+        {%- else %}
+        --focus-ring: #E2C27A;
+        {%- endif %}
+      }
+    {% endfor %}
+  {% endstyle %}
+{%- endif -%}

@@ -1,11 +1,21 @@
+{%- liquid
+  assign lifestyle = false
+  if section.settings.layout == 'lifestyle' and section.settings.image != blank
+    assign lifestyle = true
+  endif
+  assign show_compare = false
+  if lifestyle == false and section.settings.image_before != blank and section.settings.image_after != blank
+    assign show_compare = true
+  endif
+-%}
 {{ 'section-hero-dark.css' | asset_url | stylesheet_tag }}
-{%- if section.settings.image_before != blank and section.settings.image_after != blank -%}
+{%- if show_compare -%}
   {{ 'section-before-after.css' | asset_url | stylesheet_tag }}
 {%- endif -%}
 
 <div
   id="{{ section.id }}"
-  class="screen-fit hero-dark hero-dark--align-{{ section.settings.text_alignment | default: 'center' }} pt pb sm-pt sm-pb"
+  class="screen-fit hero-dark hero-dark--align-{{ section.settings.text_alignment | default: 'center' }}{% if lifestyle %} hero-dark--lifestyle{% endif %} pt pb sm-pt sm-pb"
   style="
     --pt: {{ section.settings.padding_top | append: 'px' }};
     --pb: {{ section.settings.padding_bottom | append: 'px' }};
@@ -20,6 +30,10 @@
 
       {%- comment -%} ── Left: Text ── {%- endcomment -%}
       <div class="hero-dark__text-col">
+
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="hero-dark__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
 
         {%- if section.settings.heading != blank -%}
           <h1 class="hero-dark__title">{{ section.settings.heading }}</h1>
@@ -87,8 +101,22 @@
 
       </div>
 
-      {%- comment -%} ── Right: before/after slider, or a single image ── {%- endcomment -%}
-      {%- if section.settings.image_before != blank and section.settings.image_after != blank -%}
+      {%- comment -%}
+        ── Right: a lifestyle photo running to the screen edge, the
+        before/after slider, or a single framed image ──
+      {%- endcomment -%}
+      {%- if lifestyle -%}
+        <div class="hero-dark__image-col hero-dark__image-col--bleed">
+          <div class="hero-dark__image hero-dark__image--bleed">
+            {%- render 'img',
+              lazyload: false,
+              wrapped: false,
+              sizes: '(min-width: 768px) 56vw, 100vw',
+              src: section.settings.image
+            -%}
+          </div>
+        </div>
+      {%- elsif show_compare -%}
         <div class="hero-dark__image-col">
           <div class="hero-dark__image hero-dark__image--compare">
             {%- render 'before-after-image-slider', block: section, sizes: '(min-width: 768px) 50vw, 100vw' -%}
@@ -138,8 +166,31 @@
       ]
     },
     {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "default": "split",
+      "info": "Lifestyle runs the Image below to the edge of the screen and ignores the before/after slider.",
+      "options": [
+        {
+          "value": "split",
+          "label": "Text beside slider or framed image"
+        },
+        {
+          "value": "lifestyle",
+          "label": "Lifestyle photo to the edge"
+        }
+      ]
+    },
+    {
       "type": "header",
       "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow (above heading)",
+      "info": "Optional short line, e.g. a seasonal message."
     },
     {
       "type": "textarea",
@@ -215,8 +266,8 @@
     {
       "type": "image_picker",
       "id": "image",
-      "label": "Image (used when no before/after pair is set)",
-      "info": "Portrait or square image recommended."
+      "label": "Image",
+      "info": "The lifestyle photo, or the framed image when no before/after pair is set. Set a focal point on the photo so the piece stays in frame on phones."
     },
     {
       "type": "header",

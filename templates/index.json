@@ -57,6 +57,7 @@
       ],
       "name": "Hero Dark",
       "settings": {
+        "layout": "lifestyle",
         "text_alignment": "center",
         "heading": "Turn any photo into string art you made with your own hands.",
         "subheading": "Upload a photo. The app's voice guides you line by line through 5 to 6 hours of phone-free calm. No skill needed, nothing to undo.",
@@ -68,18 +69,12 @@
         "primary_button_link": "shopify://products/string-ring-custom-string-art-kit",
         "secondary_button_label": "",
         "secondary_button_link": "",
-        "image": "shopify://shop_images/Screenshot_2026-09-21_at_2.16.18_PM.png",
-        "image_before": "shopify://shop_images/new_aphrodite_string.png",
-        "image_after": "shopify://shop_images/aphrodite_string.png",
-        "before_label": "Your photo",
-        "after_label": "Your string art",
-        "label_colors": "#ffffff",
-        "label_position": "top",
-        "media_aspect_ratio": "square",
+        "image": "shopify://shop_images/IMG_8337.jpg",
         "md_padding_top": 80,
         "md_padding_bottom": 80,
         "padding_top": 56,
-        "padding_bottom": 56
+        "padding_bottom": 56,
+        "eyebrow": "A holiday gift they make themselves"
       }
     },
     "trust_strip_home": {
@@ -609,7 +604,14 @@
         "md_padding_top": 120,
         "md_padding_bottom": 120,
         "padding_top": 80,
-        "padding_bottom": 80
+        "padding_bottom": 80,
+        "image_before": "shopify://shop_images/new_aphrodite_string.png",
+        "image_after": "shopify://shop_images/aphrodite_string.png",
+        "before_label": "Your photo",
+        "after_label": "Your string art",
+        "label_colors": "#ffffff",
+        "label_position": "top",
+        "media_aspect_ratio": "square"
       }
     },
     "before_after_home": {

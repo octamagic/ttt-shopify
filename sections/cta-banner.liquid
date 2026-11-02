@@ -1,8 +1,17 @@
+{%- liquid
+  assign show_compare = false
+  if section.settings.image_before != blank and section.settings.image_after != blank
+    assign show_compare = true
+  endif
+-%}
 {{ 'section-cta-banner.css' | asset_url | stylesheet_tag }}
+{%- if show_compare -%}
+  {{ 'section-before-after.css' | asset_url | stylesheet_tag }}
+{%- endif -%}
 
 <div
   id="{{ section.id }}"
-  class="screen-fit cta-banner cta-banner--{{ section.settings.style | default: 'cobalt' }} pt pb sm-pt sm-pb"
+  class="screen-fit cta-banner cta-banner--{{ section.settings.style | default: 'cobalt' }}{% if show_compare %} cta-banner--compare{% endif %} pt pb sm-pt sm-pb"
   style="
     --pt: {{ section.settings.padding_top | append: 'px' }};
     --pb: {{ section.settings.padding_bottom | append: 'px' }};
@@ -13,78 +22,93 @@
   <div class="cta-banner__bg" aria-hidden="true"></div>
 
   <div class="cta-banner__inner container">
-    <div class="cta-banner__content text-align-center">
-
+    <div class="cta-banner__layout">
       {%- comment -%}
-        Three photos that follow the headline: a memory (the original photo),
-        a meditation (someone threading), a piece (someone with the finished
-        piece). Empty slots show only inside the Theme Editor, never to
-        customers.
+        With a before/after pair set, the slider sits beside the copy
+        (above it on phones) and takes the place of the three photos.
       {%- endcomment -%}
-      {%- liquid
-        assign show_trio = false
-        if section.settings.image_memory != blank or section.settings.image_meditation != blank or section.settings.image_piece != blank
-          assign show_trio = true
-        endif
-        if request.design_mode
-          assign show_trio = true
-        endif
-      -%}
-      {%- if show_trio -%}
-        <div class="cta-banner__trio">
-          {%- for slot in (1..3) -%}
-            {%- liquid
-              case slot
-                when 1
-                  assign img = section.settings.image_memory
-                  assign label = section.settings.memory_label
-                when 2
-                  assign img = section.settings.image_meditation
-                  assign label = section.settings.meditation_label
-                else
-                  assign img = section.settings.image_piece
-                  assign label = section.settings.piece_label
-              endcase
-            -%}
-            {%- if img != blank or request.design_mode -%}
-              <figure class="cta-banner__trio-item">
-                <div class="cta-banner__trio-media">
-                  {%- if img != blank -%}
-                    {{ img | image_url: width: 600 | image_tag: loading: 'lazy', widths: '240, 400, 600', sizes: '(min-width: 768px) 220px, 30vw', alt: label }}
-                  {%- else -%}
-                    {{ 'image' | placeholder_svg_tag: 'cta-banner__placeholder' }}
-                  {%- endif -%}
-                </div>
-                {%- if label != blank -%}
-                  <figcaption class="cta-banner__trio-label">{{ label | escape }}</figcaption>
-                {%- endif -%}
-              </figure>
-            {%- endif -%}
-          {%- endfor -%}
+      {%- if show_compare -%}
+        <div class="cta-banner__compare">
+          {%- render 'before-after-image-slider', block: section, sizes: '(min-width: 768px) 45vw, 100vw' -%}
         </div>
       {%- endif -%}
 
-      {%- if section.settings.heading != blank -%}
-        <h2 class="cta-banner__title">{{ section.settings.heading }}</h2>
-      {%- endif -%}
+      <div class="cta-banner__content text-align-center">
 
-      {%- if section.settings.subheading != blank -%}
-        <p class="cta-banner__subheading">{{ section.settings.subheading }}</p>
-      {%- endif -%}
+        {%- comment -%}
+          Three photos that follow the headline: a memory (the original photo),
+          a meditation (someone threading), a piece (someone with the finished
+          piece). Empty slots show only inside the Theme Editor, never to
+          customers.
+        {%- endcomment -%}
+        {%- liquid
+          assign show_trio = false
+          if section.settings.image_memory != blank or section.settings.image_meditation != blank or section.settings.image_piece != blank
+            assign show_trio = true
+          endif
+          if request.design_mode
+            assign show_trio = true
+          endif
+          if show_compare
+            assign show_trio = false
+          endif
+        -%}
+        {%- if show_trio -%}
+          <div class="cta-banner__trio">
+            {%- for slot in (1..3) -%}
+              {%- liquid
+                case slot
+                  when 1
+                    assign img = section.settings.image_memory
+                    assign label = section.settings.memory_label
+                  when 2
+                    assign img = section.settings.image_meditation
+                    assign label = section.settings.meditation_label
+                  else
+                    assign img = section.settings.image_piece
+                    assign label = section.settings.piece_label
+                endcase
+              -%}
+              {%- if img != blank or request.design_mode -%}
+                <figure class="cta-banner__trio-item">
+                  <div class="cta-banner__trio-media">
+                    {%- if img != blank -%}
+                      {{ img | image_url: width: 600 | image_tag: loading: 'lazy', widths: '240, 400, 600', sizes: '(min-width: 768px) 220px, 30vw', alt: label }}
+                    {%- else -%}
+                      {{ 'image' | placeholder_svg_tag: 'cta-banner__placeholder' }}
+                    {%- endif -%}
+                  </div>
+                  {%- if label != blank -%}
+                    <figcaption class="cta-banner__trio-label">{{ label | escape }}</figcaption>
+                  {%- endif -%}
+                </figure>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
 
-      {%- if section.settings.button_label != blank -%}
-        
-          <a href="{{ section.settings.button_link | default: '#' }}"
-          class="cta-banner__btn"
-        >
-          {{ section.settings.button_label }}
-        </a>
-      {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="cta-banner__title">{{ section.settings.heading }}</h2>
+        {%- endif -%}
 
-      {%- if section.settings.caption != blank -%}
-        <p class="cta-banner__caption">{{ section.settings.caption }}</p>
-      {%- endif -%}
+        {%- if section.settings.subheading != blank -%}
+          <p class="cta-banner__subheading">{{ section.settings.subheading }}</p>
+        {%- endif -%}
 
+        {%- if section.settings.button_label != blank -%}
+          
+            <a href="{{ section.settings.button_link | default: '#' }}"
+            class="cta-banner__btn"
+          >
+            {{ section.settings.button_label }}
+          </a>
+        {%- endif -%}
+
+        {%- if section.settings.caption != blank -%}
+          <p class="cta-banner__caption">{{ section.settings.caption }}</p>
+        {%- endif -%}
+
+      </div>
     </div>
   </div>
 </div>
@@ -164,6 +188,82 @@
       "id": "piece_label",
       "label": "Piece label",
       "default": "A piece"
+    },
+    {
+      "type": "header",
+      "content": "Before / after slider"
+    },
+    {
+      "type": "paragraph",
+      "content": "Set both images to show a drag slider beside the text, in place of the three photos: the customer's photo on the left, the finished piece on the right."
+    },
+    {
+      "type": "image_picker",
+      "id": "image_before",
+      "label": "Before (the photo)"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_after",
+      "label": "After (the string art)"
+    },
+    {
+      "type": "text",
+      "id": "before_label",
+      "label": "Before label",
+      "default": "Your photo"
+    },
+    {
+      "type": "text",
+      "id": "after_label",
+      "label": "After label",
+      "default": "Your string art"
+    },
+    {
+      "type": "color",
+      "id": "label_colors",
+      "label": "Label text colour",
+      "default": "#ffffff"
+    },
+    {
+      "type": "select",
+      "id": "label_position",
+      "label": "Label position",
+      "default": "top",
+      "options": [
+        {
+          "value": "top",
+          "label": "Top"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "media_aspect_ratio",
+      "label": "Slider aspect ratio",
+      "default": "square",
+      "options": [
+        {
+          "value": "square",
+          "label": "Square"
+        },
+        {
+          "value": "portrait",
+          "label": "Portrait"
+        },
+        {
+          "value": "natural",
+          "label": "Natural"
+        }
+      ]
     },
     {
       "type": "header",
