@@ -483,7 +483,7 @@
           "settings": {
             "image": "shopify://shop_images/Untitled_design.gif",
             "title": "2. Upload your photo",
-            "description": "A person, a pet, a pattern. Your personalized guide is ready in seconds."
+            "description": "A person, a pet, a logo. Your personalized guide is ready in seconds."
           }
         },
         "step_iRR8EV": {
@@ -686,7 +686,7 @@
           "type": "faq_item",
           "settings": {
             "question": "Will my photo actually turn out good?",
-            "answer": "<p>Yes - a clear photo with a close-up subject in good contrast makes a strong piece. Faces, pets, and simple compositions work beautifully.</p>"
+            "answer": "<p>Yes - a clear photo with a close-up subject in good contrast makes a strong piece. Faces, pets, and simple compositions work beautifully. &nbsp;Your final piece will look just like you design it in the app.</p>"
           }
         },
         "faq_item_jPDegj": {
@@ -707,14 +707,14 @@
           "type": "faq_item",
           "settings": {
             "question": "How long does it take to make?",
-            "answer": "<p>Most pieces take 5 to 8 hours, depending on detail. Plenty of makers spread that across a few evenings. The app saves your place, so it's ready whenever you are.</p>"
+            "answer": "<p>Most pieces take 5 to 6 hours, depending on detail. Plenty of makers spread that across a few evenings. The app saves your place, so it's ready whenever you are.</p>"
           }
         },
         "faq_item_fThdwz": {
           "type": "faq_item",
           "settings": {
             "question": "What exactly do I get?",
-            "answer": "<p>The loom, thread, spool holder, precision wand, numbered paper guide, wooden phone stand, mounting accessories, the easel-box, and app access - no subscription ever.</p>"
+            "answer": "<p>Everything you need for multiple pieces. The loom, thread, spool holder, precision wand, numbered paper guide, wooden phone stand, mounting accessories, the easel-box, and app access - no subscription ever.</p>"
           }
         }
       },

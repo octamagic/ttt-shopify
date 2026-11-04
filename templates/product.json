@@ -20,12 +20,6 @@
             "margin_top": 0
           }
         },
-        "rating_Ccm9zT": {
-          "type": "rating",
-          "settings": {
-            "margin_top": 12
-          }
-        },
         "the-title": {
           "type": "title",
           "settings": {
@@ -37,7 +31,17 @@
           "settings": {
             "text": "<p>Turn any photo into string art you make by hand.</p>",
             "read_more": false,
-            "margin_top": 8
+            "margin_top": 8,
+            "visibility": "all"
+          }
+        },
+        "text_specs": {
+          "type": "text",
+          "settings": {
+            "text": "<p>20-inch loom · 240 pins</p>",
+            "read_more": false,
+            "margin_top": 4,
+            "visibility": "all"
           }
         },
         "judgeme_badge": {
@@ -55,22 +59,10 @@
             "size_multiplier": "size--huge"
           }
         },
-        "the-description": {
-          "type": "description",
-          "disabled": true,
+        "rating_Ccm9zT": {
+          "type": "rating",
           "settings": {
-            "enable_collapsible": false,
-            "collapsible_type": "collapsible",
-            "margin_top": 24
-          }
-        },
-        "text_bullets": {
-          "type": "text",
-          "settings": {
-            "text": "<ul><li>Turn any photo into string art</li><li>No skills needed. The app's voice guides every line</li><li>Loom, thread and tools included. Nothing else to buy</li><li>Relaxing and mess-free. 5 to 8 hours, at your pace</li></ul>",
-            "read_more": false,
-            "margin_top": 0,
-            "visibility": "mobile"
+            "margin_top": 12
           }
         },
         "557a3a73-80c5-47b2-abb8-a78027516c90": {
@@ -106,6 +98,40 @@
             "add_multipliers": "",
             "add_multipliers_layout": "single-line",
             "margin_top": 16
+          }
+        },
+        "text_about": {
+          "type": "text",
+          "settings": {
+            "text": "<ul><li>Mistake friendly. All errors disappear.</li><li>No skills needed. The app's voice guides every number.</li><li>Loom, thread and tools included. Nothing else to buy.</li><li>Relaxing and mess-free. 5 to 6hours, at your pace.</li></ul>",
+            "read_more": false,
+            "margin_top": 20,
+            "visibility": "desktop"
+          }
+        },
+        "details_break": {
+          "type": "details_break",
+          "settings": {
+            "color_scheme": "alternative-2",
+            "heading": "About the kit"
+          }
+        },
+        "the-description": {
+          "type": "description",
+          "disabled": true,
+          "settings": {
+            "enable_collapsible": false,
+            "collapsible_type": "collapsible",
+            "margin_top": 24
+          }
+        },
+        "text_bullets": {
+          "type": "text",
+          "settings": {
+            "text": "<ul><li>Turn any photo into string art</li><li>No skills needed. The app's voice guides every line</li><li>Loom, thread and tools included. Nothing else to buy</li><li>Relaxing and mess-free. 5 to 8 hours, at your pace</li></ul>",
+            "read_more": false,
+            "margin_top": 0,
+            "visibility": "mobile"
           }
         },
         "trust_row": {
@@ -150,7 +176,7 @@
           "type": "collapsible_tab",
           "settings": {
             "title": "What's in the box",
-            "content": "<ul><li>20-inch interlocking loom</li><li>Pre-cut thread and spool holder</li><li>Threading wand</li><li>Numbered paper guide</li><li>Wooden phone stand</li><li>A box that turns into your easel</li><li>App access for personalized guides, no subscription</li></ul>",
+            "content": "<ul><li>20-inch loom</li><li>The Right Thread</li><li>Precision wand</li><li>Numbered removable guide</li><li>Wooden phone stand and spool holder</li><li>A box that turns into your easel</li><li>App access for personalized patterns, no subscription ever</li></ul>",
             "page": "",
             "open_as_drawer": false,
             "icon": "icon-caret__right",
@@ -161,7 +187,7 @@
           "type": "collapsible_tab",
           "settings": {
             "title": "How it works",
-            "content": "<p>Upload any photo and the app turns it into a voice-guided sequence. It speaks each pin number, shows the line, then flows to the next at your pace. Lose your place? Keep going. Missed lines vanish into the whole. The app saves your spot, so every session picks up where you left off.</p>",
+            "content": "<p>Upload any photo and the app turns it into a voice-guided sequence. It speaks each pin number, then flows to the next at your pace. Lose your place? Keep going. Missed lines vanish into the thousands. The app saves your spot, so every session picks up where you left off.</p>",
             "page": "",
             "open_as_drawer": false,
             "icon": "icon-caret__right",
@@ -172,7 +198,7 @@
           "type": "collapsible_tab",
           "settings": {
             "title": "Features",
-            "content": "<ul><li><strong>Real-time voice-guided app</strong> — speaks and shows each step, then flows to the next at your pace. No lost lines, no buttons between them.</li><li><strong>Convertible easel-box</strong> — packaging that becomes your work surface.</li><li><strong>Wooden phone stand</strong> — holds your guide hands-free while you thread.</li><li><strong>Thread and spool holder</strong> — pre-cut, organized, ready to use.</li><li><strong>Precision threading wand</strong> — designed for clean, accurate placement.</li><li><strong>Numbered paper guide</strong> — a physical reference for using the loom with our app.</li><li><strong>Patented software and loom design</strong> — U.S. Patent 12,423,349. An original system you won't find anywhere else.</li></ul>",
+            "content": "<ul><li><strong>Real-time voice-guided app</strong> - speaks and shows each step, then flows to the next at your pace. No lost lines, no buttons between them.</li><li><strong>Convertible easel-box</strong> - packaging that becomes your work surface.</li><li><strong>Wooden phone stand</strong> - holds your guide hands-free while you thread.</li><li><strong>Thread and spool holder</strong> - pre-cut, organized, ready to use.</li><li><strong>Precision threading wand</strong> - designed for clean, accurate placement.</li><li><strong>Numbered paper guide</strong> - a physical reference for using the loom with our app.</li><li><strong>Patented software and loom design</strong> - U.S. Patent 12,423,349. An original system you won't find anywhere else.</li><li><strong>Great for: </strong>eye-hand coordination, fine motor skills, spatial cognition, recall</li></ul>",
             "page": "",
             "open_as_drawer": false,
             "icon": "icon-caret__right",
@@ -183,7 +209,7 @@
           "type": "collapsible_tab",
           "settings": {
             "title": "Specs",
-            "content": "<p><strong>Loom</strong></p><ul><li>Diameter: 20\"</li><li>Patented loom design, U.S. Patent 12,423,349</li><li>Interlocking modular pieces</li><li>Tool-free</li><li>Easel- or wall-mounted</li></ul><p><strong>Thread</strong></p><ul><li>Pre-cut thread set</li><li>Integrated spool holder included</li></ul><p><strong>Tools included</strong></p><ul><li>Precision threading wand</li><li>Numbered paper guide</li><li>Wooden phone stand</li></ul><p><strong>Packaging</strong></p><ul><li>Mailbox-sized box converts to easel work surface</li><li>No additional stand required</li></ul><p><strong>App</strong></p><ul><li>iOS and Android</li><li>Cost: Free (included with kit)</li><li>Features: photo upload, real-time voice-guided session, adjustable pacing, design preview</li><li>U.S. Patent 12,423,349</li></ul><p><strong>Project duration</strong></p><ul><li>Estimated completion: 5–8 hours depending on design complexity</li><li>Session flexibility: pause and resume — the app saves your progress</li></ul>",
+            "content": "<p><strong>Loom</strong></p><ul><li>Diameter: 20\"</li><li>Patented loom design, U.S. Patent 12,423,349</li><li>8 Interlocking modular pieces</li><li>Tool-free</li><li>Easel- or wall-mounted</li></ul><p><strong>Thread</strong></p><ul><li>The right type of thread</li><li>Integrated spool holder included</li></ul><p><strong>Tools included</strong></p><ul><li>Precision threading wand</li><li>Numbered paper guide</li><li>Wooden phone stand</li><li>Mounting accessories</li></ul><p><strong>Packaging</strong></p><ul><li>Mailbox-sized box converts to easel work surface</li><li>No additional stand required</li></ul><p><strong>App</strong></p><ul><li>Website access on any browser: iOS and Android, PC and Mac</li><li>Cost: Free (included with kit)</li><li>Features: photo upload, real-time voice-guided session, adjustable pacing, design preview</li><li>U.S. Patent 12,423,349</li></ul><p><strong>Project duration</strong></p><ul><li>Estimated completion: 5–6 hours depending on design complexity</li><li>Session flexibility: pause and resume - the app saves your progress</li></ul>",
             "page": "",
             "open_as_drawer": false,
             "icon": "icon-caret__right",
@@ -199,30 +225,6 @@
             "open_as_drawer": false,
             "icon": "icon-caret__right",
             "margin_top": 8
-          }
-        },
-        "text_specs": {
-          "type": "text",
-          "settings": {
-            "text": "<p>20-inch loom · 240 pins</p>",
-            "read_more": false,
-            "margin_top": 4
-          }
-        },
-        "details_break": {
-          "type": "details_break",
-          "settings": {
-            "color_scheme": "alternative-2",
-            "heading": "About the kit"
-          }
-        },
-        "text_about": {
-          "type": "text",
-          "settings": {
-            "text": "<ul><li>Turn any photo into string art</li><li>No skills needed. The app's voice guides every line</li><li>Loom, thread and tools included. Nothing else to buy</li><li>Relaxing and mess-free. 5 to 8 hours, at your pace</li></ul>",
-            "read_more": false,
-            "margin_top": 20,
-            "visibility": "desktop"
           }
         }
       },
@@ -312,7 +314,7 @@
         "text_VFiFGN": {
           "type": "text",
           "settings": {
-            "text": "<p>Slide to see a real photo become a finished piece, made by hand on the 20-inch loom.</p><ul><li><strong>Pick a photo you love.</strong> Faces, pets and close-ups with clear contrast come out best.</li><li><strong>The app makes the pattern.</strong> Your photo becomes a numbered thread guide in seconds.</li><li><strong>You thread it, line by line.</strong> The app speaks every step, so you never get lost.</li><li><strong>Hang it on your wall.</strong> Most pieces take 5 to 8 hours, at your own pace.</li></ul>",
+            "text": "<p>Slide to see a real photo become a finished piece, made by your hand on the easy to use loom.</p><ul><li><strong>Pick a photo you love.</strong> Faces, pets and close-ups with clear contrast come out best.</li><li><strong>The app makes the pattern.</strong> Your photo becomes a numbered thread guide in seconds.</li><li><strong>You thread it, line by line.</strong> The app speaks every step, so you never get lost.</li><li><strong>Hang it on your wall.</strong> Most pieces take 5 to 6 hours, at your own pace.</li></ul>",
             "sm_size_multiplier": "sm-size--default",
             "sm_margin_top": 12,
             "size_multiplier": "size--default",
@@ -371,7 +373,7 @@
             "corner_styling": "soft",
             "header_text_color": "#000000",
             "text_color": "#0b0b0f",
-            "card_color": "#F4F2ED",
+            "card_color": "#f4f2ed",
             "stars_color": "#1450c4",
             "arrows_color": "#1450c4",
             "transition_speed": 8,
@@ -384,17 +386,35 @@
       "block_order": [
         "judgeme_cards_pdp"
       ],
+      "disabled": true,
       "settings": {
         "color_scheme": "alternative-1",
+        "background": "#e3e1f2",
+        "heading": "Made by people like you.",
         "enable_full_width": false,
         "md_padding_top": 80,
         "md_padding_bottom": 80,
         "padding_top": 48,
-        "padding_bottom": 48,
+        "padding_bottom": 48
+      }
+    },
+    "reviews_wall_pdp": {
+      "type": "reviews-wall",
+      "settings": {
+        "style": "cobalt",
         "heading": "Made by people like you.",
-        "background": "#E3E1F2"
-      },
-      "disabled": true
+        "product": "",
+        "min_rating": 4,
+        "max_reviews": 9,
+        "hide_anonymous": true,
+        "show_product": true,
+        "button_label": "",
+        "button_link": "",
+        "md_padding_top": 64,
+        "md_padding_bottom": 64,
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
     },
     "testimonials_pdp": {
       "type": "testimonials-slider",
@@ -482,6 +502,9 @@
       ],
       "disabled": true,
       "settings": {
+        "color_scheme": "",
+        "background": "",
+        "heading": "",
         "enable_full_width": false,
         "md_padding_top": 40,
         "md_padding_bottom": 40,
@@ -499,11 +522,11 @@
         "heading": "Everything you need, in one box",
         "intro": "Open the box and you are ready to start. Nothing to source, nothing missing.",
         "bullet_1": "20-inch interlocking loom",
-        "bullet_2": "Pre-cut thread & spool holder",
-        "bullet_3": "Threading wand",
+        "bullet_2": "The Right Thread & spool holder",
+        "bullet_3": "Precision wand",
         "bullet_4": "Numbered paper guide",
         "bullet_5": "Wooden phone stand",
-        "bullet_6": "A box that turns into your easel",
+        "bullet_6": "A box that turns into an easel",
         "bullet_7": "App access, no subscription",
         "bullet_8": "",
         "bullet_9": "",
@@ -523,31 +546,34 @@
         "feature_card_Qnxz7P": {
           "type": "feature_card",
           "settings": {
+            "photo": "shopify://shop_images/finished-image.jpg",
             "icon_preset": "forgiving",
+            "icon_color": "auto",
             "icon_svg": "",
             "title": "Forgiving by design",
-            "description": "Lose your place? Keep going. With thousands of lines, missed steps disappear into the whole — there's nothing to undo.",
-            "photo": "shopify://shop_images/finished-image.jpg"
+            "description": "Lose your place? Keep going. With thousands of lines, missed steps disappear into the whole — there's nothing to undo."
           }
         },
         "feature_card_jMkMTj": {
           "type": "feature_card",
           "settings": {
+            "photo": "shopify://shop_images/follow-the-voice.png",
             "icon_preset": "voice",
+            "icon_color": "auto",
             "icon_svg": "",
             "title": "You won't get lost",
-            "description": "The app speaks and shows every step, flowing line by line at your pace. No experience needed.",
-            "photo": "shopify://shop_images/follow-the-voice.png"
+            "description": "The app speaks and shows every step, flowing line by line at your pace. No experience needed."
           }
         },
         "feature_card_JkAaLp": {
           "type": "feature_card",
           "settings": {
+            "photo": "shopify://shop_images/IMG_8337.jpg",
             "icon_preset": "photo",
+            "icon_color": "auto",
             "icon_svg": "",
             "title": "Your photo, your art",
-            "description": "Any meaningful image becomes one-of-a-kind string art. No two pieces will ever match.",
-            "photo": "shopify://shop_images/IMG_8337.jpg"
+            "description": "Any meaningful image becomes one-of-a-kind string art. No two pieces will ever match."
           }
         }
       },
@@ -722,6 +748,8 @@
         "align_content": "text-align-center",
         "position_content": "above",
         "text_below": "<p>Upload a photo and the app turns it into a numbered pattern. Then it speaks every line, one at a time, while your hands do the rest.</p>",
+        "button_label": "",
+        "button_link": "",
         "md_padding_top": 48,
         "md_padding_bottom": 48,
         "padding_top": 32,
@@ -793,6 +821,14 @@
       "name": "CTA Banner",
       "settings": {
         "style": "cobalt",
+        "memory_label": "A memory",
+        "meditation_label": "A meditation",
+        "piece_label": "A piece",
+        "before_label": "Your photo",
+        "after_label": "Your string art",
+        "label_colors": "#ffffff",
+        "label_position": "top",
+        "media_aspect_ratio": "square",
         "heading": "Your photo, in thread, made by you.",
         "subheading": "A meaningful photo, a guided evening or three, and a piece on your wall that you made.",
         "button_label": "Get my kit",
@@ -802,24 +838,6 @@
         "md_padding_bottom": 120,
         "padding_top": 80,
         "padding_bottom": 80
-      }
-    },
-    "reviews_wall_pdp": {
-      "type": "reviews-wall",
-      "settings": {
-        "style": "cobalt",
-        "heading": "Made by people like you.",
-        "product": "",
-        "min_rating": 4,
-        "max_reviews": 9,
-        "hide_anonymous": true,
-        "show_product": true,
-        "button_label": "",
-        "button_link": "",
-        "md_padding_top": 64,
-        "md_padding_bottom": 64,
-        "padding_top": 40,
-        "padding_bottom": 40
       }
     }
   },

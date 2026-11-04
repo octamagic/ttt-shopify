@@ -48,7 +48,7 @@
           "type": "newsletter",
           "settings": {
             "title": "Make more. Stress less.",
-            "richtext": "<p>New kits, early access, and session guides — for people who actually use their hands.</p>",
+            "richtext": "<p>New kits, early access, and session guides - for people who actually use their hands.</p>",
             "column_width_tablet": "col-sm-6",
             "column_width": "col-md-3"
           }
