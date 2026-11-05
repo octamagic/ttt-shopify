@@ -69,7 +69,7 @@
         "md_padding_bottom": 64,
         "padding_top": 48,
         "padding_bottom": 48,
-        "subheading": "Mount the loom, upload a photo, and start threading. The app guides you from there."
+        "subheading": "Mount the loom, sign in to the app, and start threading. The app guides you from there."
       }
     },
     "steps_with_images_WMKPeF": {
@@ -96,7 +96,7 @@
         "step_Xm4zYR": {
           "type": "step",
           "settings": {
-            "image": "shopify://shop_images/step-3.jpg",
+            "image": "shopify://shop_images/halloweenLander_image_upload.png",
             "title": "Upload your photo",
             "description": "Upload your image in the app to generate a custom threading guide.",
             "tip": "Select photos to try by following the Tips Guide. Zoom in! Now zoom in more! After uploading many photos, you will develop an eye for what images make for great string art. Optimize and choose line count/ detail level. Every 500 lines takes under an hour. 3500-4000 lines look best in our opinion."
@@ -110,11 +110,21 @@
             "description": "The app speaks and shows the next step, then continues at your pace. It starts at 10-second intervals. Speed up as your skill improves, then slow it down a few clicks to switch from focus mode to relax mode.",
             "tip": "Mistakes don't matter, they all disappear behind the other steps.  Line after line, this craft is forgiving.  No craftsmanship needed. "
           }
+        },
+        "step_signin": {
+          "type": "step",
+          "settings": {
+            "image": "shopify://shop_images/step-3.jpg",
+            "title": "Sign in to the app",
+            "description": "Go to go.threaditate.com and sign up with Google or your email. When it asks for an access code, enter the KIT code from your purchase email.",
+            "tip": "The full manual is in the app, in the How to section."
+          }
         }
       },
       "block_order": [
         "step_dPEj8J",
         "step_xQfen7",
+        "step_signin",
         "step_Xm4zYR",
         "step_AaEBpH"
       ],
@@ -124,8 +134,8 @@
         "heading": "Getting started",
         "subheading": "Follow these steps in order for the smoothest experience.",
         "number_color": "#1450c4",
-        "button_label": "Get my kit",
-        "button_link": "shopify://products/string-ring-custom-string-art-kit",
+        "button_label": "Open the app",
+        "button_link": "https://go.threaditate.com",
         "button_style": "primary",
         "md_padding_top": 80,
         "md_padding_bottom": 80,
