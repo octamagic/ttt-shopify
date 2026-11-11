@@ -24,17 +24,17 @@
         "q2": {
           "type": "quote",
           "settings": {
-            "text": "[VERBATIM QUOTE FROM SEP 2026 SURVEY, completion angle]",
-            "name": "Sheryl M.",
-            "context": "Verified customer"
+            "text": "Incredibly rewarding and proud of finishing a project, because I struggle with finishing projects.",
+            "name": "Timothy K.",
+            "context": "Kickstarter backer"
           }
         },
         "q3": {
           "type": "quote",
           "settings": {
-            "text": "[VERBATIM QUOTE FROM SEP 2026 SURVEY, calm angle]",
-            "name": "Timothy K.",
-            "context": "Verified customer"
+            "text": "It was easy, relaxing, and fun. I immediately wanted to do another.",
+            "name": "Megan D.",
+            "context": "Got hers as a gift"
           }
         },
         "f1": {
