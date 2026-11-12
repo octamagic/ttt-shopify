@@ -34,14 +34,14 @@
           "settings": {
             "text": "It was easy, relaxing, and fun. I immediately wanted to do another.",
             "name": "Megan D.",
-            "context": "Got hers as a gift"
+            "context": "Received as a gift"
           }
         },
         "f1": {
           "type": "faq",
           "settings": {
             "q": "They are not crafty. Will they actually finish it?",
-            "a": "<p>That is the whole design. There is no pattern to read and no skill to pick up. The app says which pin is next and they loop the thread. Most people finish in an evening or two, and the app keeps their place if they stop halfway.</p>"
+            "a": "<p>That is the whole design. There is no pattern to read and no skill to pick up. The app says which pin is next and they loop the thread. Most people finish in about five hours, and the app keeps their place if they stop halfway.</p>"
           }
         },
         "f2": {
@@ -55,21 +55,21 @@
           "type": "faq",
           "settings": {
             "q": "Will it arrive in time?",
-            "a": "<p>Orders ship within 24 hours from our US warehouse. Anything ordered during this sale has weeks of margin before the holidays.</p>"
+            "a": "<p>Orders ship within 24 hours from our US warehouse. Anything ordered during this sale has plenty of time to arrive before the holidays.</p>"
           }
         },
         "f4": {
           "type": "faq",
           "settings": {
             "q": "What is in the box?",
-            "a": "<p>The loom with pins already set, enough thread for a full piece, a needle, hanging hardware, and a card with the app download. The app is free and runs on iPhone.</p>"
+            "a": "<p>The loom, enough thread for a full piece, a wand, a spool holder, a phone holder, hanging hardware, and a code for the app. The app is free and runs on phones, tablets, or computers.</p>"
           }
         },
         "f5": {
           "type": "faq",
           "settings": {
             "q": "What if they already have one, or change their mind?",
-            "a": "<p>Unopened kits can be returned within 30 days. Email support and we will sort it out. If something arrives damaged or wrong, that is on us and we cover it.</p>"
+            "a": "<p>Unused kits can be returned within 30 days. Email support and we will sort it out. If something arrives damaged or wrong, that is on us and we fix it fast.</p>"
           }
         },
         "f6": {
