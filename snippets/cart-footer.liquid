@@ -11,6 +11,7 @@
         <span>{{ cart.original_total_price | money_with_currency }}</span>
       </div>
       {%- render 'cart-discounts', cart: cart -%}
+      {%- render 'cart-discount-field' -%}
       {%- if settings.cart_reassurance != blank -%}
         <p class="cart__reassurance">{{ settings.cart_reassurance | escape }}</p>
       {%- endif -%}

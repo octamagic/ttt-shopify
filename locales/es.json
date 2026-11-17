@@ -425,6 +425,10 @@
         "title": "¿Tener una cuenta?",
         "paragraph_html": "<a href=\"{{ link }}\" class=\"link underlined-link\">Inicie sesión</a> para pagar más rápido."
       },
+      "discount_code": "Código de descuento",
+      "discount_code_toggle": "¿Tienes un código de descuento?",
+      "discount_code_apply": "Aplicar",
+      "discount_code_error": "Ese código no es válido para este carrito.",
       "new_subtotal": "Nuevo subtotal",
       "note": "Pedir instrucciones especiales",
       "remove": "Eliminar",

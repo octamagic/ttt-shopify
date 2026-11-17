@@ -10,34 +10,115 @@ class CartRemoveButton extends HTMLElement {
 customElements.define('cart-remove-button', CartRemoveButton);
 
 /**
- * Takes the discount code off the cart. Also clears the cookie a
+ * Discount codes in the cart. Shopify's cart update takes the full list of
+ * codes, so adding or removing one means sending the list with that change.
+ */
+const CartDiscountCodes = {
+  async current() {
+    const cart = await (await fetch(`${routes.cart_url}.js`)).json();
+    return (cart.discount_codes || []).map((discount) => discount.code);
+  },
+  async set(codes) {
+    const response = await fetch(`${routes.cart_update_url}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ discount: codes.join(',') })
+    });
+    return response.json();
+  },
+  same(a, b) {
+    return a.trim().toLowerCase() === b.trim().toLowerCase();
+  },
+  render() {
+    document.querySelectorAll('cart-items').forEach((cartItems) => cartItems.renderItems());
+  }
+};
+
+/**
+ * Takes one discount code off the cart. Also clears the cookie a
  * /discount/CODE link leaves behind, so the code is not put back on the next cart.
  */
 class CartRemoveDiscount extends HTMLElement {
   constructor() {
     super();
-    this.addEventListener('click', (event) => {
+    this.addEventListener('click', async (event) => {
       event.preventDefault();
       const button = this.querySelector('button');
       if (button) button.disabled = true;
 
-      fetch(`${routes.cart_update_url}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify({ discount: '' })
-      })
-        .then(() => {
-          document.cookie = 'discount_code=; Max-Age=0; path=/';
-          document.querySelectorAll('cart-items').forEach((cartItems) => cartItems.renderItems());
-        })
-        .catch((e) => {
-          console.error(e);
-          if (button) button.disabled = false;
-        });
+      try {
+        const codes = await CartDiscountCodes.current();
+        const code = this.dataset.code || '';
+        await CartDiscountCodes.set(code ? codes.filter((c) => !CartDiscountCodes.same(c, code)) : []);
+        document.cookie = 'discount_code=; Max-Age=0; path=/';
+        CartDiscountCodes.render();
+      } catch (e) {
+        console.error(e);
+        if (button) button.disabled = false;
+      }
     });
   }
 }
 customElements.define('cart-remove-discount', CartRemoveDiscount);
+
+/**
+ * The "Have a discount code?" field. Adds the typed code to the cart; if
+ * Shopify says it does not apply, the cart is put back and a message shows.
+ */
+class CartDiscountField extends HTMLElement {
+  connectedCallback() {
+    this.input = this.querySelector('input');
+    this.button = this.querySelector('button');
+    this.error = this.querySelector('.cart__discount-error');
+    if (!this.input || !this.button) return;
+
+    this.button.addEventListener('click', () => this.apply());
+    this.input.addEventListener('keydown', (event) => {
+      if (event.key !== 'Enter') return;
+      // Enter would otherwise submit the cart form and go to checkout
+      event.preventDefault();
+      this.apply();
+    });
+  }
+
+  showError() {
+    if (!this.error) return;
+    this.error.textContent = this.dataset.error || '';
+    this.error.hidden = false;
+  }
+
+  async apply() {
+    const code = this.input.value.trim();
+    if (!code) return;
+
+    this.button.disabled = true;
+    if (this.error) this.error.hidden = true;
+
+    try {
+      const before = await CartDiscountCodes.current();
+      if (before.some((c) => CartDiscountCodes.same(c, code))) {
+        CartDiscountCodes.render();
+        return;
+      }
+
+      const cart = await CartDiscountCodes.set([...before, code]);
+      const added = (cart.discount_codes || []).find((discount) => CartDiscountCodes.same(discount.code, code));
+
+      if (added && added.applicable) {
+        CartDiscountCodes.render();
+      } else {
+        await CartDiscountCodes.set(before);
+        this.showError();
+      }
+    } catch (e) {
+      console.error(e);
+      this.showError();
+    } finally {
+      this.button.disabled = false;
+    }
+  }
+}
+customElements.define('cart-discount-field', CartDiscountField);
 
 class CartItems extends HTMLElement {
   constructor() {

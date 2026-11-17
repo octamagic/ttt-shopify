@@ -421,6 +421,10 @@
         "title": "Onko sinulla tili?",
         "paragraph_html": "<a href=\"{{ link }}\" class=\"link underlined-link\">Kirjaudu sisään</a>"
       },
+      "discount_code": "Alennuskoodi",
+      "discount_code_toggle": "Onko sinulla alennuskoodi?",
+      "discount_code_apply": "Käytä",
+      "discount_code_error": "Koodi ei kelpaa tähän ostoskoriin.",
       "new_subtotal": "Uusi välisumma",
       "note": "Viesti",
       "remove": "Poista",

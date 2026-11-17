@@ -421,6 +421,10 @@
         "title": "Have an account?",
         "paragraph_html": "<a href=\"{{ link }}\" class=\"link underlined-link\">Log in</a> to check out faster."
       },
+      "discount_code": "Discount code",
+      "discount_code_toggle": "Have a discount code?",
+      "discount_code_apply": "Apply",
+      "discount_code_error": "That code is not valid for this cart.",
       "new_subtotal": "New subtotal",
       "note": "Order special instructions",
       "remove": "Remove",

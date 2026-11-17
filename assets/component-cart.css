@@ -368,7 +368,7 @@ drawer-cart .cart__reassurance {
 }
 /* No gap under the last item: the footer border already separates them,
    and the gap was enough to push the quantity controls out of view. */
-drawer-cart cart-items { margin-bottom: 0; }
+drawer-cart.drawer cart-items { margin-bottom: 0; }
 drawer-cart .cart-item:last-child { padding-bottom: 0; }
 drawer-cart .cart-buttons { gap: 8px; }
 drawer-cart .cart__checkout {
@@ -427,4 +427,59 @@ drawer-cart .cart-item__total .cart-item__discounted-prices dd:has(.cart-item__o
 .cart__discount .discount-title cart-remove-discount {
   display: block;
   line-height: 1.2;
+}
+
+/* Discount code entry: one link, opening to an input and Apply button */
+.cart__discount-field {
+  display: block;
+  margin-top: 6px;
+}
+.cart__discount-field details,
+.cart__discount-field summary {
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+.cart__discount-field summary {
+  display: inline-block;
+  cursor: pointer;
+  list-style: none;
+}
+.cart__discount-field summary::before,
+.cart__discount-field summary::after {
+  content: none;
+}
+.cart__discount-field summary::-webkit-details-marker { display: none; }
+.cart__discount-field details[open] > summary { display: none; }
+.cart__discount-field-row {
+  display: flex;
+  gap: 8px;
+}
+.cart__discount-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 38px;
+  padding: 0 12px;
+  /* 16px stops iOS zooming the page when the field is focused */
+  font-size: 1.6rem;
+  color: var(--color-foreground);
+  background: transparent;
+  border: 1px solid var(--color-borders);
+  border-radius: var(--button-border-radius);
+  text-transform: uppercase;
+}
+.cart__discount-input::placeholder {
+  text-transform: none;
+  color: inherit;
+  opacity: 0.6;
+}
+.cart__discount-apply {
+  flex: 0 0 auto;
+  min-height: 38px;
+  padding: 0 16px;
+  font-size: 1.4rem;
+}
+.cart__discount-error {
+  margin: 4px 0 0;
+  color: var(--error);
 }

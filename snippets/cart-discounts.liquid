@@ -17,7 +17,7 @@
             {{- discount_title -}}
             {%- comment -%} Codes can be taken off here; automatic discounts cannot. {%- endcomment -%}
             {%- if discount.type == 'discount_code' -%}
-              <cart-remove-discount>
+              <cart-remove-discount data-code="{{ discount.title | escape }}">
                 <button type="button" class="link size--tiny style--subdued" aria-label="{{ 'sections.cart.remove_title' | t: title: discount.title | escape }}">
                   {{- 'sections.cart.remove' | t -}}
                 </button>

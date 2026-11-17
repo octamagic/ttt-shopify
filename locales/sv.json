@@ -421,6 +421,10 @@
         "title": "Har du ett konto?",
         "paragraph_html": "<a href=\"{{ link }}\" class=\"link underlined-link\">Logga in</a> för att gå till kassan snabbare."
       },
+      "discount_code": "Rabattkod",
+      "discount_code_toggle": "Har du en rabattkod?",
+      "discount_code_apply": "Använd",
+      "discount_code_error": "Koden gäller inte för den här varukorgen.",
       "new_subtotal": "Ny delsumma",
       "note": "Beställningsspecifika instruktioner",
       "remove": "Ta bort",

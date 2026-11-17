@@ -1,0 +1,28 @@
+{%- comment -%}
+  Discount code entry for the cart (drawer and cart page). Collapsed to one
+  link so it costs a single line; opens to an input and an Apply button.
+  It sits inside the cart <form>, so the input has no name (it is not sent
+  with checkout) and cart.js handles Enter and the button.
+{%- endcomment -%}
+<cart-discount-field class="cart__discount-field" data-error="{{ 'sections.cart.discount_code_error' | t | escape }}">
+  <details>
+    <summary class="link size--tiny">{{ 'sections.cart.discount_code_toggle' | t }}</summary>
+    <div class="cart__discount-field-row">
+      <input
+        type="text"
+        class="cart__discount-input"
+        autocomplete="off"
+        autocapitalize="characters"
+        autocorrect="off"
+        spellcheck="false"
+        enterkeyhint="done"
+        placeholder="{{ 'sections.cart.discount_code' | t | escape }}"
+        aria-label="{{ 'sections.cart.discount_code' | t | escape }}"
+      >
+      <button type="button" class="btn btn--secondary cart__discount-apply">
+        {{- 'sections.cart.discount_code_apply' | t -}}
+      </button>
+    </div>
+    <p class="cart__discount-error size--tiny" role="alert" hidden></p>
+  </details>
+</cart-discount-field>
