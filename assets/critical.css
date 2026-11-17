@@ -2185,6 +2185,12 @@ html.has-buy-bar body [class*="kl-teaser-"] {
   transition: bottom 0.3s ease-in-out;
 }
 
+/* While a drawer or modal is open (body.overflow-hidden, set in global.js)
+   the teaser is hidden, so it can't sit on top of the cart's pay buttons. */
+body.overflow-hidden [class*="kl-teaser-"] {
+  display: none !important;
+}
+
 /* On phones the teaser is a small tab tucked bottom-right, and it slides
    away after a few seconds (see snippets/klaviyo-teaser.liquid).
    Scoped to elements inside body: the <html> tag's own classes must never
