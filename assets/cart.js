@@ -9,6 +9,36 @@ class CartRemoveButton extends HTMLElement {
 }
 customElements.define('cart-remove-button', CartRemoveButton);
 
+/**
+ * Takes the discount code off the cart. Also clears the cookie a
+ * /discount/CODE link leaves behind, so the code is not put back on the next cart.
+ */
+class CartRemoveDiscount extends HTMLElement {
+  constructor() {
+    super();
+    this.addEventListener('click', (event) => {
+      event.preventDefault();
+      const button = this.querySelector('button');
+      if (button) button.disabled = true;
+
+      fetch(`${routes.cart_update_url}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ discount: '' })
+      })
+        .then(() => {
+          document.cookie = 'discount_code=; Max-Age=0; path=/';
+          document.querySelectorAll('cart-items').forEach((cartItems) => cartItems.renderItems());
+        })
+        .catch((e) => {
+          console.error(e);
+          if (button) button.disabled = false;
+        });
+    });
+  }
+}
+customElements.define('cart-remove-discount', CartRemoveDiscount);
+
 class CartItems extends HTMLElement {
   constructor() {
     super();
