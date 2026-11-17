@@ -421,6 +421,10 @@
         "title": "Vous possédez un compte ?",
         "paragraph_html": "<a href=\"{{ link }}\" class=\"link underlined-link\">Connectez-vous</a> pour payer plus vite."
       },
+      "discount_code": "Code de réduction",
+      "discount_code_toggle": "Vous avez un code de réduction ?",
+      "discount_code_apply": "Appliquer",
+      "discount_code_error": "Ce code n'est pas valable pour ce panier.",
       "new_subtotal": "Nouveau sous-total",
       "note": "Instructions spéciales concernant la commande",
       "remove": "Supprimer",

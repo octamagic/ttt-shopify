@@ -421,6 +421,10 @@
         "title": "Ein Konto haben?",
         "paragraph_html": "<a href=\"{{ link }}\" class=\"link underlined-link\">Melden Sie sich an</a> , um schneller auszuchecken."
       },
+      "discount_code": "Rabattcode",
+      "discount_code_toggle": "Hast du einen Rabattcode?",
+      "discount_code_apply": "Anwenden",
+      "discount_code_error": "Dieser Code gilt nicht für diesen Warenkorb.",
       "new_subtotal": "Neue Zwischensumme",
       "note": "Sonderanweisung bestellen",
       "remove": "Entfernen",

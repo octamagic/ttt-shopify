@@ -421,6 +421,10 @@
         "title": "Hai un account?",
         "paragraph_html": "<a href=\"{{ link }}\" class=\"link underlined-link\">Accedi</a> per pagare più velocemente."
       },
+      "discount_code": "Codice sconto",
+      "discount_code_toggle": "Hai un codice sconto?",
+      "discount_code_apply": "Applica",
+      "discount_code_error": "Questo codice non è valido per questo carrello.",
       "new_subtotal": "Nuovo subtotale",
       "note": "Ulteriori informazioni",
       "remove": "Rimuovi",
