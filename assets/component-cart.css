@@ -299,9 +299,6 @@ cart-items {
   padding: 2px 0;
 }
 
-.drawer cart-remove-button {
-  display: none;
-}
 
 .drawer.is-open .shipping-notification.threshold-reached .checkmark {
   animation: fill .4s ease-in-out 0.9s forwards, scale .3s ease-in-out 1.4s both;
@@ -328,4 +325,52 @@ drawer-cart [data-contents] {
 .cart__checkout {
   min-height: 52px;
   font-size: 1.7rem;
+}
+
+/* Cart drawer: the line items always keep room on screen.
+   The footer (totals, Checkout, express buttons) used to hold its full
+   height and the item list did all the shrinking, so on a phone the items,
+   quantity and remove controls disappeared. Now the list keeps a floor and
+   a too-tall footer scrolls instead, with totals and Checkout at its top. */
+drawer-cart .drawer-cart__content {
+  flex: 1 1 0;
+  height: auto;
+  min-height: 190px;
+}
+drawer-cart .drawer-footer {
+  flex: 0 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+@media only screen and (max-width: 767px) {
+  drawer-cart .drawer-cart__content {
+    padding-top: 16px;
+    padding-bottom: 16px;
+  }
+  drawer-cart .drawer-footer {
+    padding-top: 16px;
+    padding-bottom: 16px;
+    border-top: 1px solid var(--color-borders);
+  }
+  drawer-cart .cart-buttons { gap: 8px; }
+  drawer-cart .cart__checkout { min-height: 48px; }
+  drawer-cart .cart__dynamic-checkout-buttons {
+    --shopify-accelerated-checkout-button-block-size: 44px;
+    --shopify-accelerated-checkout-row-gap: 8px;
+  }
+}
+
+/* Cart drawer on phones: keep the +/- steppers. The theme hides them on
+   small screens, which left a bare number box as the only way to change a
+   quantity. Sized up a little so they are easy to tap. */
+@media only screen and (max-width: 767px) {
+  drawer-cart quantity-input:not(.force-icons).small {
+    --height: 36px;
+    width: 108px;
+  }
+  drawer-cart quantity-input:not(.force-icons).small .quantity__button {
+    display: grid;
+  }
 }
