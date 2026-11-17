@@ -13,7 +13,17 @@
             endcapture
           -%}
 
-          <span class="discount-title">{{- discount_title -}}</span>
+          <span class="discount-title">
+            {{- discount_title -}}
+            {%- comment -%} Codes can be taken off here; automatic discounts cannot. {%- endcomment -%}
+            {%- if discount.type == 'discount_code' -%}
+              <cart-remove-discount>
+                <button type="button" class="link size--tiny style--subdued" aria-label="{{ 'sections.cart.remove_title' | t: title: discount.title | escape }}">
+                  {{- 'sections.cart.remove' | t -}}
+                </button>
+              </cart-remove-discount>
+            {%- endif -%}
+          </span>
           <span class="discount-price">{{- discount.total_allocated_amount | money_with_currency | prepend: '-' -}}</span>
         </li>
       {%- endfor -%}

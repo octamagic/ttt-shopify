@@ -335,7 +335,7 @@ drawer-cart [data-contents] {
 drawer-cart .drawer-cart__content {
   flex: 1 1 0;
   height: auto;
-  min-height: 150px;
+  min-height: 160px;
   padding-top: 16px;
   padding-bottom: 16px;
 }
@@ -353,7 +353,23 @@ drawer-cart .drawer-header {
   padding-top: 8px;
   padding-bottom: 8px;
 }
-drawer-cart .cart__subtotals { margin: 0 0 12px; }
+drawer-cart .cart__subtotals {
+  margin: 0 0 10px;
+  font-size: 1.5rem;
+  line-height: 1.35;
+}
+drawer-cart .cart__subtotal-final {
+  padding-top: 8px;
+  margin-top: 8px;
+}
+drawer-cart .cart__reassurance {
+  margin-top: 4px;
+  font-size: 1.25rem;
+}
+/* No gap under the last item: the footer border already separates them,
+   and the gap was enough to push the quantity controls out of view. */
+drawer-cart cart-items { margin-bottom: 0; }
+drawer-cart .cart-item:last-child { padding-bottom: 0; }
 drawer-cart .cart-buttons { gap: 8px; }
 drawer-cart .cart__checkout {
   min-height: 44px;
@@ -405,4 +421,10 @@ drawer-cart shopify-paypal-button .paypal-buttons {
    already under the product title, and both together overflow a narrow phone. */
 drawer-cart .cart-item__total .cart-item__discounted-prices dd:has(.cart-item__old-price) {
   display: none;
+}
+
+/* Discount code row: the code, with a Remove link under it */
+.cart__discount .discount-title cart-remove-discount {
+  display: block;
+  line-height: 1.2;
 }
