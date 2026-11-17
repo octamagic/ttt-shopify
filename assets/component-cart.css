@@ -327,44 +327,70 @@ drawer-cart [data-contents] {
   font-size: 1.7rem;
 }
 
-/* Cart drawer: the line items always keep room on screen.
-   The footer (totals, Checkout, express buttons) used to hold its full
-   height and the item list did all the shrinking, so on a phone the items,
-   quantity and remove controls disappeared. Now the list keeps a floor and
-   a too-tall footer scrolls instead, with totals and Checkout at its top. */
+/* ── Cart drawer layout ──
+   Everything fits on one phone screen without scrolling: a slim header,
+   the line items, then totals, Checkout and a compact stack of express
+   buttons. The item list keeps a floor so it can never be squeezed
+   out; with several items it is the list that scrolls, not the footer. */
 drawer-cart .drawer-cart__content {
   flex: 1 1 0;
   height: auto;
-  min-height: 190px;
+  min-height: 150px;
+  padding-top: 16px;
+  padding-bottom: 16px;
 }
 drawer-cart .drawer-footer {
   flex: 0 1 auto;
   min-height: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  border-top: 1px solid var(--color-borders);
+}
+drawer-cart .drawer-header {
+  min-height: 56px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+drawer-cart .cart__subtotals { margin: 0 0 12px; }
+drawer-cart .cart-buttons { gap: 8px; }
+drawer-cart .cart__checkout {
+  min-height: 44px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-size: 1.6rem;
+}
+drawer-cart .cart__tax { margin: 10px 0 0; }
+
+/* Express buttons: one tidy stack, all the same compact height and full
+   width. PayPal sizes itself to 150px when it loads inside the closed
+   drawer, so its wrappers are stretched to match the others. */
+drawer-cart .cart__dynamic-checkout-buttons {
+  --shopify-accelerated-checkout-button-block-size: 38px;
+  --shopify-accelerated-checkout-row-gap: 6px;
+}
+drawer-cart shopify-paypal-button > div,
+drawer-cart shopify-paypal-button .paypal-buttons {
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
 }
 
 @media only screen and (max-width: 767px) {
-  drawer-cart .drawer-cart__content {
-    padding-top: 16px;
-    padding-bottom: 16px;
-  }
-  drawer-cart .drawer-footer {
-    padding-top: 16px;
-    padding-bottom: 16px;
-    border-top: 1px solid var(--color-borders);
-  }
-  drawer-cart .cart-buttons { gap: 8px; }
-  drawer-cart .cart__checkout { min-height: 48px; }
-  drawer-cart .cart__dynamic-checkout-buttons {
-    --shopify-accelerated-checkout-button-block-size: 44px;
-    --shopify-accelerated-checkout-row-gap: 8px;
-  }
+  /* The reassurance line above already covers shipping; the cart page
+     keeps the full tax note. */
+  drawer-cart .cart__tax { display: none; }
+}
+/* Very short screens: Checkout alone, so nothing has to scroll. The same
+   express options are offered on the first step of checkout. */
+@media only screen and (max-width: 767px) and (max-height: 640px) {
+  drawer-cart .cart__dynamic-checkout-buttons { display: none; }
 }
 
-/* Cart drawer on phones: keep the +/- steppers. The theme hides them on
-   small screens, which left a bare number box as the only way to change a
-   quantity. Sized up a little so they are easy to tap. */
+/* Phones: keep the +/- steppers. The theme hides them on small screens,
+   which left a bare number box as the only way to change a quantity. */
 @media only screen and (max-width: 767px) {
   drawer-cart quantity-input:not(.force-icons).small {
     --height: 36px;
@@ -373,4 +399,10 @@ drawer-cart .drawer-footer {
   drawer-cart quantity-input:not(.force-icons).small .quantity__button {
     display: grid;
   }
+}
+
+/* Drawer line total: just the price you pay. The crossed-out price is
+   already under the product title, and both together overflow a narrow phone. */
+drawer-cart .cart-item__total .cart-item__discounted-prices dd:has(.cart-item__old-price) {
+  display: none;
 }
