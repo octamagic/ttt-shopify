@@ -5,7 +5,8 @@
         src: block.settings.image_before,
         lazyload: true,
         sizes: sizes,
-        custom_classes: 'br-img image-before slider-image'
+        custom_classes: 'br-img image-before slider-image',
+        alt_fallback: block.settings.before_label
       -%}
       <p class="label-text label-text--before color-{{ section.settings.color_scheme }}" style="color: {{ block.settings.label_colors }};">{{ block.settings.before_label }}</p>
     </div>
@@ -15,7 +16,8 @@
         src: block.settings.image_after,
         lazyload: true,
         sizes: sizes,
-        custom_classes: 'br-img image-after slider-image'
+        custom_classes: 'br-img image-after slider-image',
+        alt_fallback: block.settings.after_label
       -%}
       <p class="label-text label-text--after color-{{ section.settings.color_scheme }}" style="color: {{ block.settings.label_colors }};">{{ block.settings.after_label }}</p>
     </div>

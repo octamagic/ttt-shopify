@@ -11,6 +11,12 @@
   assign show_sort_by = section.settings.enable_sorting
   assign show_sidebar = section.settings.show_sidebar
 
+  # Nothing to filter or sort in a collection of one product
+  if collection.all_products_count < 2
+    assign show_filters = false
+    assign show_sort_by = false
+  endif
+
   assign actions_items_count = 0
 
   if show_filters
@@ -109,14 +115,14 @@
               {%- endif -%}
               </p>
             {%- endif -%}
-            {%- if section.settings.enable_filtering -%}
+            {%- if show_filters -%}
               <a class="btn btn--link size--small btn--with-icon filters-button" href="#drawer-filter">{{ 'products.facets.filter_button' | t }} <span class="link-icon icon--round">{%- render 'icon-caret' -%}</span></a>
             {%- endif -%}
-            {%- if section.settings.enable_sorting -%}
+            {%- if show_sort_by -%}
               {% render 'sort-by' %}
             {%- endif -%}
           </div>
-          {%- if section.settings.enable_filtering -%}
+          {%- if show_filters -%}
             {%- render 'current-facets' -%}
           {%- endif -%}
         {% endif %}
@@ -140,7 +146,7 @@
           {%- else -%}
             <div class="text-align-center" style="grid-column-start: 1; grid-column-end: -1;">
               <h2>{{ 'sections.collection_template.empty' | t }}</h2>
-              {% if section.settings.enable_filtering %}
+              {% if show_filters %}
                 <p>{{ 'sections.collection_template.use_fewer_filters_html' | t: class: 'link', link: collection.url }}</p>
               {% endif %}
             </div>
@@ -158,11 +164,11 @@
 {%- endpaginate -%}
 
 
-{% if section.settings.enable_filtering %}
+{% if show_filters %}
   {%- render 'drawer-filters', context: 'collection', show_swatches: section.settings.enable_swatches -%}
   <script type="text/javascript" src="{{ 'component-price-range.js' | asset_url }}" defer></script>
 {% endif %}
-{% if section.settings.enable_sorting or section.settings.enable_filtering %}
+{% if show_sort_by or show_filters %}
   <script type="text/javascript" src="{{ 'component-facets.js' | asset_url }}" defer></script>
 {% endif %}
 

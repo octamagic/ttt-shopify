@@ -7,6 +7,7 @@
   # media         =>  REQUIRED | image object
   # aspect_ratio  =>  REQUIRED | string: 'portrait', 'landscape', 'square', 'natural'
   # lazyload      =>  OPTIONAL | true / false
+  # alt_fallback  =>  OPTIONAL | string | alt text for an image with none of its own, e.g. the product title
 
   # ** NOTES **
   # - Lazyload only works with images
@@ -22,7 +23,8 @@
     sizing_rule: sizing_rule,
     background_color: background_color,
     custom_classes: custom_classes,
-    sizes: sizes
+    sizes: sizes,
+    alt_fallback: alt_fallback
  -%}
 {%- else -%}
   {%- case media.media_type -%}

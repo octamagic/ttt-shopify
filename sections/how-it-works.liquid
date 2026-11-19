@@ -28,12 +28,29 @@
         {%- for block in section.blocks -%}
           {%- if block.type == 'step' -%}
             <div class="how-it-works__card" {{ block.shopify_attributes }}>
-              {%- if block.settings.image != blank -%}
+              {%- if block.settings.video != blank -%}
+                {%- comment -%}
+                  A short silent loop in place of an animated GIF: the same
+                  motion at a fraction of the download. The step image, when
+                  set, is the poster shown until the clip plays.
+                {%- endcomment -%}
+                <div class="how-it-works__card-image">
+                  {%- liquid
+                    assign step_poster = nil
+                    if block.settings.image != blank
+                      assign step_poster = block.settings.image | image_url: width: 720
+                    endif
+                    assign step_video_label = block.settings.video.alt | default: block.settings.title | strip_html
+                  -%}
+                  {{ block.settings.video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, controls: false, preload: 'metadata', image_size: '720x', poster: step_poster, aria-label: step_video_label }}
+                </div>
+              {%- elsif block.settings.image != blank -%}
                 <div class="how-it-works__card-image">
                   {%- render 'img',
                     lazyload: true,
                     wrapped: false,
-                    src: block.settings.image
+                    src: block.settings.image,
+                    alt_fallback: block.settings.title
                   -%}
                 </div>
               {%- else -%}
@@ -189,6 +206,12 @@
           "type": "image_picker",
           "id": "image",
           "label": "Step image"
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Step video (optional)",
+          "info": "A short silent clip that loops in place of the image. Use this instead of an animated GIF: an MP4 of the same clip is many times smaller. The step image becomes the poster."
         },
         {
           "type": "text",

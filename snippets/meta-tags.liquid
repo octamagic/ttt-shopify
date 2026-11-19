@@ -8,8 +8,13 @@
         Social crawlers (Slack, iMessage, Facebook, X) show no card without an
         image, so fall back to the theme's default share image whenever the page
         itself has none — the homepage and every /pages/* route included.
+
+        Pages have no image of their own in Shopify, so a landing page sets one
+        with the custom.share_image page metafield (a file). It wins over both.
+        A file metafield returns a media_image; its preview_image carries the
+        width, height and alt the tags below need.
       endcomment
-      assign og_image = page_image | default: settings.share_image
+      assign og_image = page.metafields.custom.share_image.value.preview_image | default: page_image | default: settings.share_image
       assign og_image_alt = og_image.alt | default: og_title
 
       assign og_image_width = og_image.width

@@ -112,7 +112,8 @@
               lazyload: false,
               wrapped: false,
               sizes: '(min-width: 768px) 56vw, 100vw',
-              src: section.settings.image
+              src: section.settings.image,
+              alt_fallback: section.settings.heading
             -%}
           </div>
         </div>
@@ -128,7 +129,8 @@
             {%- render 'img',
               lazyload: false,
               wrapped: false,
-              src: section.settings.image
+              src: section.settings.image,
+              alt_fallback: section.settings.heading
             -%}
           </div>
         </div>
