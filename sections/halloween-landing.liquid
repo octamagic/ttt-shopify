@@ -19,12 +19,24 @@
   /pages/halloween?utm_content=october-making
 
   Create SPOOKY in Shopify Admin > Discounts as Buy X Get Y:
-  buy 1 String Ring kit, get 1 at 50% off, Oct 1 to 31. Never also set a
+  buy 1 kit, get 1 at 50% off, Oct 1 to 31. Never also set a
   sale price on the product (they stack).
 {% endcomment %}
 
 {% liquid
   assign promo_code = section.settings.discount_code | strip
+
+  comment
+    The countdown is only rendered while the sale is running, so an ended
+    sale leaves no empty "Ends in ." in the page source. The script still
+    hides it for a cached page that outlives the sale.
+  endcomment
+  assign sale_live = false
+  assign sale_end_ts = section.settings.sale_end | date: '%s' | plus: 0
+  assign now_ts = 'now' | date: '%s' | plus: 0
+  if sale_end_ts > now_ts
+    assign sale_live = true
+  endif
 
   assign default_kit = all_products['string-ring-custom-string-art-kit']
 
@@ -131,9 +143,11 @@
         </button>
       {% endif %}
 
-      <span class="spooky__countdown" data-countdown hidden>
-        ends in <strong data-countdown-value></strong>
-      </span>
+      {%- if sale_live -%}
+        <span class="spooky__countdown" data-countdown hidden>
+          ends in <strong data-countdown-value></strong>
+        </span>
+      {%- endif -%}
     </div>
   </div>
 
@@ -702,7 +716,9 @@
       </a>
 
       <p class="spooky__offer-fine">
-        <span data-countdown-inline hidden>Ends in <strong data-countdown-value></strong>. </span>
+        {%- if sale_live -%}
+          <span data-countdown-inline hidden>Ends in <strong data-countdown-value></strong>. </span>
+        {%- endif %}
         Two kits, two photos. App included. Ships within one business day. 30-day returns.
         {%- if cta_mode != 'product' %}
           <a class="spooky__single-link" href="{{ single_url }}">Only need one kit?</a>
@@ -2336,7 +2352,7 @@
       "type": "product",
       "id": "product",
       "label": "CTA product",
-      "info": "Defaults to the String Ring kit if empty."
+      "info": "Defaults to the Threaditate kit if empty."
     },
     {
       "type": "select",

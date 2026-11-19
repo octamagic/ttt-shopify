@@ -114,17 +114,23 @@
               src: media_block.settings.image,
               src_mobile: media_block.settings.image_mobile
             -%}
-          {%- else -%}
+          {%- elsif request.design_mode -%}
             {{ 'lifestyle-2' | placeholder_svg_tag }}
           {%- endif -%}
 
         {%- when 'show_video' -%}
-          {%- render 'video',
-            src: media_block.settings.video_url,
-            src_mobile: media_block.settings.video_url_mobile,
-            autoplay: true,
-            loop: true
-          -%}
+          {%- comment -%}
+            With no video chosen the video snippet plays the theme's demo clip.
+            That belongs in the editor only, never on the storefront.
+          {%- endcomment -%}
+          {%- if media_block.settings.video_url != blank or request.design_mode -%}
+            {%- render 'video',
+              src: media_block.settings.video_url,
+              src_mobile: media_block.settings.video_url_mobile,
+              autoplay: true,
+              loop: true
+            -%}
+          {%- endif -%}
       {%- endcase -%}
     </div>
 
