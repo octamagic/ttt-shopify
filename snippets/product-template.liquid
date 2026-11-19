@@ -758,6 +758,7 @@
     zoom_type_mobile: zoom_type_mobile,
     zoom_type_desktop: zoom_type_desktop,
     medias: product.media,
+    alt_fallback: product.title,
     id: section.id %}
 {%- endif -%}
 
@@ -835,7 +836,34 @@ endif
 </script>
 
 {% unless settings.disable_product_structured_data %}
+  {%- liquid
+    comment
+      Shopify's structured_data filter leaves out the review rating, so add
+      aggregateRating from the same review metafields the star line reads
+      (Judge.me keeps them current). With no reviews the output is unchanged.
+    endcomment
+    assign product_schema = product | structured_data | strip
+    assign schema_rating = product.metafields.reviews.rating.value
+    assign schema_rating_count = product.metafields.reviews.rating_count.value | default: 0
+    assign schema_last_char = product_schema | slice: -1
+    if schema_rating != blank and schema_rating_count > 0 and schema_last_char == '}'
+      assign schema_body_size = product_schema.size | minus: 1
+      assign product_schema = product_schema | slice: 0, schema_body_size
+      capture schema_aggregate
+        echo ',"aggregateRating":{"@type":"AggregateRating","ratingValue":'
+        echo schema_rating.rating | round: 2 | json
+        echo ',"bestRating":'
+        echo schema_rating.scale_max | round: 2 | json
+        echo ',"worstRating":'
+        echo schema_rating.scale_min | round: 2 | json
+        echo ',"ratingCount":'
+        echo schema_rating_count | json
+        echo '}}'
+      endcapture
+      assign product_schema = product_schema | append: schema_aggregate
+    endif
+  -%}
   <script type="application/ld+json">
-    {{ product | structured_data }}
+    {{ product_schema }}
   </script>
 {% endunless %}

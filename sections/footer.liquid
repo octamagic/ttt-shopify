@@ -53,7 +53,8 @@
                   {% if block.settings.image != blank %}
                     <figure class="media cover natural" style="max-width: {{ block.settings.image_width | append: 'px' }}; {% if block.settings.text_alignment == 'center' %}margin: 0 auto; {% elsif block.settings.text_alignment == 'right' %}margin-left: auto; {% else %}margin-right: auto; {% endif %}">
                       {% assign width_2x = block.settings.image_width | times: 2 %}
-                      {{ block.settings.image | image_url: width: width_2x | image_tag: class: 'footer-image', loading: 'lazy' }}
+                      {%- assign footer_image_alt = block.settings.image.alt | default: shop.name -%}
+                      {{ block.settings.image | image_url: width: width_2x | image_tag: class: 'footer-image', loading: 'lazy', alt: footer_image_alt }}
                     </figure>
                   {% endif %}
 
@@ -125,10 +126,18 @@
           <div class="footer-payment mb-16">
             <span class="visually-hidden">{{ 'sections.footer.payment' | t }}</span>
             <ul class="flex" role="list" style="gap: 8px;">
+              {%- comment -%}
+                The store accepts many regional methods at checkout. The footer
+                shows only the ones listed in the setting, so the row stays
+                short. An empty setting shows every enabled method.
+              {%- endcomment -%}
+              {%- assign payment_types_shown = section.settings.payment_types | remove: ' ' | split: ',' -%}
               {%- for type in shop.enabled_payment_types -%}
-                <li class="footer-payment__item">
-                  {{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}
-                </li>
+                {%- if payment_types_shown.size == 0 or payment_types_shown contains type -%}
+                  <li class="footer-payment__item">
+                    {{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}
+                  </li>
+                {%- endif -%}
               {%- endfor -%}
               {% for custom_payment_icon in custom_payment_icons %}
                 <li class="footer-payment__item">
@@ -267,6 +276,14 @@
         "id": "payment_enable",
         "label": "t:sections.footer.settings.payment_enable.label",
         "default": false
+      },
+      {
+        "type": "text",
+        "id": "payment_types",
+        "label": "Payment icons to show",
+        "info": "Comma-separated, in Shopify's names: visa, master, american_express, discover, shopify_pay, apple_pay, google_pay, paypal. Leave empty to show every method the store accepts.",
+        "default": "visa, master, american_express, discover, shopify_pay, apple_pay, google_pay, paypal",
+        "visible_if": "{{ section.settings.payment_enable }}"
       },
       {
         "type": "checkbox",
