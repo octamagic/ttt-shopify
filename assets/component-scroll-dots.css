@@ -1,0 +1,23 @@
+/* Dots under a sideways-scrolling card row. See component-scroll-dots.js. */
+scroll-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+scroll-dots[hidden] { display: none; }
+.scroll-dots__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.3;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.scroll-dots__dot.is-active {
+  opacity: 1;
+  transform: scale(1.25);
+}
+@media (prefers-reduced-motion: reduce) {
+  .scroll-dots__dot { transition: none; }
+}
