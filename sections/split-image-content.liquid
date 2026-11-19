@@ -23,7 +23,8 @@
         {%- render 'img',
           lazyload: false,
           wrapped: false,
-          src: section.settings.image
+          src: section.settings.image,
+          alt_fallback: section.settings.heading
         -%}
       {%- else -%}
         {{ 'lifestyle-1' | placeholder_svg_tag }}
@@ -155,13 +156,13 @@
       "type": "text",
       "id": "bullet_2",
       "label": "Bullet 2",
-      "default": "Pre-Cut String & Spool Holder"
+      "default": "Thread & Spool Holder"
     },
     {
       "type": "text",
       "id": "bullet_3",
       "label": "Bullet 3",
-      "default": "Precision Stringing Tool"
+      "default": "Precision Threading Wand"
     },
     {
       "type": "text",

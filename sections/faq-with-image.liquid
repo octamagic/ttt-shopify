@@ -79,7 +79,8 @@
           {%- render 'img',
             lazyload: true,
             wrapped: false,
-            src: section.settings.image
+            src: section.settings.image,
+            alt_fallback: section.settings.heading
           -%}
         </div>
       {%- else -%}

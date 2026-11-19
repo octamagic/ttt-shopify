@@ -57,7 +57,8 @@
           style="
             background-color: {{ background_color }};">
           <figure class="media {{ sizing_rule }} {{ section.settings.product_image_aspect_ratio }}">
-            {{ media.preview_image | image_url: width: 240 | image_tag }}
+            {%- assign thumbnail_alt = media.alt | default: product.title -%}
+            {{ media.preview_image | image_url: width: 240 | image_tag: alt: thumbnail_alt }}
           </figure>
         </button>
       {%- endfor -%}

@@ -8,6 +8,7 @@
   # src_mobile        =>  OPTIONAL | image object
   # aspect_ratio      =>  OPTIONAL | string: 'portrait', 'landscape', 'square' | default: "natural"
   # alt               =>  OPTIONAL | string | default: src.alt
+  # alt_fallback      =>  OPTIONAL | string | used when neither alt nor src.alt is set, e.g. the section heading
   # background_color  =>  OPTIONAL | string | default: transparent | e.g. 'transparent', '#fff'
   # custom_classes    =>  OPTIONAL | string | 'sm-item-span-2'
   # custom_width      =>  OPTIONAL | integer | e.g. 300
@@ -76,7 +77,7 @@
     {{ src | image_url }} {{ src.width }}w"
     sizes="{{ sizes | default: '100vw' }}"
     src="{{ src | image_url: width: 1500 }}"
-    alt="{%- if alt -%}{{ alt }}{%- else -%}{{ src.alt }}{%- endif -%}"
+    alt="{{ alt | default: src.alt | default: alt_fallback | strip_html | escape }}"
     {% if lazyload %}
     loading="lazy"
     fetchpriority="low"

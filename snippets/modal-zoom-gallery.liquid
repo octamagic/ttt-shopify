@@ -8,6 +8,7 @@
   # ** PARAMETERS **
   # id                =>  REQUIRED | string | unique ID, can be section ID
   # context           =>  OPTIONAL | string | default: 'product' | 'product' OR 'gallery-section'
+  # alt_fallback      =>  OPTIONAL | string | alt text for product images with none of their own
   # medias            =>  REQUIRED | array | product.media OR section.blocks | depending on the context
   # zoom_type_mobile  =>  OPTIONAL | string | default: 'slider' | 'slider' OR 'column'
   # zoom_type_desktop =>  OPTIONAL | string | default: 'slider' | 'slider','column'
@@ -48,7 +49,8 @@
                   aspect_ratio: 'natural',
                   lazyload: true,
                   sizing_rule: 'contain',
-                  custom_classes: 'zoom-media'
+                  custom_classes: 'zoom-media',
+                  alt_fallback: alt_fallback
                 -%}
               {% elsif media.type == 'image' %}
                 {% assign media_alt = media.settings.image.alt %}

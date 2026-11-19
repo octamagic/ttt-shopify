@@ -127,7 +127,8 @@
                 {%- if block.settings.image != blank -%}
                   {%- render 'img',
                     lazyload: true,
-                    src: block.settings.image
+                    src: block.settings.image,
+                    alt_fallback: block.settings.title
                   -%}
                 {%- elsif block.settings.video_url != blank -%}
                   {%- render 'video',
