@@ -61,7 +61,7 @@
         "layout": "lifestyle",
         "eyebrow": "A holiday gift they make themselves",
         "heading": "Turn any photo into string art you made with your own hands.",
-        "subheading": "Upload a photo. The app's voice guides you line by line through 5 to 6 hours of phone-free calm. No skill needed, nothing to undo.",
+        "subheading": "Upload a photo. The app's voice guides you line by line through 5 to 6 hours of calm, with no scrolling. No skill needed, nothing to undo.",
         "show_rating": true,
         "rating_product": "",
         "proof_line": "3,000+ kits made. App included, no subscription.",
@@ -231,7 +231,7 @@
       "settings": {
         "color_scheme": "scheme-d41b7294-aad9-4454-94d4-1e261262bb1f",
         "heading": "Not another craft kit",
-        "subheading": "Only one of these starts from your own photo and gets you off your phone.",
+        "subheading": "Only one of these starts from your own photo and keeps your hands busy instead of scrolling.",
         "col_us": "Threaditate",
         "col_2": "Paint by numbers",
         "col_3": "Diamond art",
@@ -512,8 +512,8 @@
         }
       },
       "block_order": [
-        "step_BR8MWp",
         "step_iRR8EV",
+        "step_BR8MWp",
         "step_aBjEXe",
         "step_UipnJM"
       ],
@@ -686,7 +686,7 @@
           "type": "faq_item",
           "settings": {
             "question": "Will my photo actually turn out good?",
-            "answer": "<p>Yes - a clear photo with a close-up subject in good contrast makes a strong piece. Faces, pets, and simple compositions work beautifully. &nbsp;Your final piece will look just like you design it in the app.</p>"
+            "answer": "<p>Yes - a clear photo with a close-up subject in good contrast makes a strong piece. Faces, pets, and simple compositions work beautifully. Like any string art, your piece reads best from a few feet away.</p>"
           }
         },
         "faq_item_jPDegj": {

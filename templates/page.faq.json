@@ -64,14 +64,14 @@
           "type": "faq_item",
           "settings": {
             "question": "What's in the kit?",
-            "answer": "<p>Your kit comes with a 20-inch loom with 240 attached pins, a number guide, thread, spool holder, phone holder, precision wand, foam resistance plug, mounts, thread, and access to the Threaditate app. Open the box and you have everything you need to start in five minutes.</p>"
+            "answer": "<p>Your kit comes with a 20-inch loom with 240 attached pins, a number guide, thread, spool holder, phone holder, precision wand, foam resistance plug, mounts, and access to the Threaditate app. Open the box and you have everything you need to start in five minutes.</p>"
           }
         },
         "q_need_app": {
           "type": "faq_item",
           "settings": {
             "question": "Do I need to use the app?",
-            "answer": "<p>Yes, the app is what makes Threaditate tick. Without it, you have string art. With it, you have a thread art session: image editing and real-time instructions, one step at a time, on iPhone and Android. Access is included with every kit.</p>"
+            "answer": "<p>Yes, the app is what makes Threaditate tick. Without it, you have string art. With it, you have a thread art session: image editing and real-time instructions, one step at a time, in any browser on your phone, tablet or computer. Access is included with every kit.</p>"
           }
         },
         "q_other_tools": {
