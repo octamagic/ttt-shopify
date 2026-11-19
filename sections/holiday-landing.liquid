@@ -45,12 +45,12 @@
     assign show_sbs = true
   endif
   assign cta_label = s.cta_label | default: 'Make yours'
-  assign checkout_base = routes.cart_url | append: '/' | append: variant.id | append: ':'
+  assign checkout_base = routes.root_url | append: 'discount/' | append: code | append: '?redirect=' | append: routes.cart_url | append: '/' | append: variant.id | append: ':'
 -%}
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@1,9..144,400;1,9..144,500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,500;1,600&display=swap" rel="stylesheet">
 
 <style>
   #hl-{{ section.id }} {
@@ -67,7 +67,7 @@
     --hl-radius: 18px;
     --hl-head: 'Space Grotesk', var(--font-heading-family, 'Space Grotesk'), system-ui, sans-serif;
     --hl-body: 'DM Sans', var(--font-body-family, 'DM Sans'), system-ui, sans-serif;
-    --hl-display: 'Fraunces', Georgia, serif;
+    --hl-display: 'Playfair Display', Georgia, serif;
     font-family: var(--hl-body);
     font-size: clamp(17px, 0.95em + 0.3vw, 22px);
     color: var(--hl-ink);
@@ -117,7 +117,7 @@
   #hl-{{ section.id }} .hl-hero::before { content: ''; position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(20,42,34,0.55) 0%, rgba(20,42,34,0.78) 55%, rgba(20,42,34,0.92) 100%), radial-gradient(80% 60% at 70% 20%, rgba(201,162,77,0.18), transparent 60%); pointer-events: none; }
   #hl-{{ section.id }} .hl-hero.has-bg::before { background: linear-gradient(180deg, rgba(20,42,34,{{ s.hero_bg_overlay | default: 70 | divided_by: 100.0 }}) 0%, rgba(20,42,34,{{ s.hero_bg_overlay | default: 70 | divided_by: 100.0 | plus: 0.15 | at_most: 0.95 }}) 100%); }
   #hl-{{ section.id }} .hl-hero__grid { z-index: 2; }
-  #hl-{{ section.id }} .hl-hero__grid { position: relative; display: grid; gap: 1.25em; padding: 1em 0 2.25em; }
+  #hl-{{ section.id }} .hl-hero__grid { position: relative; display: grid; gap: 1.25em; padding: 0.9em 0 2.25em; }
   #hl-{{ section.id }} .hl-hero__media { aspect-ratio: 16 / 10; border-radius: var(--hl-radius); overflow: hidden; }
   #hl-{{ section.id }} .hl-hero__media img { width: 100%; height: 100%; object-fit: cover; }
   #hl-{{ section.id }} .hl-hero__media--desktop { display: none; }
@@ -128,6 +128,8 @@
   #hl-{{ section.id }} .hl-hero h1 .hl-ital { color: var(--hl-brass); }
   #hl-{{ section.id }} .hl-hero__lede { font-size: clamp(1.02em, 1.7vw, 1.15em); color: rgba(255,255,255,0.8); max-width: 48ch; }
 
+  #hl-{{ section.id }} .hl-stats { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5em; }
+  #hl-{{ section.id }} .hl-stats li { font-family: var(--hl-head); font-size: 0.82em; font-weight: 600; padding: 0.35em 0.75em; border-radius: 999px; border: 1px solid rgba(255,255,255,0.22); color: rgba(255,255,255,0.9); }
   #hl-{{ section.id }} .hl-offer { display: grid; gap: 0.9em; padding: 1.1em; border-radius: 16px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); }
   #hl-{{ section.id }} .hl-price { display: flex; align-items: baseline; gap: 0.6em; flex-wrap: wrap; }
   #hl-{{ section.id }} .hl-price__sale { font-family: var(--hl-head); font-size: 2.1em; font-weight: 700; color: #fff; line-height: 1; }
@@ -146,7 +148,7 @@
 
   @media (min-width: 860px) {
     #hl-{{ section.id }} .hl-hero__grid { grid-template-columns: 1.05fr 1fr; align-items: center; gap: 3.5em; padding: 3.5em 0 4em; }
-    #hl-{{ section.id }} .hl-hero__media { order: 2; aspect-ratio: 5 / 6; }
+    #hl-{{ section.id }} .hl-hero__media { order: 2; aspect-ratio: 1 / 1; }
     #hl-{{ section.id }} .hl-hero__media--mobile { display: none; }
     #hl-{{ section.id }} .hl-hero__media--desktop { display: block; }
     #hl-{{ section.id }} .hl-hero__bg--mobile { display: none; }
@@ -160,7 +162,7 @@
   #hl-{{ section.id }} .hl-trust__item svg { width: 18px; height: 18px; flex: none; color: var(--hl-brass); margin-top: 1px; }
   #hl-{{ section.id }} .hl-trust__item b { font-family: var(--hl-head); font-weight: 600; display: block; }
   #hl-{{ section.id }} .hl-trust__item span { color: rgba(255,255,255,0.65); font-size: 0.78em; }
-  @media (min-width: 860px) { #hl-{{ section.id }} .hl-trust__row { grid-template-columns: repeat(4, 1fr); padding: 1.25em 0; } }
+  @media (min-width: 860px) { #hl-{{ section.id }} .hl-trust__row { grid-template-columns: repeat(5, 1fr); padding: 1.25em 0; } }
 
   /* 3. reveal */
   #hl-{{ section.id }} .hl-reveal__pair { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75em; margin-top: 1.75em; }
@@ -176,17 +178,16 @@
   /* 4. gift stories */
   #hl-{{ section.id }} .hl-stories { background: var(--hl-cream); }
   #hl-{{ section.id }} .hl-stories__grid { display: grid; gap: 1.25em; margin-top: 2em; }
-  #hl-{{ section.id }} .hl-story { background: #fff; border: 1px solid var(--hl-line); border-radius: var(--hl-radius); overflow: hidden; display: grid; grid-template-columns: 104px 1fr; }
-  #hl-{{ section.id }} .hl-story__media { aspect-ratio: 1; height: 100%; }
-  #hl-{{ section.id }} .hl-story__media img, #hl-{{ section.id }} .hl-story__media .hl-ph { width: 100%; height: 100%; object-fit: cover; border-radius: 0; border: 0; }
-  #hl-{{ section.id }} .hl-story__body { padding: 1em 1.1em; display: grid; gap: 0.35em; align-content: center; }
+  #hl-{{ section.id }} .hl-story { background: #fff; border: 1px solid var(--hl-line); border-radius: var(--hl-radius); overflow: hidden; display: grid; grid-template-columns: 1fr; }
+  #hl-{{ section.id }} .hl-story__media { aspect-ratio: 16 / 10; width: 100%; overflow: hidden; }
+  #hl-{{ section.id }} .hl-story__media img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  #hl-{{ section.id }} .hl-story__body { padding: 1.1em 1.2em 1.3em; display: grid; gap: 0.35em; align-content: start; }
   #hl-{{ section.id }} .hl-story__for { font-family: var(--hl-head); font-size: 0.75em; letter-spacing: 0.1em; text-transform: uppercase; color: var(--hl-cobalt); font-weight: 600; }
   #hl-{{ section.id }} .hl-story h3 { font-size: 1.1em; }
   #hl-{{ section.id }} .hl-story p { font-size: 0.92em; color: var(--hl-ink-soft); }
   @media (min-width: 860px) {
     #hl-{{ section.id }} .hl-stories__grid { grid-template-columns: repeat(3, 1fr); }
-    #hl-{{ section.id }} .hl-story { grid-template-columns: 1fr; }
-    #hl-{{ section.id }} .hl-story__media { aspect-ratio: 4 / 3; height: auto; }
+    #hl-{{ section.id }} .hl-story__media { aspect-ratio: 4 / 3; }
     #hl-{{ section.id }} .hl-story__body { padding: 1.25em 1.35em 1.5em; }
   }
 
@@ -219,7 +220,7 @@
   #hl-{{ section.id }} .hl-stars { color: var(--hl-brass); letter-spacing: 0.1em; font-size: 1em; }
   #hl-{{ section.id }} .hl-quotes { display: grid; gap: 1em; margin-top: 1.75em; }
   #hl-{{ section.id }} .hl-quote { background: #fff; border: 1px solid var(--hl-line); border-radius: var(--hl-radius); padding: 1.35em; display: grid; gap: 0.75em; }
-  #hl-{{ section.id }} .hl-quote blockquote { margin: 0; font-family: var(--hl-display); font-style: italic; font-size: 1.15em; line-height: 1.35; }
+  #hl-{{ section.id }} .hl-quote blockquote { margin: 0; font-family: var(--hl-body); font-weight: 500; font-size: 1.08em; line-height: 1.5; color: var(--hl-ink); }
   #hl-{{ section.id }} .hl-quote cite { font-style: normal; font-family: var(--hl-head); font-size: 0.82em; color: var(--hl-ink-soft); }
   #hl-{{ section.id }} .hl-judgeme { margin-top: 2em; }
   @media (min-width: 860px) { #hl-{{ section.id }} .hl-quotes { grid-template-columns: repeat(3, 1fr); } }
@@ -235,11 +236,13 @@
   /* 9. faq */
   #hl-{{ section.id }} .hl-faq__list { margin-top: 1.5em; border-top: 1px solid var(--hl-line); }
   #hl-{{ section.id }} .hl-faq__item { border-bottom: 1px solid var(--hl-line); }
-  #hl-{{ section.id }} .hl-faq__item summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 1em; padding: 1.1em 0; font-family: var(--hl-head); font-weight: 600; font-size: 1.02em; }
-  #hl-{{ section.id }} .hl-faq__item summary::-webkit-details-marker { display: none; }
-  #hl-{{ section.id }} .hl-faq__item summary::after { content: '+'; font-weight: 400; font-size: 1.4em; color: var(--hl-cobalt); flex: none; transition: transform 0.15s ease; }
-  #hl-{{ section.id }} .hl-faq__item[open] summary::after { transform: rotate(45deg); }
-  #hl-{{ section.id }} .hl-faq__item .hl-faq__a { padding: 0 0 1.2em; color: var(--hl-ink-soft); font-size: 0.95em; max-width: 64ch; }
+  #hl-{{ section.id }} .hl-faq__q { all: unset; box-sizing: border-box; width: 100%; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 1em; padding: 1.1em 0; font-family: var(--hl-head); font-weight: 600; font-size: 1.02em; color: var(--hl-ink); text-align: left; }
+  #hl-{{ section.id }} .hl-faq__q:focus-visible { outline: 3px solid var(--hl-brass); outline-offset: 2px; }
+  #hl-{{ section.id }} .hl-faq__q span { font-weight: 400; font-size: 1.4em; line-height: 1; color: var(--hl-cobalt); flex: none; transition: transform 0.15s ease; }
+  #hl-{{ section.id }} .hl-faq__q[aria-expanded="true"] span { transform: rotate(45deg); }
+  #hl-{{ section.id }} .hl-faq__a { padding: 0 0 1.2em; color: var(--hl-ink-soft); font-size: 0.95em; max-width: 64ch; }
+  #hl-{{ section.id }} .hl-faq__a[hidden] { display: none; }
+  #hl-{{ section.id }} .hl-faq__a p { margin: 0 0 0.5em; }
 
   /* 10. final cta */
   #hl-{{ section.id }} .hl-final { background: var(--hl-pine-deep); color: var(--hl-cream); text-align: center; }
@@ -252,17 +255,20 @@
   #hl-{{ section.id }} .hl-sticky { position: fixed; left: 0; right: 0; bottom: 0; z-index: 60; background: rgba(20,42,34,0.96); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); color: #fff; border-top: 1px solid rgba(255,255,255,0.12); padding: 0.65em 1em calc(0.65em + env(safe-area-inset-bottom)); transform: translateY(110%); transition: transform 0.25s ease; }
   #hl-{{ section.id }} .hl-sticky.is-on { transform: translateY(0); }
   #hl-{{ section.id }} .hl-sticky__inner { width: min(100%, 1200px); margin-inline: auto; display: flex; align-items: center; justify-content: space-between; gap: 1em; }
-  #hl-{{ section.id }} .hl-sticky__price { display: grid; line-height: 1.15; }
-  #hl-{{ section.id }} .hl-sticky__price b { font-family: var(--hl-head); font-size: 1.1em; }
-  #hl-{{ section.id }} .hl-sticky__price span { font-size: 0.74em; color: rgba(255,255,255,0.6); }
-  #hl-{{ section.id }} .hl-sticky .hl-btn { width: auto; min-height: 46px; min-width: 0; padding: 0.7em 1.3em; font-size: 0.95em; box-shadow: none; }
+  #hl-{{ section.id }} .hl-sticky__price { display: grid; gap: 0.15em; line-height: 1.2; min-width: 0; }
+  #hl-{{ section.id }} .hl-sticky__line1 { font-family: var(--hl-head); font-size: 1.15em; color: #fff; }
+  #hl-{{ section.id }} .hl-sticky__line1 b { font-weight: 700; }
+  #hl-{{ section.id }} .hl-sticky__line1 s { font-weight: 400; font-size: 0.8em; color: rgba(255,255,255,0.6); margin-left: 0.35em; }
+  #hl-{{ section.id }} .hl-sticky__line2 { font-size: 0.82em; color: rgba(255,255,255,0.78); }
+  #hl-{{ section.id }} .hl-sticky__line2 b { font-family: var(--hl-head); font-weight: 600; color: #fff; letter-spacing: 0.04em; }
+  #hl-{{ section.id }} .hl-sticky .hl-btn { flex: none; width: auto; min-width: 0; min-height: 46px; padding: 0.7em 1.4em; font-size: 0.98em; white-space: nowrap; box-shadow: none; }
 
   @media (min-width: 1600px) {
     #hl-{{ section.id }} .hl-wrap { width: min(100% - 4em, 1320px); }
     #hl-{{ section.id }} .hl-hero__grid { gap: 5em; padding: 5em 0 5.5em; }
     #hl-{{ section.id }} .hl-sec { padding: 6em 0; }
     #hl-{{ section.id }} .hl-story p, #hl-{{ section.id }} .hl-step p, #hl-{{ section.id }} .hl-faq__item .hl-faq__a { font-size: 1.05em; }
-    #hl-{{ section.id }} .hl-quote blockquote { font-size: 1.3em; }
+    #hl-{{ section.id }} .hl-quote blockquote { font-size: 1.15em; }
   }
   @media (prefers-reduced-motion: reduce) { #hl-{{ section.id }} * { transition: none !important; } }
 </style>
@@ -270,7 +276,7 @@
 <div id="hl-{{ section.id }}" data-section="holiday-landing" data-reg="{{ reg }}" data-sale="{{ sale }}" data-base="{{ checkout_base }}" data-code="{{ code }}">
 
   {%- comment -%} 1. HERO {%- endcomment -%}
-  <section class="hl-hero{% if s.hero_bg or s.hero_bg_mobile %} has-bg{% endif %}">
+  <section class="hl-hero has-bg">
     {%- if s.hero_bg or s.hero_bg_mobile -%}
       <div class="hl-hero__bg hl-hero__bg--mobile" aria-hidden="true">
         {%- assign bgm = s.hero_bg_mobile | default: s.hero_bg -%}
@@ -280,6 +286,8 @@
         {%- assign bgd = s.hero_bg | default: s.hero_bg_mobile -%}
         {{ bgd | image_url: width: 2800 | image_tag: loading: 'eager', fetchpriority: 'high', sizes: '100vw', alt: '' }}
       </div>
+    {%- else -%}
+      <div class="hl-hero__bg" aria-hidden="true"><img src="{{ 'holiday-hero-bg.jpg' | asset_url }}" width="2560" height="1440" loading="eager" alt=""></div>
     {%- endif -%}
     <div class="hl-wrap hl-hero__grid">
 
@@ -287,27 +295,26 @@
         {%- if s.hero_image_mobile -%}
           {{ s.hero_image_mobile | image_url: width: 1200 | image_tag: loading: 'eager', fetchpriority: 'high', sizes: '100vw', alt: s.hero_alt }}
         {%- else -%}
-          <div class="hl-ph" style="height:100%">
-            {{ 'lifestyle-1' | placeholder_svg_tag }}
-            <div class="hl-ph__label"><b>Hero, mobile</b>1080 x 675 (16:10), wide crop so the offer stays above the fold. A real finished piece on a wall beside the wrapped kit, or someone mid-thread by lamplight. Warm, holiday-adjacent, no tree required.</div>
-          </div>
+          <img src="{{ 'holiday-hero-mobile.jpg' | asset_url }}" width="1600" height="1000" loading="eager" fetchpriority="high" alt="{{ s.hero_alt }}">
         {%- endif -%}
       </div>
       <div class="hl-hero__media hl-hero__media--desktop">
         {%- if s.hero_image -%}
           {{ s.hero_image | image_url: width: 1600 | image_tag: loading: 'eager', fetchpriority: 'high', sizes: '(min-width: 860px) 50vw, 100vw', alt: s.hero_alt }}
         {%- else -%}
-          <div class="hl-ph" style="height:100%">
-            {{ 'lifestyle-2' | placeholder_svg_tag }}
-            <div class="hl-ph__label"><b>Hero, desktop</b>1400 x 1680 (5:6). Same scene as mobile, cropped taller. Real piece, real loom, composited into the scene if needed.</div>
-          </div>
+          <img src="{{ 'holiday-hero-desktop.jpg' | asset_url }}" width="1400" height="1400" loading="eager" fetchpriority="high" alt="{{ s.hero_alt }}">
         {%- endif -%}
       </div>
 
       <div class="hl-hero__copy">
         <span class="hl-pill"><i></i>{{ s.hero_eyebrow | default: 'Black Friday through Cyber Monday' }}</span>
-        <h1>{{ s.headline | default: 'The gift is the <span class="hl-ital">evening they spend</span> making it' }}</h1>
+        <h1>{{ s.headline | default: 'Gift them <span class="hl-ital">calm and creativity</span> this year.' }}</h1>
         <p class="hl-hero__lede">{{ s.subhead | default: 'Thread any photo, line by line, into a piece for the wall. Every kit is 30% off through December 1, and it ships within 24 hours.' }}</p>
+        <ul class="hl-stats" aria-label="At a glance">
+          <li>{{ s.stat_1 | default: '4.6 stars' }}</li>
+          <li>{{ s.stat_2 | default: '3,000 sold' }}</li>
+          <li>{{ s.stat_3 | default: '5 to 6 hours to make' }}</li>
+        </ul>
 
         <div class="hl-offer">
           <div class="hl-price" aria-live="polite">
@@ -324,7 +331,7 @@
               <button type="button" class="hl-qty__btn" data-qty="3" aria-pressed="false">3 kits<small>the whole list</small></button>
             </div>
           </div>
-          <a class="hl-btn hl-btn--primary" data-cta data-cta-loc="hero" href="{{ checkout_base }}1?discount={{ code }}">{{ cta_label }}</a>
+          <a class="hl-btn hl-btn--primary" data-cta data-cta-loc="hero" href="{{ checkout_base }}1">{{ cta_label }}</a>
           <p class="hl-offer__fine">Code <code>{{ code }}</code> is applied for you at checkout. {{ s.offer_dates | default: 'November 26 through December 1.' }}</p>
         </div>
       </div>
@@ -340,15 +347,19 @@
       </div>
       <div class="hl-trust__item">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.3-5.7"/><path d="M4 4v5h5"/></svg>
-        <div><b>30-day returns</b><span>On unopened kits, by email</span></div>
+        <div><b>30-day returns</b><span>Return for a full refund</span></div>
       </div>
       <div class="hl-trust__item">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.9L12 16.4 6.8 19.2l1-5.9L3.5 9.2l5.9-.9z"/></svg>
-        <div><b>U.S. Patent 12,423,349</b><span>The guided loom is ours</span></div>
+        <div><b>U.S. Patent 12,423,349</b><span>State of the art app</span></div>
       </div>
       <div class="hl-trust__item">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21s-6-5.3-6-10a6 6 0 0 1 12 0c0 4.7-6 10-6 10z"/><circle cx="12" cy="11" r="2"/></svg>
-        <div><b>Made by a small team</b><span>Atlanta, Georgia</span></div>
+        <div><b>Made by a small team</b><span>Fulfilled out of Alabama</span></div>
+      </div>
+      <div class="hl-trust__item">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4 6.1 20.5l1.2-6.5L2.5 9.4l6.6-.9z"/></svg>
+        <div><b>{{ s.rating_line | default: '4.6 stars' }}</b><span>{{ s.sold_line | default: '2,700 sold' }}</span></div>
       </div>
     </div>
   </section>
@@ -358,15 +369,15 @@
     <div class="hl-wrap hl-reveal">
       <div>
         <p class="hl-eyebrow">{{ s.reveal_eyebrow | default: 'From the camera roll to the wall' }}</p>
-        <h2 class="hl-h2">{{ s.reveal_headline | default: 'One photo. A few hundred lines of thread. Something that stays up.' }}</h2>
-        <p class="hl-lede">{{ s.reveal_body | default: 'The app turns the photo into a sequence. A voice reads each line out loud. Your hands do the rest, and the picture appears slowly, which is most of the pleasure.' }}</p>
+        <h2 class="hl-h2">{{ s.reveal_headline | default: 'One photo. A single thread. A memory you connect with.' }}</h2>
+        <p class="hl-lede">{{ s.reveal_body | default: 'The app turns the photo into a sequence. A voice reads each number out loud. Your hands do the rest, and the picture appears slowly, stunning everyone.' }}</p>
       </div>
       <div class="hl-reveal__pair">
         <div class="hl-reveal__cell">
           {%- if s.reveal_before -%}
             {{ s.reveal_before | image_url: width: 900 | image_tag: loading: 'lazy', sizes: '(min-width: 720px) 30vw, 50vw', alt: 'The original photo' }}
           {%- else -%}
-            <div class="hl-ph">{{ 'image' | placeholder_svg_tag }}<div class="hl-ph__label"><b>Original photo</b>900 x 900. The actual source photo for the piece on the right. A person or a pet reads best for holiday.</div></div>
+            <img src="{{ 'holiday-reveal-photo.jpg' | asset_url }}" width="1000" height="1000" loading="lazy" alt="The original photo, open in the app">
           {%- endif -%}
           <span class="hl-reveal__cap">{{ s.reveal_before_cap | default: 'The photo' }}</span>
         </div>
@@ -374,7 +385,7 @@
           {%- if s.reveal_after -%}
             {{ s.reveal_after | image_url: width: 900 | image_tag: loading: 'lazy', sizes: '(min-width: 720px) 30vw, 50vw', alt: 'The finished thread piece' }}
           {%- else -%}
-            <div class="hl-ph">{{ 'image' | placeholder_svg_tag }}<div class="hl-ph__label"><b>Finished piece</b>900 x 900. Real photograph of the real threaded loom. Never generated.</div></div>
+            <img src="{{ 'holiday-reveal-piece.jpg' | asset_url }}" width="1000" height="1000" loading="lazy" alt="The finished thread piece">
           {%- endif -%}
           <span class="hl-reveal__cap">{{ s.reveal_after_cap | default: 'The piece, an evening or two later' }}</span>
         </div>
@@ -386,8 +397,8 @@
   <section class="hl-sec hl-stories">
     <div class="hl-wrap">
       <p class="hl-eyebrow">{{ s.stories_eyebrow | default: 'Who it is for' }}</p>
-      <h2 class="hl-h2">{{ s.stories_headline | default: 'They have enough things. Give them a few hours.' }}</h2>
-      <p class="hl-lede">{{ s.stories_lede | default: 'What arrives is a loom, thread, and an app. What they get is a quiet evening with their hands busy and a piece they made, from a photo they chose.' }}</p>
+      <h2 class="hl-h2">{{ s.stories_headline | default: 'They have worked hard. Gift them a little vacation.' }}</h2>
+      <p class="hl-lede">{{ s.stories_lede | default: 'What arrives is a loom, thread, and an app. What they get is a quiet evening with their mind off and a masterpiece they made, from a photo they love.' }}</p>
 
       <div class="hl-stories__grid">
         {%- for i in (1..3) -%}
@@ -395,30 +406,33 @@
             case i
               when 1
                 assign st_for = s.story_1_for | default: 'For the one who has everything'
-                assign st_h = s.story_1_head | default: 'They do not have a portrait they made themselves'
-                assign st_p = s.story_1_body | default: 'Their dog, their kid, their grandmother at twenty. Threaded by hand, hung by the door.'
+                assign st_h = s.story_1_head | default: 'They do not have the newest art form, made themselves'
+                assign st_p = s.story_1_body | default: 'Their dog, their kid, their grandmother. Threaded by hand, amazing to all.'
                 assign st_img = s.story_image_1
+                assign st_asset = 'holiday-story-1.jpg'
                 assign st_spec = '800 x 600. Finished piece of a person or pet, hung in a real room.'
               when 2
                 assign st_for = s.story_2_for | default: 'For the one who needs a night off'
                 assign st_h = s.story_2_head | default: 'A phone-down evening with an ending'
                 assign st_p = s.story_2_body | default: 'The voice calls the next line. They thread it. Two hours disappear and something real is left behind.'
                 assign st_img = s.story_image_2
+                assign st_asset = 'holiday-story-2b.jpg'
                 assign st_spec = '800 x 600. Hands threading the loom, overhead, lamplight. Real loom.'
               when 3
-                assign st_for = s.story_3_for | default: 'For the one who never finishes a kit'
+                assign st_for = s.story_3_for | default: 'For the one who never finishes an activity'
                 assign st_h = s.story_3_head | default: 'Built to be finished'
-                assign st_p = s.story_3_body | default: 'No chart to decode, no skill to learn. Open the box, pick a photo, follow along. It ends on the wall, not in a drawer.'
+                assign st_p = s.story_3_body | default: 'No chart to decode, no skill to learn. Open the box, pick a photo, follow along. It ends up on the wall, not in a drawer.'
                 assign st_img = s.story_image_3
+                assign st_asset = 'holiday-story-3.jpg'
                 assign st_spec = '800 x 600. The kit contents laid out, box open, app on screen.'
             endcase
           -%}
           <article class="hl-story">
             <div class="hl-story__media">
               {%- if st_img -%}
-                {{ st_img | image_url: width: 800 | image_tag: loading: 'lazy', sizes: '(min-width: 860px) 33vw, 104px', alt: st_h }}
+                {{ st_img | image_url: width: 800 | image_tag: loading: 'lazy', sizes: '(min-width: 860px) 33vw, 100vw', alt: st_h }}
               {%- else -%}
-                <div class="hl-ph">{{ 'image' | placeholder_svg_tag }}<div class="hl-ph__label"><b>Gift story {{ i }}</b>{{ st_spec }}</div></div>
+                <img src="{{ st_asset | asset_url }}" width="1000" height="750" loading="lazy" alt="{{ st_h }}">
               {%- endif -%}
             </div>
             <div class="hl-story__body">
@@ -441,14 +455,14 @@
         <div class="hl-steps">
           <div class="hl-step"><div class="hl-step__num">1</div><div><h3>Choose a photo</h3><p>Any photo from the camera roll. The app shows a preview of how it will thread before a single line is tied.</p></div></div>
           <div class="hl-step"><div class="hl-step__num">2</div><div><h3>Follow the voice</h3><p>The app reads out each pin, line by line. Loop the thread, move on. No chart, no counting, no squinting.</p></div></div>
-          <div class="hl-step"><div class="hl-step__num">3</div><div><h3>Hang the piece</h3><p>The loom is the frame. Tie off the last line, put it on the wall, and let people ask where it came from.</p></div></div>
+          <div class="hl-step"><div class="hl-step__num">3</div><div><h3>Hang the piece</h3><p>Put it on the wall, and let people ask where it came from.</p></div></div>
         </div>
       </div>
       <div class="hl-steps__media">
         {%- if s.how_image -%}
           {{ s.how_image | image_url: width: 1200 | image_tag: loading: 'lazy', sizes: '(min-width: 860px) 50vw, 100vw', alt: 'The Threaditate app guiding a line' }}
         {%- else -%}
-          <div class="hl-ph" style="height:100%">{{ 'image' | placeholder_svg_tag }}<div class="hl-ph__label"><b>App in use</b>1200 x 1500 (4:5). Phone propped by the loom showing the voice-guidance screen, hands mid-line. Must show the actual UI, not the icon.</div></div>
+          <img src="{{ 'holiday-app.jpg' | asset_url }}" width="1000" height="1250" loading="lazy" alt="The Threaditate app guiding a line">
         {%- endif -%}
       </div>
     </div>
@@ -461,13 +475,13 @@
       <h2 class="hl-h2">{{ s.compare_headline | default: 'Why this one and not a bag of nails' }}</h2>
       <p class="hl-lede">{{ s.compare_lede | default: 'Classic string art is a board, two hundred nails, a hammer, and a pattern someone else drew. We kept the thread and replaced everything else.' }}</p>
       <table class="hl-table">
-        <thead><tr><th scope="col"></th><th scope="col">Threaditate</th><th scope="col">Nail-board kits</th></tr></thead>
+        <thead><tr><th scope="col"></th><th scope="col">Threaditate</th><th scope="col">Nail boards</th></tr></thead>
         <tbody>
           <tr><td>The picture</td><td><span class="hl-tick">&#10003;</span>Any photo you choose</td><td>A fixed design from the box</td></tr>
-          <tr><td>Setup</td><td><span class="hl-tick">&#10003;</span>Open the box, pins are already in the loom</td><td>Hammer every nail into a board</td></tr>
-          <tr><td>Guidance</td><td><span class="hl-tick">&#10003;</span>A voice reads each line</td><td>A printed chart and a lot of counting</td></tr>
-          <tr><td>Time to finish</td><td><span class="hl-tick">&#10003;</span>An evening or two</td><td>Several weekends, if it gets finished</td></tr>
-          <tr><td>On the wall</td><td><span class="hl-tick">&#10003;</span>The loom is the frame, ready to hang</td><td>Find a frame that fits a board</td></tr>
+          <tr><td>Setup</td><td><span class="hl-tick">&#10003;</span>Headless, angled pins come attached, with wide gaps for threading</td><td>Hammer hundreds of nails into a board, then floss narrow gaps</td></tr>
+          <tr><td>Guidance</td><td><span class="hl-tick">&#10003;</span>A soothing voice reads each line</td><td>A printed chart and a lot of counting</td></tr>
+          <tr><td>Time to finish</td><td><span class="hl-tick">&#10003;</span>An evening or two. Wide gaps and marked pins cut threading time in half</td><td>Hours of work before threading can even begin, then narrow gaps that need both hands</td></tr>
+          <tr><td>On the wall</td><td><span class="hl-tick">&#10003;</span>The loom is the frame, lightweight, ready to hang</td><td>Push the strings down, hang a heavy board</td></tr>
         </tbody>
       </table>
     </div>
@@ -504,9 +518,9 @@
     <div class="hl-wrap hl-sbs__inner">
       <div>
         <p class="hl-eyebrow">Small Business Saturday</p>
-        <h2>{{ s.sbs_headline | default: 'Made by a small team of makers in Atlanta' }}</h2>
+        <h2>{{ s.sbs_headline | default: 'Made by a small team of makers across America' }}</h2>
       </div>
-      <p>{{ s.sbs_body | default: 'There is no warehouse algorithm behind this. There is a loom we designed, a patent we were granted, a 3PL in the US that gets your order out within a day, and a few people who answer the support inbox themselves. Buying from us today keeps that going.' }}</p>
+      <p>{{ s.sbs_body | default: 'There is no warehouse algorithm behind this. There is a loom we designed, a patent we were granted, a 3PL in the US that gets your order out within 24 hours, and a few people who answer the support inbox themselves. Buying from us today keeps that going.' }}</p>
     </div>
   </section>
   {%- endif -%}
@@ -519,10 +533,10 @@
       <div class="hl-faq__list">
         {%- for block in section.blocks -%}
           {%- if block.type == 'faq' -%}
-            <details class="hl-faq__item" {{ block.shopify_attributes }}>
-              <summary>{{ block.settings.q }}</summary>
-              <div class="hl-faq__a">{{ block.settings.a }}</div>
-            </details>
+            <div class="hl-faq__item" {{ block.shopify_attributes }}>
+              <button type="button" class="hl-faq__q" aria-expanded="false" aria-controls="hl-faq-{{ section.id }}-{{ forloop.index }}">{{ block.settings.q }}<span aria-hidden="true">+</span></button>
+              <div class="hl-faq__a" id="hl-faq-{{ section.id }}-{{ forloop.index }}" hidden>{{ block.settings.a }}</div>
+            </div>
           {%- endif -%}
         {%- endfor -%}
       </div>
@@ -533,12 +547,12 @@
   <section class="hl-sec hl-final" id="hl-final-{{ section.id }}">
     <div class="hl-wrap hl-final__inner">
       <p class="hl-eyebrow">{{ pct }}% off every kit</p>
-      <h2>{{ s.final_headline | default: 'Give them something to make this year' }}</h2>
+      <h2>{{ s.final_headline | default: 'Give them something to be proud of this year' }}</h2>
       <div class="hl-price" style="justify-content:center">
         <span class="hl-price__sale" data-sale-total>{{ sale_money }}</span>
         <span class="hl-price__reg" data-reg-total>{{ reg_money }}</span>
       </div>
-      <a class="hl-btn hl-btn--primary" data-cta data-cta-loc="final" href="{{ checkout_base }}1?discount={{ code }}">{{ cta_label }}</a>
+      <a class="hl-btn hl-btn--primary" data-cta data-cta-loc="final" href="{{ checkout_base }}1">{{ cta_label }}</a>
       <p class="hl-final__fine">Code {{ code }} applied at checkout. {{ s.offer_dates | default: 'November 26 through December 1.' }} Ships within 24 hours.</p>
     </div>
   </section>
@@ -548,10 +562,10 @@
   <div class="hl-sticky" data-sticky aria-hidden="true">
     <div class="hl-sticky__inner">
       <div class="hl-sticky__price">
-        <b><span data-sale-total>{{ sale_money }}</span> <s style="opacity:.5;font-weight:400;font-size:.85em" data-reg-total>{{ reg_money }}</s></b>
-        <span data-sticky-sub>{{ pct }}% off with {{ code }}, through Dec 1</span>
+        <div class="hl-sticky__line1"><b data-sale-total>{{ sale_money }}</b><s data-reg-total>{{ reg_money }}</s></div>
+        <div class="hl-sticky__line2"><b>{{ pct }}% off</b> with <b>{{ code }}</b>, through <b>Dec 1</b></div>
       </div>
-      <a class="hl-btn hl-btn--primary" data-cta data-cta-loc="sticky" href="{{ checkout_base }}1?discount={{ code }}">{{ cta_label }}</a>
+      <a class="hl-btn hl-btn--primary" data-cta data-cta-loc="sticky" href="{{ checkout_base }}1">{{ cta_label }}</a>
     </div>
   </div>
   {%- endif -%}
@@ -574,7 +588,7 @@
       root.querySelectorAll('[data-reg-total]').forEach(function (el) { el.textContent = fmt(reg * qty); });
       root.querySelectorAll('[data-save-total]').forEach(function (el) { el.textContent = 'Save ' + fmt((reg - sale) * qty); });
       root.querySelectorAll('[data-each]').forEach(function (el) { el.hidden = qty === 1; el.textContent = fmt(sale) + ' per kit'; });
-      root.querySelectorAll('[data-cta]').forEach(function (a) { a.href = base + qty + '?discount=' + encodeURIComponent(code); });
+      root.querySelectorAll('[data-cta]').forEach(function (a) { a.href = base + qty; });
       root.querySelectorAll('.hl-qty__btn').forEach(function (b) { b.setAttribute('aria-pressed', String(parseInt(b.dataset.qty, 10) === qty)); });
     };
     root.querySelectorAll('.hl-qty__btn').forEach(function (b) {
@@ -588,6 +602,16 @@
         try { if (window.fbq) fbq('track', 'InitiateCheckout', payload); } catch (e) {}
         try { if (window.gtag) gtag('event', 'begin_checkout', { value: payload.value, currency: 'USD', items: [{ item_id: '{{ variant.id }}', quantity: qty }] }); } catch (e) {}
         try { if (window.dataLayer) dataLayer.push({ event: 'hl_cta_click', location: a.dataset.ctaLoc, qty: qty }); } catch (e) {}
+      });
+    });
+
+    /* faq */
+    root.querySelectorAll('.hl-faq__q').forEach(function (q) {
+      q.addEventListener('click', function () {
+        var open = q.getAttribute('aria-expanded') === 'true';
+        q.setAttribute('aria-expanded', String(!open));
+        var a = document.getElementById(q.getAttribute('aria-controls'));
+        if (a) a.hidden = open;
       });
     });
 
@@ -616,6 +640,11 @@
     { "type": "range", "id": "discount_pct", "label": "Discount %", "min": 5, "max": 60, "step": 5, "default": 30 },
     { "type": "text", "id": "offer_dates", "label": "Offer dates line", "default": "November 26 through December 1." },
     { "type": "text", "id": "cta_label", "label": "CTA label", "default": "Make yours" },
+    { "type": "text", "id": "stat_1", "label": "Hero stat 1", "default": "4.6 stars" },
+    { "type": "text", "id": "stat_2", "label": "Hero stat 2", "default": "3,000 sold" },
+    { "type": "text", "id": "stat_3", "label": "Hero stat 3", "default": "5 to 6 hours to make" },
+    { "type": "text", "id": "rating_line", "label": "Trust strip rating", "default": "4.6 stars" },
+    { "type": "text", "id": "sold_line", "label": "Trust strip sold count", "default": "2,700 sold" },
     { "type": "checkbox", "id": "sticky_bar", "label": "Show sticky CTA bar", "default": true },
 
     { "type": "header", "content": "Hero" },
@@ -625,9 +654,9 @@
     { "type": "image_picker", "id": "hero_bg", "label": "Hero background, desktop (2880 x 1620, 16:9)", "info": "Full-bleed behind the hero. Keep the subject soft and low-contrast; copy sits on top of the left half." },
     { "type": "image_picker", "id": "hero_bg_mobile", "label": "Hero background, mobile (1080 x 1920, 9:16)", "info": "Falls back to the desktop image, center-cropped." },
     { "type": "range", "id": "hero_bg_overlay", "label": "Background darkening %", "min": 30, "max": 90, "step": 5, "default": 70 },
-    { "type": "image_picker", "id": "hero_image", "label": "Hero image, desktop (1400 x 1680)" },
-    { "type": "image_picker", "id": "hero_image_mobile", "label": "Hero image, mobile (1080 x 675)" },
-    { "type": "text", "id": "hero_alt", "label": "Hero alt text", "default": "A finished Threaditate piece hung beside the wrapped kit" },
+    { "type": "image_picker", "id": "hero_image", "label": "Hero image, desktop (1400 x 1400, square)" },
+    { "type": "image_picker", "id": "hero_image_mobile", "label": "Hero image, mobile (1600 x 1000, 16:10)" },
+    { "type": "text", "id": "hero_alt", "label": "Hero alt text", "default": "A finished Threaditate piece of a smiling baby, resting on a shelf" },
 
     { "type": "header", "content": "Reveal" },
     { "type": "text", "id": "reveal_eyebrow", "label": "Eyebrow" },
@@ -706,13 +735,13 @@
       "name": "Holiday landing (BFCM)",
       "blocks": [
         { "type": "quote", "settings": { "text": "It looks like something from a gallery. People ask where I bought it. I made it. On my couch.", "name": "Andy S.", "context": "Kickstarter backer" } },
-        { "type": "quote", "settings": { "text": "[VERBATIM QUOTE FROM SEP 2026 SURVEY, completion angle]", "name": "Sheryl M.", "context": "Verified customer" } },
-        { "type": "quote", "settings": { "text": "[VERBATIM QUOTE FROM SEP 2026 SURVEY, calm / mind went quiet angle]", "name": "Timothy K.", "context": "Verified customer" } },
-        { "type": "faq", "settings": { "q": "They are not crafty. Will they actually finish it?", "a": "<p>That is the whole design. There is no pattern to read and no skill to pick up. The app says which pin is next and they loop the thread. Most people finish in an evening or two, and the app keeps their place if they stop halfway.</p>" } },
+        { "type": "quote", "settings": { "text": "Incredibly rewarding and proud of finishing a project, because I struggle with finishing projects.", "name": "Timothy K.", "context": "Kickstarter backer" } },
+        { "type": "quote", "settings": { "text": "It was easy, relaxing, and fun. I immediately wanted to do another.", "name": "Megan D.", "context": "Received as a gift" } },
+        { "type": "faq", "settings": { "q": "They are not crafty. Will they actually finish it?", "a": "<p>That is the whole design. There is no pattern to read and no skill to pick up. The app says which pin is next and they loop the thread. Most people finish in about five hours, and the app keeps their place if they stop halfway.</p>" } },
         { "type": "faq", "settings": { "q": "Do I need to pick the photo before I buy?", "a": "<p>No. The kit works with any photo, and the recipient chooses it in the app when they open the box. You are giving them the choice, which is a better gift than guessing.</p>" } },
-        { "type": "faq", "settings": { "q": "Will it arrive in time?", "a": "<p>Orders ship within 24 hours from our US warehouse. Anything ordered during this sale has weeks of margin before the holidays.</p>" } },
-        { "type": "faq", "settings": { "q": "What is in the box?", "a": "<p>The loom with pins already set, enough thread for a full piece, a needle, hanging hardware, and a card with the app download. The app is free and runs on iPhone.</p>" } },
-        { "type": "faq", "settings": { "q": "What if they already have one, or change their mind?", "a": "<p>Unopened kits can be returned within 30 days. Email support and we will sort it out. If something arrives damaged or wrong, that is on us and we cover it.</p>" } },
+        { "type": "faq", "settings": { "q": "Will it arrive in time?", "a": "<p>Orders ship within 24 hours from our US warehouse. Anything ordered during this sale has plenty of time to arrive before the holidays.</p>" } },
+        { "type": "faq", "settings": { "q": "What is in the box?", "a": "<p>The loom, enough thread for a full piece, a wand, a spool holder, a phone holder, hanging hardware, and a code for the app. The app is free and runs on phones, tablets, or computers.</p>" } },
+        { "type": "faq", "settings": { "q": "What if they already have one, or change their mind?", "a": "<p>Unused kits can be returned within 30 days. Email support and we will sort it out. If something arrives damaged or wrong, that is on us and we fix it fast.</p>" } },
         { "type": "faq", "settings": { "q": "How does the discount work?", "a": "<p>Tap the button and the code is applied for you at checkout. If it does not show, enter HOLIDAY30 in the discount field. It is good on every kit through December 1.</p>" } }
       ]
     }
