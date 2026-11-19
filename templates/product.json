@@ -103,7 +103,7 @@
         "text_about": {
           "type": "text",
           "settings": {
-            "text": "<ul><li>Mistake friendly. All errors disappear.</li><li>No skills needed. The app's voice guides every number.</li><li>Loom, thread and tools included. Nothing else to buy.</li><li>Relaxing and mess-free. 5 to 6hours, at your pace.</li></ul>",
+            "text": "<ul><li>Mistake friendly. All errors disappear.</li><li>No skills needed. The app's voice guides every number.</li><li>Loom, thread and tools included. Nothing else to buy.</li><li>Relaxing and mess-free. 5 to 6 hours, at your pace.</li></ul>",
             "read_more": false,
             "margin_top": 20,
             "visibility": "desktop"
@@ -198,7 +198,7 @@
           "type": "collapsible_tab",
           "settings": {
             "title": "Features",
-            "content": "<ul><li><strong>Real-time voice-guided app</strong> - speaks and shows each step, then flows to the next at your pace. No lost lines, no buttons between them.</li><li><strong>Convertible easel-box</strong> - packaging that becomes your work surface.</li><li><strong>Wooden phone stand</strong> - holds your guide hands-free while you thread.</li><li><strong>Thread and spool holder</strong> - pre-cut, organized, ready to use.</li><li><strong>Precision threading wand</strong> - designed for clean, accurate placement.</li><li><strong>Numbered paper guide</strong> - a physical reference for using the loom with our app.</li><li><strong>Patented software and loom design</strong> - U.S. Patent 12,423,349. An original system you won't find anywhere else.</li><li><strong>Great for: </strong>eye-hand coordination, fine motor skills, spatial cognition, recall</li></ul>",
+            "content": "<ul><li><strong>Real-time voice-guided app</strong> - speaks and shows each step, then flows to the next at your pace. No lost lines, no buttons between them.</li><li><strong>Convertible easel-box</strong> - packaging that becomes your work surface.</li><li><strong>Wooden phone stand</strong> - holds your guide hands-free while you thread.</li><li><strong>Thread and spool holder</strong> - one continuous thread, ready to go.</li><li><strong>Precision threading wand</strong> - designed for clean, accurate placement.</li><li><strong>Numbered paper guide</strong> - a physical reference for using the loom with our app.</li><li><strong>Patented software and loom design</strong> - U.S. Patent 12,423,349. An original system you won't find anywhere else.</li></ul>",
             "page": "",
             "open_as_drawer": false,
             "icon": "icon-caret__right",

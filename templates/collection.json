@@ -37,7 +37,7 @@
         "text_3cmaUq": {
           "type": "text",
           "settings": {
-            "text": "<h1>Something beautiful. Made by you.</h1><p>Your hands make it. The app walks you through every step — one string at a time. No experience needed.</p>",
+            "text": "<h1>Something beautiful. Made by you.</h1><p>Your hands make it. The app guides every line. No experience needed.</p>",
             "sm_size_multiplier": "sm-size--huge",
             "sm_margin_top": 0,
             "size_multiplier": "size--default",
@@ -71,6 +71,7 @@
     },
     "divider_HEcjPW": {
       "type": "divider",
+      "disabled": true,
       "blocks": {
         "standard_BhFqEa": {
           "type": "standard",
