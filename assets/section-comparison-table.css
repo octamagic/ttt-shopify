@@ -198,6 +198,23 @@
     padding-left: 1px;
     padding-right: 1px;
   }
+  /* The table is taller than a phone screen, so the column names stay pinned
+     under the site header while the rows scroll. Sticky needs the wrapper to
+     stop being a scroll container, which is safe here: nothing swipes sideways. */
+  .comparison__scroll { overflow: visible; }
+  .comparison thead th {
+    position: sticky;
+    top: var(--header-height, 0px);
+    z-index: 2;
+    background: var(--color-background);
+    opacity: 1;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .comparison thead th:not(.comparison__us) {
+    color: color-mix(in srgb, var(--color-foreground) 80%, transparent);
+  }
+  .comparison thead .comparison__us { background: var(--brand-cobalt-wash, #E4EBF8); }
   .comparison .comparison__label-head { width: 30%; }
   .comparison .comparison__us { min-width: 0; }
   .comparison td { padding-left: 2px; padding-right: 2px; }

@@ -1,4 +1,6 @@
 {{ 'section-reviews-wall.css' | asset_url | stylesheet_tag }}
+{{ 'component-scroll-dots.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'component-scroll-dots.js' | asset_url }}" defer></script>
 
 {%- comment -%}
   Reviews wall: a rating summary and a masonry grid of review cards, filled
@@ -49,7 +51,8 @@
       {%- endif -%}
     </div>
 
-    <div class="reviews-wall__grid" data-reviews-grid aria-live="polite"></div>
+    <div class="reviews-wall__grid" id="ReviewsWall-{{ section.id }}" data-reviews-grid aria-live="polite"></div>
+    <scroll-dots for="ReviewsWall-{{ section.id }}" hidden></scroll-dots>
 
     <template data-review-card>
       <article class="reviews-wall__card">

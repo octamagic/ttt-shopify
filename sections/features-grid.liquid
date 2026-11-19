@@ -1,4 +1,6 @@
 {{ 'section-features-grid.css' | asset_url | stylesheet_tag }}
+{{ 'component-scroll-dots.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'component-scroll-dots.js' | asset_url }}" defer></script>
 
 {%- liquid
   assign section_heading = section.settings.heading
@@ -25,7 +27,7 @@
   </div>
 
   {%- if section.blocks.size > 0 -%}
-    <div class="features-grid__grid">
+    <div class="features-grid__grid" id="FeaturesGrid-{{ section.id }}">
       {%- for block in section.blocks -%}
         {%- if block.type == 'feature_card' -%}
           {%- liquid
@@ -76,6 +78,7 @@
         {%- endif -%}
       {%- endfor -%}
     </div>
+    <scroll-dots for="FeaturesGrid-{{ section.id }}" hidden></scroll-dots>
   {%- endif -%}
 </div>
 
