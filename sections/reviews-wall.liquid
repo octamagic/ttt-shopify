@@ -94,6 +94,12 @@
     const min = Number(root.dataset.minRating || 4);
     const max = Number(root.dataset.max || 9);
     const hideAnon = root.dataset.hideAnonymous === 'true';
+    // Reviewers show as first name and last initial: "Hailey Deets" -> "Hailey D."
+    const shortName = (name) => {
+      const parts = (name || '').trim().split(/\s+/).filter(Boolean);
+      if (parts.length < 2) return parts[0] || '';
+      return `${parts.slice(0, -1).join(' ')} ${parts[parts.length - 1].charAt(0).toUpperCase()}.`;
+    };
     const params = new URLSearchParams({
       carousel_type: 'cards', reviews_selection: 'all', star_rating: 'all', max_reviews: '100',
       display_order: 'most_recent', shop_domain: root.dataset.shop, platform: 'shopify',
@@ -122,7 +128,7 @@
         if (!reviews.length) { root.querySelector('[data-reviews-empty]')?.removeAttribute('hidden'); if (!root.querySelector('[data-reviews-empty]')) root.closest('.shopify-section').hidden = true; return; }
         for (const r of reviews) {
           const card = tpl.content.firstElementChild.cloneNode(true);
-          card.querySelector('[data-name]').textContent = r.reviewer_name || 'A maker';
+          card.querySelector('[data-name]').textContent = shortName(r.reviewer_name) || 'A maker';
           if (r.verified_buyer) card.querySelector('[data-verified]').hidden = false;
           const date = card.querySelector('[data-date]');
           date.dateTime = r.created_at; date.textContent = fmt.format(new Date(r.created_at));
