@@ -1679,6 +1679,13 @@
         "default": "Black Friday"
       },
       {
+        "type": "text",
+        "id": "sale_emoji",
+        "label": "Emoji",
+        "default": "🎄",
+        "info": "Shown before the sale name. Leave empty for none."
+      },
+      {
         "type": "range",
         "id": "sale_percent",
         "label": "Discount",
