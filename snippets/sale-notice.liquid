@@ -1,0 +1,108 @@
+{%- comment -%}
+  Sale notice: tells shoppers about a running sale, from one place
+  (Theme settings > Sale notice). It switches itself off at the end time, so
+  the store never promises a discount that checkout no longer gives.
+
+  ** PARAMETERS **
+  placement  => REQUIRED | string | 'bar' (the strip above the header, on
+                                    every page) or 'product' (the sale price
+                                    under the price in the buy box)
+  product    => OPTIONAL | object | required for placement 'product'
+
+  The bar also loads sale-notice.js, which applies the discount code for the
+  shopper on any page, so the price shown is the price at checkout.
+{%- endcomment -%}
+
+{%- liquid
+  assign sale_active = false
+  assign sale_pct = settings.sale_percent | default: 0
+  assign sale_code = settings.sale_code | strip
+
+  if settings.sale_enabled and sale_pct > 0
+    assign sale_active = true
+    if settings.sale_end_at != blank
+      assign sale_end_ts = settings.sale_end_at | date: '%s' | plus: 0
+      assign sale_now_ts = 'now' | date: '%s' | plus: 0
+      if sale_end_ts == 0 or sale_now_ts >= sale_end_ts
+        assign sale_active = false
+      endif
+    endif
+  endif
+-%}
+
+{%- if sale_active -%}
+  {%- capture sale_offer -%}
+    {%- if settings.sale_label != blank -%}{{ settings.sale_label | escape }}: {% endif -%}
+    {{ sale_pct }}% off{% if placement == 'bar' %} every kit{% endif %}
+    {%- if settings.sale_end_label != blank %} through {{ settings.sale_end_label | escape }}{% endif -%}
+  {%- endcapture -%}
+
+  {%- if placement == 'bar' -%}
+    {%- liquid
+      assign sale_link = settings.sale_link
+      assign sale_href = sale_link
+      assign sale_link_first = sale_link | slice: 0
+      assign sale_link_second = sale_link | slice: 1
+
+      comment
+        Going through /discount/CODE applies the code on the way to the sale
+        page. Only for links on this store, since redirect takes a path.
+      endcomment
+      if sale_code != blank and sale_link_first == '/' and sale_link_second != '/'
+        assign sale_code_path = sale_code | url_encode
+        assign sale_link_param = sale_link | url_encode
+        assign sale_href = routes.root_url | append: 'discount/' | append: sale_code_path | append: '?redirect=' | append: sale_link_param
+      endif
+    -%}
+
+    {{ 'component-sale-notice.css' | asset_url | stylesheet_tag }}
+
+    {%- comment -%} The sale page already says all of this, so the bar stays off it. {%- endcomment -%}
+    {%- unless sale_link != blank and request.path == sale_link -%}
+      <div
+        class="sale-bar"
+        role="region"
+        aria-label="{{ settings.sale_label | default: 'Sale' | escape }}"
+        data-sale-end-at="{{ settings.sale_end_at | escape }}">
+        <p class="sale-bar__text">
+          <span>{{ sale_offer }}.</span>
+          {%- if sale_link != blank and settings.sale_link_label != blank %}
+            <a class="sale-bar__link" href="{{ sale_href }}" data-sale-link>{{ settings.sale_link_label | escape }}</a>
+          {%- endif -%}
+        </p>
+      </div>
+    {%- endunless -%}
+
+    {%- if sale_code != blank -%}
+      <script
+        src="{{ 'sale-notice.js' | asset_url }}"
+        data-sale-code="{{ sale_code | escape }}"
+        data-sale-end-at="{{ settings.sale_end_at | escape }}"
+        defer></script>
+    {%- endif -%}
+
+  {%- elsif placement == 'product' and product != blank -%}
+    {%- liquid
+      assign sale_variant = product.selected_or_first_available_variant
+      assign sale_saving = sale_variant.price | times: sale_pct | divided_by: 100
+      assign sale_price = sale_variant.price | minus: sale_saving
+    -%}
+    {%- if sale_variant != nil and sale_saving > 0 -%}
+      <div class="sale-note" data-sale-end-at="{{ settings.sale_end_at | escape }}">
+        <p class="sale-note__offer">{{ sale_offer }}</p>
+        <p class="sale-note__price">
+          <strong>{{ sale_price | money }}</strong>
+          <s><span class="visually-hidden">Regular price</span> {{ sale_variant.price | money }}</s>
+          <span class="sale-note__save">Save {{ sale_saving | money }}</span>
+        </p>
+        <p class="sale-note__how">
+          {%- if sale_code != blank -%}
+            Code {{ sale_code | escape }} is applied for you at checkout.
+          {%- else -%}
+            The discount is applied for you at checkout.
+          {%- endif -%}
+        </p>
+      </div>
+    {%- endif -%}
+  {%- endif -%}
+{%- endif -%}

@@ -1660,6 +1660,67 @@
     ]
   },
   {
+    "name": "Sale notice",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Shows a running sale on every page: a strip above the header, and the sale price under the price on the product page. The discount itself is set up in Admin > Discounts. The notice turns itself off at the end time."
+      },
+      {
+        "type": "checkbox",
+        "id": "sale_enabled",
+        "label": "Show the sale notice",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "sale_label",
+        "label": "Sale name",
+        "default": "Black Friday"
+      },
+      {
+        "type": "range",
+        "id": "sale_percent",
+        "label": "Discount",
+        "min": 5,
+        "max": 60,
+        "step": 5,
+        "unit": "%",
+        "default": 30,
+        "info": "Must match the discount in Admin. The sale price shown is calculated from this."
+      },
+      {
+        "type": "text",
+        "id": "sale_code",
+        "label": "Discount code",
+        "info": "Applied for the shopper automatically. Leave empty when the discount is automatic in Admin."
+      },
+      {
+        "type": "text",
+        "id": "sale_end_label",
+        "label": "Last day, as shown to shoppers",
+        "info": "For example: December 1"
+      },
+      {
+        "type": "text",
+        "id": "sale_end_at",
+        "label": "Turn off at",
+        "info": "ISO 8601 with timezone offset, e.g. 2026-12-02T00:00:00-06:00. Use the same end time as the discount in Admin. Leave empty for no end."
+      },
+      {
+        "type": "url",
+        "id": "sale_link",
+        "label": "Sale page"
+      },
+      {
+        "type": "text",
+        "id": "sale_link_label",
+        "label": "Link text",
+        "default": "See the sale"
+      }
+    ]
+  },
+  {
     "name": "Seasonal look",
     "settings": [
       {
