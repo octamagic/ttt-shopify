@@ -4,7 +4,8 @@
  * 1. Applies the sale's discount code to the shopper's cart, once per browser
  *    session, through Shopify's Cart API. The cart and checkout then show
  *    the sale price with no code to type.
- * 2. Hides the sale bar and the buy box note at the end time, in case the
+ * 2. Keeps the sticky header just below the sale bar.
+ * 3. Hides the sale bar and the buy box note at the end time, in case the
  *    page was cached or left open past it.
  */
 (function () {
@@ -19,6 +20,7 @@
     document.querySelectorAll('.sale-bar, .sale-note').forEach(function (el) {
       el.hidden = true;
     });
+    document.documentElement.style.setProperty('--sale-bar-height', '0px');
   }
 
   function whenReady(fn) {
@@ -33,6 +35,19 @@
     whenReady(hideNotices);
     return;
   }
+
+  /* Tell the sticky header how tall the bar is, so it sticks just below it. */
+  function trackBarHeight() {
+    var bar = document.querySelector('[data-sale-bar]');
+    if (!bar) return;
+    function set() {
+      document.documentElement.style.setProperty('--sale-bar-height', (bar.hidden ? 0 : bar.offsetHeight) + 'px');
+    }
+    set();
+    if ('ResizeObserver' in window) new ResizeObserver(set).observe(bar);
+    window.addEventListener('resize', set);
+  }
+  whenReady(trackBarHeight);
 
   if (!isNaN(endTs)) {
     var remaining = endTs - Date.now();

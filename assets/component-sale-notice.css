@@ -2,34 +2,61 @@
    Both read brand tokens, so they follow the Seasonal look. */
 
 .sale-bar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
   background: var(--brand-cobalt-blue);
   color: var(--brand-ivory-white);
 }
-.sale-bar__text {
+/* The header sticks too, so it sits under the bar, not on top of it.
+   sale-notice.js keeps --sale-bar-height current. */
+html.sticky-header-initialized .site-header {
+  top: var(--sale-bar-height, 0px);
+}
+.sale-bar__inner {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: baseline;
-  gap: 0.2em 0.9em;
+  align-items: center;
+  gap: 0.4rem 1.4rem;
   margin: 0;
-  padding: 0.9rem 1.6rem;
+  padding: 0.8rem 1.6rem;
+  color: inherit;
   font-size: 1.5rem;
   font-weight: 600;
   line-height: 1.35;
   text-align: center;
+  text-decoration: none;
 }
-.sale-bar__link {
-  color: inherit;
-  text-decoration: underline;
-  text-underline-offset: 0.2em;
+.sale-bar__emoji {
+  margin-right: 0.3em;
+}
+.sale-bar__name {
+  margin-right: 0.35em;
+  color: var(--brand-cobalt-text-tint);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.sale-bar__offer {
+  font-weight: 800;
+}
+.sale-bar__btn {
+  padding: 0.3rem 1.3rem;
+  border-radius: 999px;
+  background: var(--brand-cta);
+  color: var(--brand-on-cta);
+  font-size: 1.3rem;
+  font-weight: 700;
   white-space: nowrap;
+  transition: background 0.15s ease;
 }
-.sale-bar__link:hover {
-  text-decoration-thickness: 2px;
+a.sale-bar__inner:hover .sale-bar__btn {
+  background: var(--brand-cta-hover);
 }
-.sale-bar__link:focus-visible {
+a.sale-bar__inner:focus-visible {
   outline: 2px solid currentColor;
-  outline-offset: 3px;
+  outline-offset: -4px;
 }
 
 .sale-note {
@@ -75,10 +102,18 @@
 }
 
 @media only screen and (max-width: 767px) {
-  /* Flow the link inline so the bar is two lines on a phone, not three. */
-  .sale-bar__text {
-    display: block;
-    padding: 0.7rem 1.2rem;
+  .sale-bar__inner {
+    gap: 0.3rem 1rem;
+    padding: 0.6rem 1rem;
     font-size: 1.3rem;
+  }
+  /* Keep the pinned bar short on a phone: the end date is on the product
+     page and the sale page. */
+  .sale-bar__through {
+    display: none;
+  }
+  .sale-bar__btn {
+    font-size: 1.2rem;
+    padding: 0.2rem 1.1rem;
   }
 }

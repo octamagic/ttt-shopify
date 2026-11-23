@@ -31,8 +31,20 @@
       {%- comment -%} ── Left: Text ── {%- endcomment -%}
       <div class="hero-dark__text-col">
 
-        {%- if section.settings.eyebrow != blank -%}
-          <p class="hero-dark__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- liquid
+          assign eyebrow = section.settings.eyebrow | escape
+          if section.settings.sale_eyebrow
+            capture sale_eyebrow
+              render 'sale-notice', placement: 'eyebrow'
+            endcapture
+            assign sale_eyebrow = sale_eyebrow | strip
+            if sale_eyebrow != blank
+              assign eyebrow = sale_eyebrow
+            endif
+          endif
+        -%}
+        {%- if eyebrow != blank -%}
+          <p class="hero-dark__eyebrow">{{ eyebrow }}</p>
         {%- endif -%}
 
         {%- if section.settings.heading != blank -%}
@@ -193,6 +205,13 @@
       "id": "eyebrow",
       "label": "Eyebrow (above heading)",
       "info": "Optional short line, e.g. a seasonal message."
+    },
+    {
+      "type": "checkbox",
+      "id": "sale_eyebrow",
+      "label": "Show the running sale in the eyebrow",
+      "info": "While a sale is on (Theme settings > Sale notice), the eyebrow shows the sale. It goes back to the text above when the sale ends.",
+      "default": true
     },
     {
       "type": "textarea",

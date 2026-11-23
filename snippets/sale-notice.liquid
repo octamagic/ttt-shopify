@@ -5,12 +5,15 @@
 
   ** PARAMETERS **
   placement  => REQUIRED | string | 'bar' (the strip above the header, on
-                                    every page) or 'product' (the sale price
-                                    under the price in the buy box)
+                                    every page), 'product' (the sale price
+                                    under the price in the buy box) or
+                                    'eyebrow' (plain text for a hero eyebrow;
+                                    empty when no sale is running)
   product    => OPTIONAL | object | required for placement 'product'
 
   The bar also loads sale-notice.js, which applies the discount code for the
-  shopper on any page, so the price shown is the price at checkout.
+  shopper on any page, so the price shown is the price at checkout, and keeps
+  the bar pinned above the sticky header.
 {%- endcomment -%}
 
 {%- liquid
@@ -31,13 +34,18 @@
 -%}
 
 {%- if sale_active -%}
-  {%- capture sale_offer -%}
-    {%- if settings.sale_label != blank -%}{{ settings.sale_label | escape }}: {% endif -%}
-    {{ sale_pct }}% off{% if placement == 'bar' %} every kit{% endif %}
-    {%- if settings.sale_end_label != blank %} through {{ settings.sale_end_label | escape }}{% endif -%}
+  {%- liquid
+    assign sale_emoji = settings.sale_emoji | strip
+    assign sale_name = settings.sale_label | default: 'Sale'
+  -%}
+  {%- capture sale_through -%}
+    {%- if settings.sale_end_label != blank %}through {{ settings.sale_end_label | escape }}{% endif -%}
   {%- endcapture -%}
 
-  {%- if placement == 'bar' -%}
+  {%- if placement == 'eyebrow' -%}
+    {%- if sale_emoji != blank -%}{{ sale_emoji | escape }} {% endif -%}
+    {{- sale_name | escape }}: {{ sale_pct }}% off every kit
+  {%- elsif placement == 'bar' -%}
     {%- liquid
       assign sale_link = settings.sale_link
       assign sale_href = sale_link
@@ -59,27 +67,36 @@
 
     {%- comment -%} The sale page already says all of this, so the bar stays off it. {%- endcomment -%}
     {%- unless sale_link != blank and request.path == sale_link -%}
-      <div
-        class="sale-bar"
-        role="region"
-        aria-label="{{ settings.sale_label | default: 'Sale' | escape }}"
-        data-sale-end-at="{{ settings.sale_end_at | escape }}">
-        <p class="sale-bar__text">
-          <span>{{ sale_offer }}.</span>
-          {%- if sale_link != blank and settings.sale_link_label != blank %}
-            <a class="sale-bar__link" href="{{ sale_href }}" data-sale-link>{{ settings.sale_link_label | escape }}</a>
+      {%- liquid
+        assign sale_bar_tag = 'p'
+        if sale_link != blank
+          assign sale_bar_tag = 'a'
+        endif
+      -%}
+      <div class="sale-bar" role="region" aria-label="{{ sale_name | escape }}" data-sale-bar>
+        <{{ sale_bar_tag }} class="sale-bar__inner"{% if sale_link != blank %} href="{{ sale_href }}" data-sale-link{% endif %}>
+          <span class="sale-bar__text">
+            {%- if sale_emoji != blank -%}
+              <span class="sale-bar__emoji" aria-hidden="true">{{ sale_emoji | escape }}</span>
+            {%- endif -%}
+            <span class="sale-bar__name">{{ sale_name | escape }}</span>
+            <span class="sale-bar__offer">{{ sale_pct }}% off every kit</span>
+            {%- if sale_through != blank %}
+              <span class="sale-bar__through">{{ sale_through }}</span>
+            {%- endif -%}
+          </span>
+          {%- if sale_link != blank and settings.sale_link_label != blank -%}
+            <span class="sale-bar__btn">{{ settings.sale_link_label | escape }}</span>
           {%- endif -%}
-        </p>
+        </{{ sale_bar_tag }}>
       </div>
     {%- endunless -%}
 
-    {%- if sale_code != blank -%}
-      <script
-        src="{{ 'sale-notice.js' | asset_url }}"
-        data-sale-code="{{ sale_code | escape }}"
-        data-sale-end-at="{{ settings.sale_end_at | escape }}"
-        defer></script>
-    {%- endif -%}
+    <script
+      src="{{ 'sale-notice.js' | asset_url }}"
+      data-sale-code="{{ sale_code | escape }}"
+      data-sale-end-at="{{ settings.sale_end_at | escape }}"
+      defer></script>
 
   {%- elsif placement == 'product' and product != blank -%}
     {%- liquid
@@ -89,7 +106,9 @@
     -%}
     {%- if sale_variant != nil and sale_saving > 0 -%}
       <div class="sale-note" data-sale-end-at="{{ settings.sale_end_at | escape }}">
-        <p class="sale-note__offer">{{ sale_offer }}</p>
+        <p class="sale-note__offer">
+          {{ sale_name | escape }}: {{ sale_pct }}% off {{ sale_through }}
+        </p>
         <p class="sale-note__price">
           <strong>{{ sale_price | money }}</strong>
           <s><span class="visually-hidden">Regular price</span> {{ sale_variant.price | money }}</s>
