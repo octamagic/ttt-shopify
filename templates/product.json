@@ -54,7 +54,7 @@
           "settings": {
             "margin_top": 8,
             "font_weight": "normal",
-            "shipping_note": "$5.95 flat US shipping. Ships in 1 business day from Alabama.",
+            "shipping_note": "US shipping from $8.95. Ships in 1 business day from Alabama.",
             "sm_size_multiplier": "sm-size--huge",
             "size_multiplier": "size--huge"
           }
@@ -220,7 +220,7 @@
           "type": "collapsible_tab",
           "settings": {
             "title": "Shipping and returns",
-            "content": "<p>$5.95 standard US shipping, 3 to 5 days. Expedited 1 to 2 day options at checkout.</p><p>Ships from Huntsville, AL within 1 business day.</p><p>30-day guarantee. If it's not for you, send it back in new condition for a full refund.</p>",
+            "content": "<p>$8.95 standard US shipping for one kit, 3 to 5 days. Expedited 1 to 2 day options at checkout.</p><p>Ships from Huntsville, AL within 1 business day.</p><p>30-day guarantee. If it's not for you, send it back in new condition for a full refund.</p>",
             "page": "",
             "open_as_drawer": false,
             "icon": "icon-caret__right",
