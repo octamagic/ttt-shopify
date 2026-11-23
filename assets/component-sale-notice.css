@@ -1,0 +1,84 @@
+/* Sale notice: the strip above the header and the sale price in the buy box.
+   Both read brand tokens, so they follow the Seasonal look. */
+
+.sale-bar {
+  background: var(--brand-cobalt-blue);
+  color: var(--brand-ivory-white);
+}
+.sale-bar__text {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
+  gap: 0.2em 0.9em;
+  margin: 0;
+  padding: 0.9rem 1.6rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.35;
+  text-align: center;
+}
+.sale-bar__link {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  white-space: nowrap;
+}
+.sale-bar__link:hover {
+  text-decoration-thickness: 2px;
+}
+.sale-bar__link:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
+.sale-note {
+  margin: 1.2rem 0 0.8rem;
+  padding: 1.2rem 1.4rem;
+  border: 1px solid var(--brand-cobalt-hairline);
+  border-radius: 12px;
+  background: var(--brand-cobalt-wash);
+}
+.sale-note p {
+  margin: 0;
+}
+.sale-note__offer {
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--brand-cobalt-blue);
+}
+.sale-note__price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.2em 0.6em;
+  margin-top: 0.4rem;
+  font-size: 1.6rem;
+}
+.sale-note__price strong {
+  font-size: 2.6rem;
+  line-height: 1.1;
+}
+.sale-note__price s {
+  opacity: 0.65;
+}
+.sale-note__save {
+  font-weight: 600;
+  color: var(--brand-cobalt-blue);
+}
+.sale-note__how {
+  margin-top: 0.4rem;
+  font-size: 1.3rem;
+  opacity: 0.8;
+}
+
+@media only screen and (max-width: 767px) {
+  /* Flow the link inline so the bar is two lines on a phone, not three. */
+  .sale-bar__text {
+    display: block;
+    padding: 0.7rem 1.2rem;
+    font-size: 1.3rem;
+  }
+}

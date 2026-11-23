@@ -322,6 +322,7 @@
                   {%- endif -%}
                 {% endunless %}
               </div>
+              {%- render 'sale-notice', placement: 'product', product: product -%}
 
               {%- unless product == nil -%}
                 {%- assign product_form_installment_id = 'product-form-installment-' | append: section.id -%}
